@@ -1,0 +1,22 @@
+# STM32CubeIDE
+stm32-car/firmware/Debug/
+stm32-car/firmware/Release/
+stm32-car/firmware/**/*.o
+stm32-car/firmware/**/*.elf
+.metadata/
+.settings/
+
+# Python
+model/**/__pycache__/
+*.pyc
+.venv/
+venv/
+
+# C++/CMake
+mini-infer/build/
+
+# OS
+.DS_Store
+
+# docs
+*.md
