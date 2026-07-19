@@ -14,9 +14,7 @@ venv/
 
 # C++/CMake
 mini-infer/build/
+mini-infer/tests/data/
 
 # OS
 .DS_Store
-
-# docs
-*.md
