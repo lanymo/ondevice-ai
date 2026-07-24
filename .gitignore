@@ -1,8 +1,8 @@
 # STM32CubeIDE
-stm32-car/firmware/Debug/
-stm32-car/firmware/Release/
-stm32-car/firmware/**/*.o
-stm32-car/firmware/**/*.elf
+stm32-edge/firmware/Debug/
+stm32-edge/firmware/Release/
+stm32-edge/firmware/**/*.o
+stm32-edge/firmware/**/*.elf
 .metadata/
 .settings/
 
