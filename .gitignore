@@ -7,7 +7,9 @@ stm32-edge/firmware/**/*.elf
 .settings/
 
 # Python
-model/**/__pycache__/
+# (원래 'model/**/__pycache__/' 였는데, 슬래시가 든 패턴은 .gitignore 위치 기준으로
+#  앵커되므로 루트의 model/ 만 잡고 stm32-edge/model/ 은 안 잡혔다.)
+**/__pycache__/
 *.pyc
 .venv/
 venv/
@@ -15,6 +17,19 @@ venv/
 # C++/CMake
 mini-infer/build/
 mini-infer/tests/data/
+
+# stm32-edge/model — 시드에서 결정적으로 재생성되는 것들 (README의 재현 절차 참고)
+# 주의: .gitignore는 줄 끝 주석을 지원하지 않는다. 주석은 반드시 별도 줄에.
+# synth_data.py 생성 CSV (실측 CSV를 넣을 자리이기도 하다)
+stm32-edge/model/data/
+# 학습된 npz 등 중간 산출물
+stm32-edge/model/artifacts/
+# export_header.py 생성 테스트벡터 + C 빌드 산출물
+stm32-edge/model/cref/testvec.bin
+stm32-edge/model/cref/*.o
+stm32-edge/model/cref/test_ae_int8
+# model_weights.h 는 **커밋한다** — 펌웨어가 Python 없이 빌드되려면 리포에 있어야 한다.
+# measurements/*.csv 와 measurements/plots/*.png 도 커밋한다 (측정 기록 = 산출물).
 
 # OS
 .DS_Store
