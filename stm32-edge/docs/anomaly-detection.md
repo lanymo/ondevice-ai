@@ -1,6 +1,6 @@
 # 이상탐지(오토인코더) — 예지보전 시나리오용
 
-> 학습 자료(축 B · 시나리오 의존). **삼성 축의 기본 시나리오 = 가전 예지보전**일 때 필요.
+> 학습 자료(축 B · 시나리오 의존). **축 B의 기본 시나리오 = 가전 예지보전**일 때 필요.
 > 재실감지(분류) 시나리오를 고르면 이 문서 대신 일반 분류로 간다. 선행: [quantization-basics.md](quantization-basics.md),
 > [timeseries-windowing.md](timeseries-windowing.md).
 
