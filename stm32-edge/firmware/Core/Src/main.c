@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include "i2c.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -26,6 +27,8 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include "dwt.h"
+#include "i2c_scan.h"
+#include "mpu6050.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -99,6 +102,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 
   /*stdio buffering stop*/
@@ -119,6 +123,13 @@ int main(void)
   {
     (void)dwt_selftest();
   }
+
+  /* I2C 브링업 1단계 - 배선 문제와 소프트웨어 문제를 여기서 가른다.
+   * 주소가 뜨면 전원/GND/SDA/SCL이 전부 맞은 것. */
+  (void)i2c_bus_scan(&hi2c1);
+
+  /* I2C 브링업 2~5단계: WHO_AM_I -> sleep 해제 -> 값 확인 -> 100Hz 스트림 검증 */
+  (void)mpu6050_bringup(&hi2c1);
 
   /* USER CODE END 2 */
 
