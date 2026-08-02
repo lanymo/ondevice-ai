@@ -25,6 +25,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
+#include "dwt.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -108,6 +109,16 @@ int main(void)
   printf("HAL tick        : TIM10 (SysTick은 FreeRTOS 소유)\r\n");
   printf("DWT 32bit wrap  : %lu ms\r\n",
          (unsigned long)(0xFFFFFFFFul / (SystemCoreClock / 1000ul)));
+
+  /* DWT 자가검증 - 스케줄러 시작 전에. 태스크가 없어야 순수한 바닥값이 나온다. */
+  if (!dwt_init())
+  {
+    printf("DWT init        : FAIL (사이클 카운터 미지원)\r\n");
+  }
+  else
+  {
+    (void)dwt_selftest();
+  }
 
   /* USER CODE END 2 */
 
