@@ -24,7 +24,7 @@ uint32_t i2c_bus_scan(I2C_HandleTypeDef *hi2c)
   {
     /* HAL은 8비트로 좌시프트된 주소를 받는다. 7비트 주소를 그냥 넘기면
      * 엉뚱한 장치를 부르게 되고 영원히 아무것도 안 뜬다.
-     * (docs/parts-guide.md §4에 "첫 삽질 포인트"로 적혀 있는 그것) */
+     * (docs/parts-guide.md §2에 "첫 삽질 포인트"로 적혀 있는 그것) */
     uint16_t hal_addr = (uint16_t)((uint16_t)addr << 1);
 
     if (HAL_I2C_IsDeviceReady(hi2c, hal_addr, I2C_SCAN_TRIALS, I2C_SCAN_TIMEOUT) == HAL_OK)
