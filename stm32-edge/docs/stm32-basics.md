@@ -1,7 +1,7 @@
 # STM32 기초 노트 — GPIO/UART/HAL/CubeMX (임베디드 초심자용)
 
-> W1 화요일 태스크 자료. 보드 없이 진행 가능: §6의 CubeMX 실습은 CubeIDE만 있으면 되고,
-> 빌드까지 확인할 수 있다. 보드가 도착하면 §7의 printf 코드를 그대로 쓴다.
+> W1 학습 자료. §6(CubeMX 실습)·§7(printf 리타겟)은 완료되어 요약만 남김 — 실물은 코드에 있다.
+> 실제 브링업을 겪은 뒤의 Q&A는 [qna-core.md](qna-core.md)가 우선.
 > 선행 문서: freertos-concepts.md (RTOS는 이 문서의 내용 *위에* 올라가는 층이다).
 
 ---
@@ -86,8 +86,8 @@ GPIO(General Purpose Input/Output) = 핀 하나를 1비트 입출력으로 쓰�
 
 | 모드 | 뜻 | 이 프로젝트에서의 예 |
 |---|---|---|
-| Output | 내가 0V/3.3V를 내보냄 | LED, L298N 방향 제어(IN1~IN4) |
-| Input | 외부 전압을 읽음 (0 또는 1) | 유저 버튼, TCRT5000 라인센서 DO |
+| Output | 내가 0V/3.3V를 내보냄 | 유저 LED (LD2 = PA5) |
+| Input | 외부 전압을 읽음 (0 또는 1) | 유저 버튼 (B1 = PC13, 하강 에지 인터럽트) |
 | Alternate Function | 다른 주변장치에게 핀을 양보 | PA2를 UART TX로, 타이머 채널을 PWM으로 |
 | Analog | ADC로 연속값을 읽음 | (당장 계획엔 없음) |
 
@@ -128,61 +128,25 @@ HAL_UART_Transmit(&huart2, msg, sizeof(msg) - 1, 100);  // 100 = 타임아웃(ms
 `huart2`는 CubeMX가 생성해주는 "USART2 설정 묶음" 구조체(핸들)다. HAL의 모든 주변장치가
 이 핸들 패턴을 쓴다: 설정은 구조체에, 동작은 `HAL_XXX_동사(&핸들, ...)` 함수로.
 
-## 6. CubeMX 실습 — 보드 없이 여기까지 해볼 것 (30~60분)
+## 6. CubeMX — 완료된 실습의 요약
 
-CubeMX는 CubeIDE에 내장된 그래픽 설정 도구다. 핀맵을 클릭으로 정하면 초기화 C 코드를
-생성해준다. 실습 순서:
+CubeMX는 CubeIDE에 내장된 그래픽 설정 도구 — 핀맵을 클릭으로 정하면 초기화 C 코드를
+생성한다. 실습은 완료됐고(현 프로젝트가 그 결과물), 계속 유효한 규칙만 남긴다:
 
-1. CubeIDE → File → New → **STM32 Project**
-2. 타겟 선택 창에서 **Board Selector 탭** → "NUCLEO-F411RE" 검색 → 선택.
-   (칩이 아니라 보드로 시작하면 LD2, B1, USART2-VCP 연결이 자동 설정된다 —
-   §4~5의 핀 배정이 맞는지 여기서 눈으로 확인)
-3. "Initialize all peripherals in default mode?" → Yes
-4. **Pinout 뷰 구경**: 칩 그림에서 PA5(LD2), PC13(B1), PA2/PA3(USART2) 라벨 확인.
-   아무 핀이나 클릭해서 어떤 대체 기능들이 가능한지 목록 훑어보기 — W2 핀맵 설계 때
-   할 일이 정확히 이 화면에서 벌어진다
-5. 왼쪽 트리 Connectivity → USART2: Mode = Asynchronous, 115200 8N1인지 확인
-6. 저장(Ctrl+S) → 코드 생성됨 → **읽기 투어**:
-   - `Core/Src/main.c` — `HAL_Init()` → `SystemClock_Config()` → `MX_GPIO_Init()` →
-     `MX_USART2_UART_Init()` → `while(1)`. 이 뼈대가 모든 STM32 프로젝트의 표준 형태
-   - `main.c`의 `/* USER CODE BEGIN x */ ... END */` 주석 쌍 — **이 사이에 쓴 코드만
-     CubeMX 재생성 시 살아남는다.** 밖에 쓰면 다음 코드 생성 때 삭제됨 (최다 사고 포인트)
-   - `Core/Src/stm32f4xx_hal_msp.c` — "PA2를 USART2에게 AF로 배정"하는 저수준 설정이
-     여기 있다. HAL이 §3의 레지스터 조작을 어떻게 감싸는지 보이는 파일
-   - `.ioc` 파일 — CubeMX 설정 자체. 이것도 git에 커밋하는 파일이다
-7. 망치 아이콘으로 **빌드** — 보드 없어도 컴파일은 된다. "Build Finished. 0 errors"와
-   메모리 사용 요약(text/data/bss)이 나오면 성공
+- **`/* USER CODE BEGIN x */ ... END */` 사이에 쓴 코드만 CubeMX 재생성 시 살아남는다.**
+  밖에 쓰면 다음 코드 생성 때 삭제됨 — 최다 사고 포인트.
+- `.ioc` 파일 = CubeMX 설정 자체. git에 커밋하는 파일이다. 주변장치 추가 등 `.ioc`
+  재생성은 사용자가 CubeIDE에서 한다 (CLAUDE.md).
+- 저수준 핀 배정(AF 설정)은 `Core/Src/stm32f4xx_hal_msp.c`와 각 `MX_*_Init()`에 생성된다.
+  확정 핀은 [pinmap.md](pinmap.md)에 정리.
 
-## 7. 보드 도착하면 바로 쓸 것 — printf 리타겟
+## 7. printf 리타겟 — 구현 완료, 코드가 원본
 
-`printf`가 UART로 나가게 하려면 표준 라이브러리의 출력 함수를 UART로 연결해야 한다.
-`main.c`의 `/* USER CODE BEGIN 0 */` 블록에:
+`printf` → newlib `_write()` → `HAL_UART_Transmit(&huart2, ...)` → ST-LINK VCP 경로.
+전체 해설은 [qna-core.md](qna-core.md) Q1~Q2. 실물은 `Core/Src/main.c`(`_write` 재정의,
+`setvbuf`)에 있다.
 
-```c
-/* USER CODE BEGIN 0 */
-#include <stdio.h>
-
-// printf가 내부적으로 호출하는 _write를 UART2로 리타겟 (gcc/newlib 기준)
-int _write(int file, char *ptr, int len) {
-    (void)file;
-    HAL_UART_Transmit(&huart2, (uint8_t *)ptr, (uint16_t)len, HAL_MAX_DELAY);
-    return len;
-}
-/* USER CODE END 0 */
-```
-
-`while(1)` 안의 `/* USER CODE BEGIN 3 */`에:
-
-```c
-    printf("hello from F411RE (%lu ms)\r\n", HAL_GetTick());
-    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-    HAL_Delay(500);
-```
-
-보드 연결 → Run 버튼(플래시+실행) → CubeIDE 하단 터미널 또는 PC 시리얼 터미널에서
-해당 포트를 115200으로 열기 → 0.5초마다 문장 출력 + LED 깜빡임 = **W1 DoD 달성**.
-주의: float를 printf로 찍으려면 프로젝트 설정에서 `-u _printf_float` 링커 플래그가
-필요하다 (기본 비활성, 필요해질 때 켜기).
+- float를 printf로 찍으려면 `-u _printf_float` 링커 플래그 필요 (기본 비활성, 필요 시).
 
 ## 8. HAL 한 겹 더 — "OS를 C로 짜던 감각"과 잇기
 

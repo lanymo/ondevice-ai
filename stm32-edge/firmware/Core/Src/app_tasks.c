@@ -38,7 +38,10 @@
 #define INFER_BUSY_MS      20u   /* 추론 스텁: 20ms 연산 + 30ms 휴지 = 40% 부하 */
 #define INFER_IDLE_MS      30u
 
-#define WIN_N             256u   /* W3 추론 입력용 가속도 링버퍼 (2^n 필수) */
+/* W3 추론 입력 윈도우. model/config.py의 WIN_LEN=128 / HOP=64와 일치시킬 것 -
+ * 어긋나면 학습된 특징 분포와 온보드 특징이 다른 것을 재게 된다. (2^n 필수) */
+#define WIN_N             128u
+#define WIN_HOP            64u
 
 /* ------------------------------------------------------------------ 로그 큐 */
 
@@ -60,7 +63,9 @@ typedef struct
   uint32_t  aux0;      /* ACT: 마감 초과 수 / SEN: 읽기 실패 수 / ERR: 코드 */
   uint32_t  aux1;      /* ACT: 이벤트 유실 수(coalesced) */
   uint32_t  aux2;      /* 로그 백프레셔로 측정에서 빠진 샘플 수 */
-  int16_t   ax, ay, az;/* SEN: 생존 신호용 최근 샘플 */
+  uint32_t  aux3;      /* SEN: 지금까지 완성된 윈도우 수 */
+  int16_t   ax, ay, az;/* SEN: 생존 신호용 최근 샘플 (가속도) */
+  int16_t   gx, gy, gz;/* SEN: 생존 신호용 최근 샘플 (자이로) */
 } app_msg_t;
 
 #define ERR_TIM2_INIT  1u
@@ -95,9 +100,12 @@ static uint32_t s_sen_int[2][SEN_BATCH_N];
 static volatile uint8_t s_act_busy[2];
 static volatile uint8_t s_sen_busy[2];
 
-/* W3 대비: 추론 입력 윈도우 링버퍼 (지금은 쌓기만 한다) */
-static mpu6050_accel_t s_win[WIN_N];
-static volatile uint32_t s_win_wr;
+/* W3 대비: 추론 입력 윈도우 링버퍼 (지금은 쌓기만 한다).
+ * 6축 raw int16 = 12B/샘플, 128샘플 = 1536B. g/dps 환산과 특징 추출은 W3에서
+ * 윈도우를 뽑는 시점에 한다. */
+static mpu6050_imu_t     s_win[WIN_N];
+static volatile uint32_t s_win_wr;      /* 총 기록 샘플 수 (인덱스는 & (WIN_N-1)) */
+static volatile uint32_t s_win_ready;   /* hop마다 1 증가 = 완성된 윈도우 수 */
 
 /* ------------------------------------------------------------------ TIM2 이벤트 */
 
@@ -240,7 +248,7 @@ static void prv_sensor_task(void *arg)
   TickType_t last;
   uint32_t prev, warm = 0u, idx = 0u, batch = 0u, fails = 0u, skip = 0u;
   uint8_t  side = 0u;
-  mpu6050_accel_t a = { 0 };
+  mpu6050_imu_t s = { 0, 0, 0, 0, 0, 0 };
 
   (void)arg;
 
@@ -258,10 +266,16 @@ static void prv_sensor_task(void *arg)
 
     t0 = dwt_now();
 
-    if (mpu6050_read_accel(&hi2c1, &a))
+    if (mpu6050_read_imu(&hi2c1, &s))
     {
-      s_win[s_win_wr & (WIN_N - 1u)] = a;   /* W3 추론 입력 윈도우 */
+      s_win[s_win_wr & (WIN_N - 1u)] = s;   /* W3 추론 입력 윈도우 */
       s_win_wr++;
+
+      /* 첫 윈도우는 버퍼가 다 찬 뒤(WIN_N), 이후로는 hop마다 하나씩 완성된다 */
+      if ((s_win_wr >= WIN_N) && (((s_win_wr - WIN_N) % WIN_HOP) == 0u))
+      {
+        s_win_ready++;   /* W3: 여기서 추론 태스크를 깨우게 된다 */
+      }
     }
     else
     {
@@ -290,8 +304,9 @@ static void prv_sensor_task(void *arg)
       app_msg_t m = {
         .type = APP_MSG_SEN, .n = SEN_BATCH_N, .batch = batch,
         .buf = s_sen_int[side], .owner = &s_sen_busy[side],
-        .aux0 = fails, .aux2 = skip,
-        .ax = a.x, .ay = a.y, .az = a.z,
+        .aux0 = fails, .aux2 = skip, .aux3 = s_win_ready,
+        .ax = s.ax, .ay = s.ay, .az = s.az,
+        .gx = s.gx, .gy = s.gy, .gz = s.gz,
       };
       s_sen_busy[side] = 1u;
       if (xQueueSend(s_logq, &m, 0u) != pdTRUE)
@@ -387,19 +402,51 @@ static void prv_log_task(void *arg)
     {
       uint32_t med10 = prv_cyc_to_us10(st.med) / 10u;   /* 주기는 us 정수면 충분 */
       printf("[SEN] batch=%lu n=%u interval_us med=%lu p99=%lu max=%lu"
-             " fail=%lu skip=%lu accel=(%d,%d,%d)\r\n",
+             " fail=%lu skip=%lu win=%lu a=(%d,%d,%d) g=(%d,%d,%d)\r\n",
              (unsigned long)m.batch, (unsigned)m.n,
              (unsigned long)med10,
              (unsigned long)(prv_cyc_to_us10(st.p99) / 10u),
              (unsigned long)(prv_cyc_to_us10(st.max) / 10u),
              (unsigned long)m.aux0, (unsigned long)m.aux2,
-             (int)m.ax, (int)m.ay, (int)m.az);
+             (unsigned long)m.aux3,
+             (int)m.ax, (int)m.ay, (int)m.az,
+             (int)m.gx, (int)m.gy, (int)m.gz);
       dwt_csv_row("imu_interval_task", &st);
     }
 
     if (m.owner != NULL)
     {
       *m.owner = 0u;   /* 버퍼 소유권 반환 - 이제 생산자가 다시 써도 된다 */
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ 오버플로 훅 */
+
+/* 훅이 잡은 태스크 이름. 디버거를 붙이면 여기부터 본다. */
+volatile const char *g_stack_overflow_task;
+
+/**
+  * 스택 오버플로 훅 (configCHECK_FOR_STACK_OVERFLOW=2).
+  * 여기서 printf를 부르지 않는다 - 이미 스택이 깨진 상태라 더 깊이 들어가면
+  * 원인 정보까지 잃는다. 인터럽트를 끄고 LD2를 고속 점멸시켜 정상 동작(10Hz)과
+  * 눈으로 구분되게 한다.
+  */
+void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName);
+void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
+{
+  (void)xTask;
+  g_stack_overflow_task = pcTaskName;
+
+  taskDISABLE_INTERRUPTS();
+  for (;;)
+  {
+    /* 1초에 한 번 토글. 정상 동작은 50ms 토글(초당 20번)이라 눈으로 바로 갈린다.
+     * 지연은 DWT로 잰다 - 인터럽트를 껐으니 HAL_Delay(SysTick/TIM10 기반)는 멎는다. */
+    uint32_t t0 = dwt_now();
+    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+    while (dwt_elapsed(t0) < SystemCoreClock)
+    {
     }
   }
 }

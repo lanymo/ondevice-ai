@@ -164,7 +164,10 @@ standard names. */
 #define USE_CUSTOM_SYSTICK_HANDLER_IMPLEMENTATION 0
 
 /* USER CODE BEGIN Defines */
-/* Section where parameter definitions can be added (for instance, to override default ones in FreeRTOS.h) */
+/* 스택 오버플로 검사 2 = 태스크 스택 끝 20바이트에 패턴을 깔고 전환 때마다 확인.
+ * 1(스택 포인터 범위만 검사)보다 비싸지만 조용히 넘어가는 오버플로를 잡는다.
+ * 걸리면 vApplicationStackOverflowHook(app_tasks.c)이 LD2 고속 점멸로 알린다. */
+#define configCHECK_FOR_STACK_OVERFLOW  2
 /* USER CODE END Defines */
 
 #endif /* FREERTOS_CONFIG_H */

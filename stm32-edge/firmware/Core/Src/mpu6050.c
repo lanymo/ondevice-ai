@@ -111,6 +111,29 @@ bool mpu6050_read_accel(I2C_HandleTypeDef *hi2c, mpu6050_accel_t *out)
   return true;
 }
 
+bool mpu6050_read_imu(I2C_HandleTypeDef *hi2c, mpu6050_imu_t *out)
+{
+  uint8_t b[MPU6050_BURST_LEN];
+
+  /* 가속도/온도/자이로를 한 트랜잭션으로. 나눠 읽으면 축 사이에 센서가 갱신돼
+   * 서로 다른 시점의 값이 한 샘플에 섞인다. */
+  if (HAL_I2C_Mem_Read(hi2c, MPU_HAL_ADDR, MPU6050_REG_BURST_START,
+                       I2C_MEMADD_SIZE_8BIT, b, MPU6050_BURST_LEN,
+                       MPU_TIMEOUT) != HAL_OK)
+  {
+    return false;
+  }
+
+  /* 빅엔디안 16비트 2의 보수. b[6..7]은 온도 - 안 쓰고 건너뛴다 */
+  out->ax = (int16_t)(((uint16_t)b[0]  << 8) | b[1]);
+  out->ay = (int16_t)(((uint16_t)b[2]  << 8) | b[3]);
+  out->az = (int16_t)(((uint16_t)b[4]  << 8) | b[5]);
+  out->gx = (int16_t)(((uint16_t)b[8]  << 8) | b[9]);
+  out->gy = (int16_t)(((uint16_t)b[10] << 8) | b[11]);
+  out->gz = (int16_t)(((uint16_t)b[12] << 8) | b[13]);
+  return true;
+}
+
 /* ------------------------------------------------------------------ 브링업 */
 
 bool mpu6050_bringup(I2C_HandleTypeDef *hi2c)
