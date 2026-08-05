@@ -5,7 +5,7 @@
 
 > **변경 이력**
 > - 2026-07-23: 자율주행 카 배선 계획 폐기. 모터 관련 배선은
->   [archive-robot-parts.md](archive-robot-parts.md)로.
+>   archive-robot-parts.md로.
 > - 2026-08-03: W2 브링업으로 확정된 실제 핀 배정 기입 (코드에서 확인).
 
 ---
@@ -22,7 +22,7 @@
 | 유저 버튼 (B1) | **PC13** | 입력, 하강 에지 인터럽트 | `Core/Src/gpio.c` |
 
 - PA2/PA3, PA5, PC13은 Nucleo 보드 배선(ST-LINK VCP, LD2, B1)으로 정해진 것.
-- HAL 타임베이스는 **TIM10** (SysTick은 FreeRTOS 소유 — [qna-core.md](qna-core.md) Q14).
+- HAL 타임베이스는 **TIM10** (SysTick은 FreeRTOS 소유 — qna-core.md Q14).
 - 마감시한 이벤트 타이머는 **TIM2** (내부 전용, 핀 없음) — W2 이벤트→액션 지연 측정용.
 - HC-SR04용 타이머 인풋캡처 핀은 시나리오 확정(W3) 시 여기 추가.
 

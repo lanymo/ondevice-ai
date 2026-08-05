@@ -3,9 +3,9 @@
 > **주차**: W2 (B트랙, board-independent). PLAN.md 110행의
 > "Python 소형 모델 학습 + int8 export → `model_weights.h`, 순수 C 순전파를 PC에서 먼저 검증".
 >
-> **선행 개념노트**: [quantization-basics.md](../docs/quantization-basics.md) ·
-> [anomaly-detection.md](../docs/anomaly-detection.md) ·
-> [timeseries-windowing.md](../docs/timeseries-windowing.md)
+> **선행 개념노트**: quantization-basics.md ·
+> anomaly-detection.md ·
+> timeseries-windowing.md
 
 센서 진동 → 통계 특징 → **int8 오토인코더 재구성 오차** → 임계값 → 이상 판정.
 학습·양자화는 Python, 추론은 **펌웨어에 그대로 들어가는 순수 C**. 둘이 갈라지지 않는다는 걸

@@ -1,7 +1,7 @@
 # W2 태스크 구조 — 4태스크 + 마감시한 이벤트 경로
 
 > 구현: [Core/Src/app_tasks.c](../firmware/Core/Src/app_tasks.c) · [Core/Inc/app_tasks.h](../firmware/Core/Inc/app_tasks.h)
-> 선행 개념: [freertos-concepts.md](freertos-concepts.md), [measurement-methodology.md](measurement-methodology.md)
+> 선행 개념: freertos-concepts.md, [measurement-methodology.md](measurement-methodology.md)
 >
 > W2 DoD: "추론 없이 **마감시한 이벤트 → 로컬 액션 지연**이 UART로 찍힘 + IMU 100Hz 스트림".
 > 이 문서는 그 구조와, 보드에서 무엇을 확인해야 하는지를 적는다.
@@ -129,7 +129,7 @@ action_latency,128,...,...,...,...
   이게 어긋나면 학습된 특징 분포와 온보드 특징이 다른 것을 재게 된다.
   g/dps 환산(1g=16384, 1dps=131 LSB)과 24차원 특징 추출은 윈도우를 뽑는 시점에 한다.
   `s_win_ready`가 hop마다 증가하므로 W3에서는 여기서 추론 태스크를 깨우면 된다.
-  ([timeseries-windowing.md](timeseries-windowing.md))
+  (timeseries-windowing.md)
 - `prv_infer_task`의 busy-wait 스텁을 실제 int8 순전파로 갈아끼우면 축 B가 붙는다.
 - 우선순위 상수(`PRIO_*`)와 청킹 여부가 축 A 스윕의 조작 변수다:
   (A) 추론 > 액션 / (B) 추론 < 액션 / (C) monolithic / (D) 청킹.

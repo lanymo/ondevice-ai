@@ -22,7 +22,7 @@
 | MPU6050 레지스터 (`PWR_MGMT_1` 0x6B, `ACCEL_XOUT_H` 0x3B, `WHO_AM_I` 0x75, `ACCEL_CONFIG`) | **RM-MPU-6000A-00** — Register Map and Descriptions | 레지스터는 **이쪽** |
 | MPU6050 노이즈·대역폭·전류·온도 특성 | **PS-MPU-6000A-00** — Product Specification | 성능 수치는 **저쪽**. 2개 문서인 걸 몰라 헤맴 |
 | FreeRTOS API, 우선순위/인터럽트 규칙 | freertos.org API Reference + **Mastering the FreeRTOS Real Time Kernel** (무료 PDF) | `configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY` 설명이 여기 |
-| 실시간 스케줄링 이론 | Liu & Layland (1973), Buttazzo *Hard Real-Time Computing Systems* | [realtime-scheduling.md](realtime-scheduling.md)에 정리됨 |
+| 실시간 스케줄링 이론 | Liu & Layland (1973), Buttazzo *Hard Real-Time Computing Systems* | realtime-scheduling.md에 정리됨 |
 | 양자화 scale/zero-point, requantize | **Jacob et al. (2018)** — *Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference* / gemmlowp 문서 | 우리 [`ae_requantize`](../model/cref/ae_infer.c#L43)가 이 논문의 구현체 |
 | CMSIS-NN 커널 (스트레치) | ARM CMSIS-NN repo + *CMSIS-NN* 논문 | `arm_fully_connected_s8` 규약에 이미 맞춰둠 |
 
@@ -53,4 +53,4 @@
 | MPU6050 DLPF(저역통과 필터) 설정 | **미설정** — 리셋 기본값 사용 | RM-MPU-6000A `CONFIG`(0x1A). 100Hz 샘플링에 적절한 대역폭인가? |
 
 세 번째는 진동 감지에서 **에일리어싱**과 직결된다 — 샘플링 100Hz면 나이퀴스트 50Hz인데
-센서 내부 대역폭이 그보다 넓으면 고주파가 접혀 들어온다. ([timeseries-windowing.md](timeseries-windowing.md))
+센서 내부 대역폭이 그보다 넓으면 고주파가 접혀 들어온다. (timeseries-windowing.md)

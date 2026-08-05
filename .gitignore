@@ -33,3 +33,5 @@ stm32-edge/model/cref/test_ae_int8
 
 # OS
 .DS_Store
+# 개인 학습 노트 — 리포에는 docs/ 의 보고서형 문서만 둔다
+stm32-edge/notes/

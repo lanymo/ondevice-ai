@@ -2,7 +2,7 @@
 
 > PLAN.md §1 BOM에 대응하는 "실물 편람". 박스 열었을 때 뭐가 뭔지 식별하고,
 > 브링업에서 어디에 꽂을지 판단하기 위한 문서.
-> 개념(I2C/인풋캡처/전원)은 [sensor-actuator-basics.md](sensor-actuator-basics.md) 참조.
+> 개념(I2C/인풋캡처/전원)은 sensor-actuator-basics.md 참조.
 >
 > ⚠️ 이 문서의 핀 이름은 **모듈 실크스크린 기준의 일반적인 표기**다.
 > 실제 배선 전에 보드에 인쇄된 글자를 눈으로 확인할 것. 벤더마다 순서가 다른 모듈이 있다.
@@ -10,7 +10,7 @@
 > **변경 이력**
 > - 2026-07-23: 자율주행 카 → 온디바이스 AI 전환(PLAN.md §0). 모터/섀시/라인센서는 [보류].
 > - 2026-08-03: 보류 부품 상세(2WD 키트, L298N, TCRT5000, 절연테이프, 18650, 옛 배선도,
->   부품×주차 매트릭스)를 [archive-robot-parts.md](archive-robot-parts.md)로 이동. 본문은 현재 쓰는 것만.
+>   부품×주차 매트릭스)를 archive-robot-parts.md로 이동. 본문은 현재 쓰는 것만.
 
 ## 부품별 사용 여부
 
@@ -69,7 +69,7 @@ SRAM 128KB, FPU 있음. FreeRTOS, 센서 폴링, int8 추론이 전부 여기서
 **활용 포인트**
 - I2C 주소: `AD0` 핀이 GND면 `0x68`, VCC면 `0x69`. 모듈에 보통 풀다운이 있어 기본 0x68.
   (HAL은 7비트 주소를 `<< 1` 해서 넘겨야 함 — 실제로 겪은 첫 삽질 포인트,
-  [qna-core.md](qna-core.md) Q9)
+  qna-core.md Q9)
 - `WHO_AM_I` 읽기가 브링업 첫 단계. GY-521에 6500/9250 다이가 든 경우도 있으나 우리가
   쓰는 레지스터는 동일 (qna-core.md Q10).
 - 전원 투입 후 **슬립 모드로 시작** — 깨우지 않으면 데이터가 계속 0.
@@ -91,7 +91,7 @@ VCC, Trig, Echo, GND.
 
 **활용 포인트**
 - 동작: Trig에 10µs HIGH 펄스 → 센서가 8회 버스트 송신 → Echo 핀이 왕복시간만큼 HIGH.
-  그 HIGH 폭을 타이머 인풋캡처로 잰다 ([sensor-actuator-basics.md](sensor-actuator-basics.md) §4).
+  그 HIGH 폭을 타이머 인풋캡처로 잰다 (sensor-actuator-basics.md §4).
 - ⚠️ **Echo 출력은 5V**다. 3.3V인 STM32 핀에 직결 금지 — 분압 저항(예: 1kΩ+2kΩ) 또는
   레벨 시프터 필요. **저항 미확보 상태** (§6, pinmap.md 미결 항목).
 - 측정 주기는 60ms 이상. 너무 빨리 쏘면 이전 반향이 섞여 값이 튄다.
