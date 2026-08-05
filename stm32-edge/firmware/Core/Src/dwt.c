@@ -109,6 +109,17 @@ void dwt_csv_row(const char *tag, const dwt_stats_t *s)
          (unsigned long)s->max);
 }
 
+void dwt_csv_row_cfg(const char *tag, const char *config, const dwt_stats_t *s)
+{
+  printf("%s,%s,%lu,%lu,%lu,%lu,%lu\r\n",
+         tag, config,
+         (unsigned long)s->n,
+         (unsigned long)s->min,
+         (unsigned long)s->med,
+         (unsigned long)s->p99,
+         (unsigned long)s->max);
+}
+
 void dwt_csv_dump(const char *tag, const uint32_t *buf, uint32_t n)
 {
   printf("tag,i,cycles\r\n");

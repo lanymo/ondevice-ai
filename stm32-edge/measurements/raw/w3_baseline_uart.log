@@ -1,0 +1,1865 @@
+
+=== stm32-edge W2 bringup ===
+SystemCoreClock : 84000000 Hz
+HAL tick        : TIM10 (SysTick은 FreeRTOS 소유)
+DWT 32bit wrap  : 51130 ms
+
+--- DWT selftest ---
+[1] alive    : PASS  193566 -> 194591
+[2] scale    : PASS  expect=8400000 meas=8466511 err=+7 permille
+[3] overhead : n=100 min=24 med=24 p99=24 max=24 (cycles)
+--- DWT selftest: PASS ---
+tag,n,min,median,p99,max
+dwt_overhead,100,24,24,24,24
+
+--- I2C bus scan ---
+  found 0x68
+--- scan done: 1 device(s) ---
+
+--- MPU6050 bringup ---
+[2] who_am_i : PASS  0x70 (MPU-6500)
+[3] wake     : PASS  SLEEP cleared
+[4] accel    : 2초간 20샘플 - 지금 보드를 기울여 보세요
+     i,ax,ay,az
+     0,268,452,16532
+     1,380,472,16528
+     2,276,432,16520
+     3,264,460,16504
+     4,352,500,16564
+     5,308,476,16512
+     6,256,452,16512
+     7,184,464,16516
+     8,356,500,16488
+     9,316,444,16496
+     10,312,468,16536
+     11,284,440,16560
+     12,324,448,16460
+     13,300,504,16548
+     14,280,472,16476
+     15,220,488,16496
+     16,332,484,16344
+     17,356,488,16560
+     18,332,388,16460
+     19,252,432,16568
+     (참고: 기본 +-2g에서 1g = 16384 LSB)
+[5] stream   : n=100 (target 100Hz)
+     interval cycles  med=924005 p99=924005 max=924005  -> 11.00 ms (med)
+     read cost cycles med=70478 p99=70479 max=70480
+tag,n,min,median,p99,max
+imu_interval,100,923980,924005,924005,924005
+imu_read_cost,100,70478,70478,70479,70480
+--- MPU6050 bringup: PASS ---
+
+=== W2 tasks up: action(48) sensor(40) log(16) infer(8) ===
+event=50ms deadline=1ms batch: act=128 sen=256 warmup=16
+tag,n,min,median,p99,max
+[SEN] batch=0 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=3 a=(288,432,16484) g=(-923,390,-363)
+imu_interval_task,256,839985,839995,840020,840020
+[SEN] batch=1 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=7 a=(284,436,16488) g=(-943,397,-368)
+imu_interval_task,256,839986,839994,840028,840028
+[ACT] batch=0 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,771,773,773,773
+[SEN] batch=2 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=11 a=(328,548,16464) g=(-957,416,-352)
+imu_interval_task,256,839986,840000,840020,840020
+[SEN] batch=3 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=15 a=(332,524,16588) g=(-956,380,-364)
+imu_interval_task,256,839976,839994,840020,840020
+[SEN] batch=4 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=19 a=(292,436,16520) g=(-954,368,-336)
+imu_interval_task,256,839980,839994,840028,840028
+[ACT] batch=1 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,771,773,773,773
+[SEN] batch=5 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=23 a=(324,372,16632) g=(-938,393,-326)
+imu_interval_task,256,839980,840000,840020,840022
+[SEN] batch=6 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=27 a=(300,460,16560) g=(-950,401,-391)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=2 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,773,773,773,773
+[SEN] batch=7 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=31 a=(272,484,16560) g=(-932,412,-363)
+imu_interval_task,256,839977,840000,840020,840025
+[SEN] batch=8 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=35 a=(220,328,16564) g=(-913,379,-354)
+imu_interval_task,256,839953,839994,840020,840022
+[SEN] batch=9 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=39 a=(292,432,16580) g=(-926,411,-350)
+imu_interval_task,256,839980,839994,840028,840028
+[ACT] batch=3 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,771,773,773,773
+[SEN] batch=10 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=43 a=(352,456,16352) g=(-924,413,-348)
+imu_interval_task,256,839980,840000,840020,840022
+[SEN] batch=11 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=47 a=(332,436,16528) g=(-954,401,-329)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=4 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=12 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=51 a=(300,388,16456) g=(-955,391,-343)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=13 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=55 a=(284,476,16524) g=(-957,381,-340)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=14 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=59 a=(296,444,16488) g=(-924,379,-364)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=5 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=15 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=63 a=(300,444,16596) g=(-919,384,-378)
+imu_interval_task,256,839980,840000,840020,840022
+[SEN] batch=16 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=67 a=(296,456,16592) g=(-945,403,-350)
+imu_interval_task,256,839963,840000,840020,840022
+[ACT] batch=6 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=17 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=71 a=(348,408,16400) g=(-914,388,-354)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=18 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=75 a=(300,416,16436) g=(-909,412,-379)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=19 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=79 a=(248,432,16548) g=(-968,384,-341)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=7 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=20 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=83 a=(276,464,16548) g=(-931,427,-356)
+imu_interval_task,256,839980,840000,840020,840022
+[SEN] batch=21 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=87 a=(260,440,16508) g=(-932,404,-340)
+imu_interval_task,256,839963,840000,840020,840022
+[ACT] batch=8 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=22 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=91 a=(284,428,16512) g=(-963,398,-345)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=23 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=95 a=(244,524,16516) g=(-959,369,-348)
+imu_interval_task,256,839957,839994,840020,840022
+[SEN] batch=24 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=99 a=(304,544,16536) g=(-971,374,-364)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=9 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=25 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=103 a=(256,416,16540) g=(-927,379,-338)
+imu_interval_task,256,839980,840000,840020,840022
+[SEN] batch=26 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=107 a=(296,448,16480) g=(-923,393,-369)
+imu_interval_task,256,839963,840000,840020,840022
+[ACT] batch=10 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=27 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=111 a=(260,508,16364) g=(-925,394,-328)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=28 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=115 a=(256,408,16620) g=(-938,382,-362)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=29 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=119 a=(288,468,16532) g=(-970,388,-332)
+imu_interval_task,256,839973,839994,840028,840028
+[ACT] batch=11 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=30 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=123 a=(316,416,16512) g=(-977,373,-326)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=31 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=127 a=(320,524,16444) g=(-951,380,-363)
+imu_interval_task,256,839966,840000,840020,840023
+[ACT] batch=12 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=32 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=131 a=(228,504,16484) g=(-945,407,-343)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=33 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=135 a=(292,436,16540) g=(-953,417,-327)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=34 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=139 a=(260,492,16432) g=(-968,394,-358)
+imu_interval_task,256,839973,839994,840028,840028
+[ACT] batch=13 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=35 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=143 a=(328,412,16448) g=(-957,395,-353)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=36 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=147 a=(316,384,16408) g=(-959,372,-345)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=14 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=37 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=151 a=(340,400,16444) g=(-968,393,-361)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=38 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=155 a=(296,388,16568) g=(-945,381,-336)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=39 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=159 a=(256,400,16468) g=(-912,386,-397)
+imu_interval_task,256,839975,839994,840028,840028
+[ACT] batch=15 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=40 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=163 a=(252,456,16480) g=(-959,402,-327)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=41 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=167 a=(308,460,16448) g=(-941,402,-354)
+imu_interval_task,256,839967,840000,840020,840027
+[ACT] batch=16 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=42 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=171 a=(340,404,16536) g=(-924,427,-351)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=43 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=175 a=(264,644,16616) g=(-981,372,-348)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=44 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=179 a=(272,412,16620) g=(-936,384,-329)
+imu_interval_task,256,839975,839994,840028,840028
+[ACT] batch=17 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=45 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=183 a=(244,348,16488) g=(-986,406,-351)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=46 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=187 a=(320,420,16552) g=(-917,379,-346)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=18 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=47 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=191 a=(248,436,16560) g=(-948,381,-332)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=48 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=195 a=(292,408,16436) g=(-957,412,-311)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=49 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=199 a=(332,400,16556) g=(-981,385,-371)
+imu_interval_task,256,839979,839994,840028,840028
+[ACT] batch=19 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=50 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=203 a=(272,472,16480) g=(-972,404,-357)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=51 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=207 a=(320,452,16592) g=(-911,418,-351)
+imu_interval_task,256,839966,840000,840020,840023
+[ACT] batch=20 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=52 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=211 a=(276,464,16432) g=(-923,413,-391)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=53 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=215 a=(308,412,16508) g=(-938,392,-338)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=54 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=219 a=(280,500,16600) g=(-972,381,-388)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=21 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=55 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=223 a=(316,368,16560) g=(-956,394,-354)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=56 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=227 a=(316,380,16568) g=(-938,406,-380)
+imu_interval_task,256,839966,840000,840020,840025
+[ACT] batch=22 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=57 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=231 a=(324,472,16568) g=(-954,390,-362)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=58 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=235 a=(284,388,16524) g=(-948,388,-354)
+imu_interval_task,256,839951,839994,840020,840022
+[SEN] batch=59 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=239 a=(288,424,16556) g=(-967,387,-361)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=23 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=60 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=243 a=(268,480,16412) g=(-959,398,-334)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=61 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=247 a=(300,500,16512) g=(-958,400,-353)
+imu_interval_task,256,839967,840000,840020,840023
+[ACT] batch=24 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=62 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=251 a=(224,440,16412) g=(-933,400,-338)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=63 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=255 a=(152,448,16536) g=(-931,408,-386)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=64 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=259 a=(308,428,16536) g=(-952,414,-337)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=25 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=65 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=263 a=(180,380,16520) g=(-945,375,-366)
+imu_interval_task,256,839980,840000,840020,840022
+[SEN] batch=66 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=267 a=(388,472,16452) g=(-957,408,-354)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=26 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=67 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=271 a=(300,636,16536) g=(-928,391,-327)
+imu_interval_task,256,839978,840000,840020,840025
+[SEN] batch=68 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=275 a=(244,340,16416) g=(-979,392,-337)
+imu_interval_task,256,839955,839994,840020,840022
+[SEN] batch=69 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=279 a=(372,572,16456) g=(-965,393,-355)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=27 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=70 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=283 a=(284,476,16428) g=(-919,350,-358)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=71 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=287 a=(348,456,16516) g=(-980,387,-351)
+imu_interval_task,256,839967,840000,840020,840023
+[ACT] batch=28 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=72 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=291 a=(316,460,16472) g=(-950,367,-366)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=73 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=295 a=(284,500,16472) g=(-954,397,-378)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=74 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=299 a=(276,444,16520) g=(-974,398,-338)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=29 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=75 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=303 a=(312,480,16588) g=(-926,418,-342)
+imu_interval_task,256,839971,840000,840020,840022
+[SEN] batch=76 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=307 a=(260,460,16500) g=(-932,416,-368)
+imu_interval_task,256,839961,840000,840020,840025
+[ACT] batch=30 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=77 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=311 a=(328,464,16420) g=(-972,395,-354)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=78 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=315 a=(252,588,16560) g=(-924,404,-364)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=79 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=319 a=(324,384,16532) g=(-945,358,-371)
+imu_interval_task,256,839971,839994,840028,840028
+[ACT] batch=31 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=80 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=323 a=(284,448,16524) g=(-936,374,-372)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=81 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=327 a=(312,400,16508) g=(-978,373,-320)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=32 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=82 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=331 a=(288,464,16504) g=(-937,391,-362)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=83 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=335 a=(272,492,16472) g=(-954,369,-363)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=84 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=339 a=(292,456,16464) g=(-961,386,-336)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=33 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=85 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=343 a=(316,492,16560) g=(-928,363,-320)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=86 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=347 a=(272,488,16536) g=(-950,359,-377)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=34 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=87 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=351 a=(336,540,16504) g=(-948,397,-346)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=88 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=355 a=(268,496,16528) g=(-925,410,-341)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=89 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=359 a=(304,452,16468) g=(-938,380,-346)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=35 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=90 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=363 a=(244,448,16528) g=(-980,381,-357)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=91 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=367 a=(312,440,16560) g=(-964,391,-364)
+imu_interval_task,256,839967,840000,840020,840025
+[ACT] batch=36 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=92 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=371 a=(228,492,16468) g=(-964,386,-351)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=93 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=375 a=(332,376,16472) g=(-948,409,-383)
+imu_interval_task,256,839953,839994,840020,840022
+[SEN] batch=94 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=379 a=(292,464,16468) g=(-978,399,-342)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=37 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=95 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=383 a=(320,484,16652) g=(-954,397,-347)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=96 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=387 a=(288,444,16472) g=(-968,401,-339)
+imu_interval_task,256,839966,840000,840020,840027
+[ACT] batch=38 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=97 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=391 a=(348,464,16568) g=(-973,373,-359)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=98 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=395 a=(316,484,16644) g=(-957,386,-344)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=99 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=399 a=(280,476,16416) g=(-973,386,-351)
+imu_interval_task,256,839971,839994,840028,840028
+[ACT] batch=39 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=100 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=403 a=(344,476,16460) g=(-944,394,-334)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=101 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=407 a=(256,428,16472) g=(-944,416,-373)
+imu_interval_task,256,839963,840000,840020,840022
+[ACT] batch=40 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=102 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=411 a=(304,456,16436) g=(-978,403,-333)
+imu_interval_task,256,839978,840000,840020,840023
+[SEN] batch=103 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=415 a=(256,420,16528) g=(-960,411,-344)
+imu_interval_task,256,839957,839994,840020,840022
+[SEN] batch=104 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=419 a=(308,424,16444) g=(-909,378,-349)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=41 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=105 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=423 a=(280,508,16588) g=(-919,399,-346)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=106 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=427 a=(316,464,16472) g=(-995,399,-372)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=42 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=107 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=431 a=(272,452,16540) g=(-918,405,-371)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=108 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=435 a=(320,460,16460) g=(-956,381,-357)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=109 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=439 a=(260,488,16584) g=(-944,401,-353)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=43 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=110 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=443 a=(352,464,16468) g=(-946,380,-344)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=111 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=447 a=(280,444,16616) g=(-957,392,-362)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=44 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=112 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=451 a=(308,444,16384) g=(-930,391,-354)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=113 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=455 a=(228,496,16416) g=(-912,376,-362)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=114 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=459 a=(232,504,16412) g=(-970,380,-366)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=45 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=115 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=463 a=(300,460,16440) g=(-949,390,-366)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=116 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=467 a=(316,432,16432) g=(-925,383,-363)
+imu_interval_task,256,839964,840000,840020,840022
+[ACT] batch=46 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=117 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=471 a=(232,432,16544) g=(-946,396,-340)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=118 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=475 a=(288,452,16500) g=(-920,389,-338)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=119 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=479 a=(324,448,16504) g=(-938,397,-342)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=47 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=120 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=483 a=(252,440,16488) g=(-940,370,-377)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=121 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=487 a=(332,400,16452) g=(-968,401,-360)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=48 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=122 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=491 a=(248,528,16580) g=(-914,394,-317)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=123 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=495 a=(276,392,16480) g=(-934,401,-374)
+imu_interval_task,256,839957,839994,840020,840022
+[SEN] batch=124 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=499 a=(332,464,16528) g=(-929,397,-369)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=49 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=125 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=503 a=(316,472,16608) g=(-956,393,-357)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=126 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=507 a=(316,468,16428) g=(-955,400,-334)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=50 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=127 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=511 a=(264,508,16552) g=(-937,387,-346)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=128 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=515 a=(328,460,16576) g=(-964,407,-362)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=129 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=519 a=(344,440,16464) g=(-970,387,-369)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=51 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=130 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=523 a=(228,452,16560) g=(-958,404,-380)
+imu_interval_task,256,839975,840000,840020,840022
+[SEN] batch=131 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=527 a=(232,468,16604) g=(-919,409,-346)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=52 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=132 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=531 a=(304,448,16496) g=(-960,405,-351)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=133 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=535 a=(332,468,16484) g=(-935,387,-342)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=134 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=539 a=(320,504,16544) g=(-970,404,-377)
+imu_interval_task,256,839977,839994,840028,840028
+[ACT] batch=53 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=135 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=543 a=(260,448,16516) g=(-960,388,-372)
+imu_interval_task,256,839975,840000,840020,840022
+[SEN] batch=136 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=547 a=(340,456,16432) g=(-927,366,-350)
+imu_interval_task,256,839967,840000,840020,840022
+[ACT] batch=54 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=137 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=551 a=(300,504,16548) g=(-931,384,-349)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=138 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=555 a=(324,412,16548) g=(-904,413,-360)
+imu_interval_task,256,839956,839994,840020,840023
+[SEN] batch=139 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=559 a=(312,372,16608) g=(-974,389,-346)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=55 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=140 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=563 a=(268,452,16484) g=(-934,385,-338)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=141 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=567 a=(328,456,16528) g=(-979,359,-383)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=56 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=142 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=571 a=(304,404,16516) g=(-952,382,-352)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=143 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=575 a=(268,492,16540) g=(-985,423,-367)
+imu_interval_task,256,839956,839994,840020,840023
+[SEN] batch=144 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=579 a=(292,448,16548) g=(-969,380,-337)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=57 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=145 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=583 a=(284,468,16556) g=(-955,397,-367)
+imu_interval_task,256,839975,840000,840020,840022
+[SEN] batch=146 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=587 a=(244,436,16408) g=(-932,418,-368)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=58 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=147 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=591 a=(236,496,16460) g=(-926,385,-329)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=148 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=595 a=(248,440,16504) g=(-942,381,-371)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=149 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=599 a=(256,456,16500) g=(-968,372,-363)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=59 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=150 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=603 a=(256,464,16444) g=(-956,395,-358)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=151 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=607 a=(280,472,16516) g=(-966,393,-357)
+imu_interval_task,256,839963,840000,840020,840022
+[ACT] batch=60 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=152 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=611 a=(308,436,16484) g=(-961,385,-361)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=153 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=615 a=(316,460,16548) g=(-931,391,-375)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=154 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=619 a=(312,396,16440) g=(-951,407,-363)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=61 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=155 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=623 a=(344,432,16512) g=(-923,415,-343)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=156 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=627 a=(376,496,16500) g=(-886,376,-359)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=62 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=157 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=631 a=(380,504,16484) g=(-971,407,-348)
+imu_interval_task,256,839977,840000,840020,840025
+[SEN] batch=158 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=635 a=(304,416,16572) g=(-962,390,-366)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=159 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=639 a=(372,392,16560) g=(-949,412,-350)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=63 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=160 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=643 a=(240,496,16448) g=(-915,371,-351)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=161 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=647 a=(344,464,16428) g=(-925,373,-341)
+imu_interval_task,256,839963,840000,840020,840022
+[ACT] batch=64 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=162 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=651 a=(296,460,16576) g=(-931,394,-365)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=163 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=655 a=(240,448,16532) g=(-971,399,-366)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=164 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=659 a=(260,384,16596) g=(-947,374,-371)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=65 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=165 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=663 a=(280,448,16616) g=(-967,387,-361)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=166 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=667 a=(280,468,16536) g=(-943,432,-330)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=66 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=167 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=671 a=(268,528,16516) g=(-954,381,-366)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=168 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=675 a=(296,484,16456) g=(-936,384,-380)
+imu_interval_task,256,839957,839994,840020,840022
+[SEN] batch=169 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=679 a=(316,476,16588) g=(-941,400,-329)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=67 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=170 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=683 a=(288,432,16620) g=(-957,383,-346)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=171 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=687 a=(276,500,16404) g=(-951,378,-349)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=68 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=172 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=691 a=(320,504,16436) g=(-960,383,-328)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=173 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=695 a=(288,448,16628) g=(-939,400,-340)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=174 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=699 a=(304,548,16400) g=(-944,407,-356)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=69 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=175 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=703 a=(280,436,16608) g=(-968,372,-345)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=176 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=707 a=(348,476,16576) g=(-940,401,-337)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=70 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=177 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=711 a=(336,492,16472) g=(-961,375,-362)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=178 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=715 a=(296,432,16496) g=(-950,390,-343)
+imu_interval_task,256,839956,839994,840020,840023
+[SEN] batch=179 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=719 a=(288,468,16608) g=(-938,405,-352)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=71 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=180 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=723 a=(308,444,16524) g=(-949,398,-340)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=181 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=727 a=(332,440,16448) g=(-969,414,-375)
+imu_interval_task,256,839963,840000,840020,840022
+[ACT] batch=72 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=182 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=731 a=(272,432,16468) g=(-954,384,-383)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=183 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=735 a=(308,460,16568) g=(-948,389,-342)
+imu_interval_task,256,839958,839994,840020,840023
+[SEN] batch=184 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=739 a=(260,496,16520) g=(-896,381,-326)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=73 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=185 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=743 a=(276,520,16448) g=(-958,401,-315)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=186 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=747 a=(272,460,16520) g=(-920,396,-378)
+imu_interval_task,256,839963,840000,840020,840022
+[ACT] batch=74 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=187 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=751 a=(332,452,16512) g=(-941,399,-338)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=188 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=755 a=(224,500,16508) g=(-930,392,-345)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=189 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=759 a=(304,436,16616) g=(-948,404,-384)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=75 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=190 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=763 a=(292,452,16564) g=(-928,385,-356)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=191 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=767 a=(244,424,16544) g=(-963,367,-359)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=76 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=192 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=771 a=(292,508,16540) g=(-942,423,-360)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=193 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=775 a=(264,480,16472) g=(-922,409,-356)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=194 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=779 a=(288,416,16596) g=(-980,405,-352)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=77 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=195 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=783 a=(328,476,16540) g=(-920,384,-333)
+imu_interval_task,256,839971,840000,840020,840022
+[SEN] batch=196 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=787 a=(292,484,16468) g=(-917,394,-335)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=78 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=197 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=791 a=(280,392,16468) g=(-969,401,-347)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=198 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=795 a=(228,472,16616) g=(-939,361,-380)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=199 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=799 a=(268,436,16520) g=(-949,376,-325)
+imu_interval_task,256,839977,839994,840028,840028
+[ACT] batch=79 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=200 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=803 a=(308,416,16564) g=(-930,371,-370)
+imu_interval_task,256,839975,840000,840020,840022
+[SEN] batch=201 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=807 a=(312,476,16436) g=(-926,417,-364)
+imu_interval_task,256,839964,840000,840020,840022
+[ACT] batch=80 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=202 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=811 a=(340,480,16500) g=(-959,376,-375)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=203 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=815 a=(288,428,16532) g=(-957,414,-353)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=204 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=819 a=(324,444,16616) g=(-929,414,-355)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=81 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=205 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=823 a=(300,428,16544) g=(-930,366,-388)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=206 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=827 a=(308,412,16544) g=(-942,371,-369)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=82 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=207 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=831 a=(288,448,16552) g=(-962,390,-328)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=208 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=835 a=(276,468,16548) g=(-933,395,-310)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=209 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=839 a=(272,480,16448) g=(-960,373,-336)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=83 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=210 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=843 a=(252,440,16584) g=(-932,387,-356)
+imu_interval_task,256,839975,840000,840020,840022
+[SEN] batch=211 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=847 a=(232,420,16412) g=(-965,405,-402)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=84 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=212 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=851 a=(224,460,16488) g=(-957,382,-361)
+imu_interval_task,256,839978,840000,840020,840027
+[SEN] batch=213 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=855 a=(312,492,16444) g=(-926,396,-297)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=214 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=859 a=(304,480,16532) g=(-969,397,-375)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=85 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=215 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=863 a=(312,492,16624) g=(-957,373,-316)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=216 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=867 a=(276,504,16560) g=(-982,375,-353)
+imu_interval_task,256,839963,840000,840020,840022
+[ACT] batch=86 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=217 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=871 a=(260,456,16428) g=(-961,414,-333)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=218 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=875 a=(300,524,16560) g=(-909,388,-338)
+imu_interval_task,256,839956,839994,840020,840023
+[SEN] batch=219 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=879 a=(292,472,16472) g=(-944,381,-363)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=87 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=220 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=883 a=(276,456,16436) g=(-929,383,-338)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=221 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=887 a=(388,492,16460) g=(-949,393,-371)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=88 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=222 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=891 a=(244,456,16556) g=(-950,411,-366)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=223 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=895 a=(348,448,16412) g=(-937,395,-367)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=224 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=899 a=(256,448,16500) g=(-952,397,-359)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=89 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=225 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=903 a=(284,420,16460) g=(-972,396,-333)
+imu_interval_task,256,839971,840000,840020,840022
+[SEN] batch=226 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=907 a=(268,472,16432) g=(-995,373,-340)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=90 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=227 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=911 a=(256,372,16440) g=(-971,413,-358)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=228 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=915 a=(252,468,16576) g=(-990,376,-361)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=229 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=919 a=(316,480,16612) g=(-913,374,-347)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=91 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=230 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=923 a=(272,436,16492) g=(-966,386,-382)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=231 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=927 a=(316,400,16528) g=(-935,380,-362)
+imu_interval_task,256,839963,840000,840020,840022
+[ACT] batch=92 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=232 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=931 a=(316,512,16596) g=(-969,395,-358)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=233 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=935 a=(276,452,16408) g=(-956,394,-388)
+imu_interval_task,256,839957,839994,840020,840022
+[SEN] batch=234 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=939 a=(368,456,16568) g=(-952,389,-343)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=93 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=235 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=943 a=(272,440,16448) g=(-933,392,-375)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=236 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=947 a=(296,412,16588) g=(-948,358,-355)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=94 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=237 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=951 a=(284,396,16592) g=(-941,389,-354)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=238 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=955 a=(328,496,16516) g=(-930,392,-360)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=239 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=959 a=(284,452,16580) g=(-956,396,-371)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=95 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=240 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=963 a=(248,448,16532) g=(-955,378,-359)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=241 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=967 a=(328,472,16448) g=(-937,431,-369)
+imu_interval_task,256,839967,840000,840020,840022
+[ACT] batch=96 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=242 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=971 a=(268,500,16524) g=(-933,379,-339)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=243 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=975 a=(204,496,16524) g=(-949,397,-379)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=244 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=979 a=(360,460,16540) g=(-934,370,-344)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=97 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=245 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=983 a=(288,480,16524) g=(-976,390,-326)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=246 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=987 a=(332,404,16508) g=(-922,403,-368)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=98 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=247 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=991 a=(260,480,16544) g=(-927,361,-355)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=248 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=995 a=(372,468,16500) g=(-937,365,-333)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=249 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=999 a=(280,468,16560) g=(-969,388,-347)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=99 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=250 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1003 a=(304,492,16588) g=(-938,416,-367)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=251 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1007 a=(248,492,16532) g=(-932,377,-356)
+imu_interval_task,256,839963,840000,840020,840022
+[ACT] batch=100 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=252 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1011 a=(240,460,16484) g=(-954,386,-337)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=253 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1015 a=(304,416,16444) g=(-914,383,-332)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=254 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1019 a=(252,464,16524) g=(-947,419,-353)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=101 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=255 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1023 a=(344,440,16488) g=(-944,392,-354)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=256 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1027 a=(292,468,16560) g=(-944,387,-350)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=102 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=257 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1031 a=(280,388,16504) g=(-954,374,-383)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=258 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1035 a=(288,420,16620) g=(-935,396,-349)
+imu_interval_task,256,839953,839994,840020,840023
+[SEN] batch=259 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1039 a=(316,488,16600) g=(-965,408,-348)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=103 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=260 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1043 a=(336,464,16408) g=(-940,394,-359)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=261 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1047 a=(224,396,16504) g=(-967,397,-344)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=104 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=262 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1051 a=(320,516,16412) g=(-938,390,-364)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=263 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1055 a=(344,512,16500) g=(-959,417,-369)
+imu_interval_task,256,839953,839994,840020,840023
+[SEN] batch=264 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1059 a=(324,392,16500) g=(-927,408,-354)
+imu_interval_task,256,839975,839994,840028,840028
+[ACT] batch=105 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=265 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1063 a=(288,440,16448) g=(-978,398,-344)
+imu_interval_task,256,839975,840000,840020,840022
+[SEN] batch=266 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1067 a=(252,468,16448) g=(-930,411,-389)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=106 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=267 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1071 a=(276,496,16480) g=(-937,421,-357)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=268 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1075 a=(292,456,16416) g=(-984,367,-340)
+imu_interval_task,256,839951,839994,840020,840022
+[SEN] batch=269 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1079 a=(252,516,16516) g=(-913,384,-359)
+imu_interval_task,256,839975,839994,840028,840028
+[ACT] batch=107 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=270 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1083 a=(272,444,16368) g=(-974,386,-345)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=271 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1087 a=(320,516,16520) g=(-918,382,-358)
+imu_interval_task,256,839963,840000,840020,840022
+[ACT] batch=108 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=272 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1091 a=(324,436,16516) g=(-952,396,-379)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=273 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1095 a=(308,424,16608) g=(-929,381,-359)
+imu_interval_task,256,839951,839994,840020,840022
+[SEN] batch=274 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1099 a=(344,460,16408) g=(-934,389,-356)
+imu_interval_task,256,839973,839994,840028,840028
+[ACT] batch=109 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=275 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1103 a=(292,468,16568) g=(-941,370,-347)
+imu_interval_task,256,839975,840000,840020,840027
+[SEN] batch=276 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1107 a=(332,448,16500) g=(-961,403,-355)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=110 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=277 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1111 a=(312,428,16580) g=(-948,382,-335)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=278 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1115 a=(284,472,16476) g=(-934,377,-361)
+imu_interval_task,256,839953,839994,840020,840022
+[SEN] batch=279 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1119 a=(316,448,16576) g=(-944,393,-347)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=111 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=280 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1123 a=(288,408,16476) g=(-940,383,-390)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=281 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1127 a=(296,456,16516) g=(-963,377,-360)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=112 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=282 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1131 a=(344,412,16600) g=(-908,361,-376)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=283 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1135 a=(248,488,16424) g=(-957,401,-343)
+imu_interval_task,256,839953,839994,840020,840022
+[SEN] batch=284 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1139 a=(288,420,16468) g=(-956,378,-359)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=113 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=285 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1143 a=(340,452,16456) g=(-943,374,-357)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=286 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1147 a=(320,440,16456) g=(-952,394,-351)
+imu_interval_task,256,839963,840000,840020,840022
+[ACT] batch=114 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=287 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1151 a=(284,488,16580) g=(-928,373,-330)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=288 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1155 a=(328,432,16576) g=(-955,404,-393)
+imu_interval_task,256,839953,839994,840020,840022
+[SEN] batch=289 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1159 a=(260,496,16592) g=(-940,389,-354)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=115 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=290 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1163 a=(292,472,16512) g=(-974,380,-363)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=291 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1167 a=(280,476,16508) g=(-963,402,-343)
+imu_interval_task,256,839967,840000,840020,840022
+[ACT] batch=116 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=292 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1171 a=(208,532,16532) g=(-921,389,-349)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=293 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1175 a=(304,448,16448) g=(-951,375,-367)
+imu_interval_task,256,839953,839994,840020,840022
+[SEN] batch=294 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1179 a=(312,416,16496) g=(-932,388,-322)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=117 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=295 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1183 a=(360,508,16532) g=(-960,390,-337)
+imu_interval_task,256,839971,840000,840020,840022
+[SEN] batch=296 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1187 a=(240,456,16560) g=(-942,390,-338)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=118 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=297 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1191 a=(308,476,16600) g=(-963,347,-339)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=298 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1195 a=(264,476,16508) g=(-942,406,-336)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=299 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1199 a=(308,432,16496) g=(-937,366,-352)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=119 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=300 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1203 a=(244,448,16516) g=(-952,385,-371)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=301 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1207 a=(260,468,16536) g=(-979,407,-354)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=120 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=302 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1211 a=(328,424,16644) g=(-941,386,-344)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=303 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1215 a=(280,432,16444) g=(-966,403,-357)
+imu_interval_task,256,839956,839994,840020,840023
+[SEN] batch=304 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1219 a=(288,532,16528) g=(-965,404,-351)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=121 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=305 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1223 a=(308,464,16300) g=(-947,381,-376)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=306 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1227 a=(364,480,16440) g=(-947,397,-381)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=122 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=307 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1231 a=(276,452,16616) g=(-907,394,-374)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=308 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1235 a=(260,484,16636) g=(-952,408,-355)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=309 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1239 a=(280,460,16564) g=(-968,419,-359)
+imu_interval_task,256,839977,839994,840028,840028
+[ACT] batch=123 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=310 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1243 a=(272,508,16544) g=(-959,403,-367)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=311 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1247 a=(312,412,16576) g=(-946,371,-345)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=124 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=312 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1251 a=(308,448,16420) g=(-962,383,-394)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=313 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1255 a=(308,500,16544) g=(-955,350,-348)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=314 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1259 a=(328,472,16580) g=(-958,407,-348)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=125 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=315 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1263 a=(296,448,16496) g=(-917,381,-339)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=316 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1267 a=(336,488,16588) g=(-929,363,-380)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=126 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=317 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1271 a=(328,468,16576) g=(-989,392,-376)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=318 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1275 a=(312,512,16528) g=(-940,382,-366)
+imu_interval_task,256,839951,839994,840020,840022
+[SEN] batch=319 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1279 a=(296,448,16560) g=(-967,383,-365)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=127 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=320 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1283 a=(328,500,16576) g=(-970,387,-346)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=321 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1287 a=(372,472,16524) g=(-936,389,-354)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=128 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=322 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1291 a=(292,480,16596) g=(-949,398,-343)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=323 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1295 a=(328,500,16528) g=(-938,385,-328)
+imu_interval_task,256,839955,839994,840020,840022
+[SEN] batch=324 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1299 a=(300,452,16488) g=(-974,389,-324)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=129 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=325 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1303 a=(308,436,16616) g=(-945,402,-350)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=326 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1307 a=(276,416,16480) g=(-943,389,-355)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=130 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=327 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1311 a=(272,464,16548) g=(-940,382,-343)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=328 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1315 a=(248,440,16500) g=(-941,393,-360)
+imu_interval_task,256,839951,839994,840020,840022
+[SEN] batch=329 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1319 a=(252,456,16564) g=(-975,412,-357)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=131 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=330 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1323 a=(344,412,16528) g=(-929,379,-329)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=331 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1327 a=(296,456,16520) g=(-975,362,-364)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=132 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=332 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1331 a=(304,452,16504) g=(-948,404,-329)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=333 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1335 a=(276,488,16552) g=(-944,373,-351)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=334 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1339 a=(300,452,16448) g=(-954,377,-338)
+imu_interval_task,256,839971,839994,840028,840028
+[ACT] batch=133 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=335 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1343 a=(380,412,16436) g=(-970,401,-359)
+imu_interval_task,256,839976,840000,840020,840023
+[SEN] batch=336 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1347 a=(284,548,16524) g=(-953,384,-376)
+imu_interval_task,256,839963,840000,840020,840022
+[ACT] batch=134 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=337 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1351 a=(300,444,16580) g=(-932,392,-364)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=338 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1355 a=(344,460,16412) g=(-944,370,-409)
+imu_interval_task,256,839951,839994,840020,840023
+[SEN] batch=339 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1359 a=(292,436,16508) g=(-929,403,-348)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=135 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=340 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1363 a=(308,496,16500) g=(-968,395,-322)
+imu_interval_task,256,839971,840000,840020,840022
+[SEN] batch=341 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1367 a=(280,452,16460) g=(-975,430,-376)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=136 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=342 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1371 a=(264,464,16496) g=(-914,409,-333)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=343 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1375 a=(316,460,16576) g=(-933,404,-362)
+imu_interval_task,256,839956,839994,840020,840023
+[SEN] batch=344 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1379 a=(336,476,16460) g=(-954,388,-315)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=137 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=345 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1383 a=(280,548,16584) g=(-950,392,-348)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=346 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1387 a=(308,468,16400) g=(-963,395,-371)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=138 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=347 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1391 a=(304,420,16460) g=(-938,410,-374)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=348 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1395 a=(300,460,16548) g=(-964,403,-339)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=349 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1399 a=(300,416,16616) g=(-942,395,-328)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=139 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=350 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1403 a=(252,408,16428) g=(-925,406,-360)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=351 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1407 a=(240,420,16360) g=(-977,380,-333)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=140 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=352 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1411 a=(272,492,16528) g=(-942,410,-346)
+imu_interval_task,256,839977,840000,840020,840025
+[SEN] batch=353 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1415 a=(272,468,16504) g=(-954,375,-373)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=354 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1419 a=(296,424,16544) g=(-925,387,-348)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=141 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=355 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1423 a=(316,436,16540) g=(-944,381,-337)
+imu_interval_task,256,839977,840000,840020,840022
+[SEN] batch=356 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1427 a=(284,416,16540) g=(-901,382,-352)
+imu_interval_task,256,839967,840000,840020,840022
+[ACT] batch=142 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=357 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1431 a=(280,468,16520) g=(-891,400,-334)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=358 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1435 a=(264,480,16432) g=(-952,423,-370)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=359 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1439 a=(248,388,16568) g=(-965,387,-349)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=143 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=360 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1443 a=(292,400,16504) g=(-920,399,-387)
+imu_interval_task,256,839971,840000,840020,840022
+[SEN] batch=361 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1447 a=(272,476,16460) g=(-934,379,-350)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=144 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=362 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1451 a=(328,484,16496) g=(-965,396,-349)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=363 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1455 a=(296,408,16564) g=(-905,353,-318)
+imu_interval_task,256,839951,839994,840020,840022
+[SEN] batch=364 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1459 a=(288,408,16544) g=(-955,414,-370)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=145 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=365 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1463 a=(328,448,16504) g=(-946,373,-385)
+imu_interval_task,256,839971,840000,840020,840022
+[SEN] batch=366 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1467 a=(276,432,16508) g=(-943,392,-360)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=146 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=367 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1471 a=(276,480,16592) g=(-945,405,-378)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=368 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1475 a=(260,440,16556) g=(-948,380,-323)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=369 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1479 a=(260,484,16600) g=(-938,423,-352)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=147 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=370 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1483 a=(272,412,16532) g=(-937,409,-359)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=371 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1487 a=(276,508,16552) g=(-936,374,-355)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=148 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=372 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1491 a=(304,448,16624) g=(-934,415,-367)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=373 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1495 a=(316,432,16552) g=(-963,378,-366)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=374 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1499 a=(348,456,16556) g=(-928,397,-337)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=149 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=375 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1503 a=(312,516,16500) g=(-979,418,-356)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=376 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1507 a=(296,512,16504) g=(-912,396,-370)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=150 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=377 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1511 a=(244,408,16508) g=(-952,374,-339)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=378 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1515 a=(328,428,16436) g=(-948,381,-350)
+imu_interval_task,256,839956,839994,840020,840023
+[SEN] batch=379 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1519 a=(292,476,16472) g=(-934,379,-343)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=151 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=380 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1523 a=(324,504,16532) g=(-945,402,-358)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=381 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1527 a=(232,396,16452) g=(-949,394,-371)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=152 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=382 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1531 a=(340,452,16484) g=(-940,407,-340)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=383 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1535 a=(308,524,16424) g=(-974,373,-355)
+imu_interval_task,256,839955,839994,840020,840023
+[SEN] batch=384 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1539 a=(356,428,16428) g=(-925,407,-338)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=153 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=385 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1543 a=(296,464,16556) g=(-975,416,-369)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=386 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1547 a=(360,428,16448) g=(-977,409,-344)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=154 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=387 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1551 a=(276,448,16532) g=(-953,381,-354)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=388 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1555 a=(256,532,16456) g=(-951,374,-351)
+imu_interval_task,256,839953,839994,840020,840022
+[SEN] batch=389 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1559 a=(288,500,16524) g=(-965,422,-378)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=155 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=390 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1563 a=(308,492,16500) g=(-945,364,-381)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=391 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1567 a=(260,472,16356) g=(-1008,363,-368)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=156 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=392 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1571 a=(376,488,16488) g=(-953,359,-373)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=393 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1575 a=(280,460,16628) g=(-958,391,-351)
+imu_interval_task,256,839951,839994,840020,840022
+[SEN] batch=394 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1579 a=(288,496,16576) g=(-962,373,-317)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=157 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=395 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1583 a=(272,440,16352) g=(-959,406,-365)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=396 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1587 a=(364,516,16456) g=(-941,400,-367)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=158 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=397 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1591 a=(260,464,16600) g=(-952,397,-360)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=398 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1595 a=(360,484,16472) g=(-924,385,-346)
+imu_interval_task,256,839951,839994,840020,840022
+[SEN] batch=399 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1599 a=(280,472,16588) g=(-945,395,-383)
+imu_interval_task,256,839971,839994,840028,840028
+[ACT] batch=159 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=400 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1603 a=(200,400,16504) g=(-938,377,-344)
+imu_interval_task,256,839976,840000,840020,840023
+[SEN] batch=401 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1607 a=(316,472,16620) g=(-949,418,-353)
+imu_interval_task,256,839963,840000,840020,840022
+[ACT] batch=160 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=402 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1611 a=(340,476,16464) g=(-943,376,-356)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=403 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1615 a=(236,452,16484) g=(-972,335,-320)
+imu_interval_task,256,839953,839994,840020,840022
+[SEN] batch=404 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1619 a=(252,424,16528) g=(-942,390,-364)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=161 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=405 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1623 a=(296,440,16408) g=(-924,389,-327)
+imu_interval_task,256,839971,840000,840020,840022
+[SEN] batch=406 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1627 a=(368,448,16468) g=(-943,419,-344)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=162 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=407 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1631 a=(332,464,16464) g=(-971,406,-350)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=408 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1635 a=(272,476,16616) g=(-931,393,-329)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=409 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1639 a=(276,452,16552) g=(-961,358,-335)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=163 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=410 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1643 a=(256,380,16388) g=(-922,383,-338)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=411 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1647 a=(352,476,16444) g=(-903,384,-363)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=164 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=412 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1651 a=(260,432,16484) g=(-910,362,-371)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=413 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1655 a=(276,444,16524) g=(-954,379,-353)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=414 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1659 a=(356,456,16372) g=(-966,397,-336)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=165 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=415 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1663 a=(292,496,16444) g=(-948,389,-339)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=416 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1667 a=(308,480,16512) g=(-970,377,-341)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=166 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=417 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1671 a=(316,488,16540) g=(-939,376,-354)
+imu_interval_task,256,839977,840000,840020,840025
+[SEN] batch=418 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1675 a=(288,516,16552) g=(-978,411,-370)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=419 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1679 a=(344,464,16632) g=(-942,382,-326)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=167 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=420 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1683 a=(312,420,16524) g=(-920,349,-327)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=421 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1687 a=(292,436,16612) g=(-930,383,-342)
+imu_interval_task,256,839967,840000,840020,840022
+[ACT] batch=168 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=422 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1691 a=(264,444,16420) g=(-959,395,-372)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=423 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1695 a=(320,428,16456) g=(-959,347,-336)
+imu_interval_task,256,839958,839994,840020,840023
+[SEN] batch=424 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1699 a=(320,484,16568) g=(-963,412,-352)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=169 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=425 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1703 a=(348,452,16516) g=(-939,384,-361)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=426 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1707 a=(296,456,16488) g=(-957,390,-324)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=170 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=427 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1711 a=(296,448,16472) g=(-930,405,-353)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=428 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1715 a=(260,488,16548) g=(-899,378,-354)
+imu_interval_task,256,839951,839994,840020,840022
+[SEN] batch=429 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1719 a=(260,424,16504) g=(-934,376,-357)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=171 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=430 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1723 a=(292,496,16516) g=(-953,409,-399)
+imu_interval_task,256,839971,840000,840020,840022
+[SEN] batch=431 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1727 a=(300,504,16536) g=(-905,399,-371)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=172 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=432 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1731 a=(280,476,16460) g=(-945,372,-336)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=433 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1735 a=(344,424,16552) g=(-916,376,-329)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=434 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1739 a=(332,372,16524) g=(-954,374,-355)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=173 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=435 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1743 a=(220,452,16468) g=(-945,386,-335)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=436 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1747 a=(284,388,16580) g=(-944,386,-351)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=174 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=437 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1751 a=(272,480,16480) g=(-936,397,-364)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=438 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1755 a=(304,468,16536) g=(-944,377,-360)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=439 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1759 a=(292,516,16548) g=(-967,373,-361)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=175 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=440 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1763 a=(336,476,16548) g=(-919,387,-365)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=441 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1767 a=(208,452,16440) g=(-992,368,-357)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=176 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=442 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1771 a=(336,416,16600) g=(-969,407,-338)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=443 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1775 a=(356,472,16536) g=(-980,366,-357)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=444 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1779 a=(348,456,16552) g=(-939,369,-371)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=177 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=445 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1783 a=(276,444,16588) g=(-933,377,-348)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=446 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1787 a=(284,500,16472) g=(-955,396,-356)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=178 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=447 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1791 a=(316,508,16488) g=(-984,387,-369)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=448 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1795 a=(328,404,16440) g=(-940,362,-358)
+imu_interval_task,256,839953,839994,840020,840022
+[SEN] batch=449 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1799 a=(244,524,16524) g=(-947,390,-373)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=179 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=450 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1803 a=(316,420,16532) g=(-973,373,-373)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=451 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1807 a=(268,464,16416) g=(-991,380,-345)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=180 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=452 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1811 a=(280,416,16384) g=(-967,389,-316)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=453 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1815 a=(284,452,16516) g=(-940,363,-362)
+imu_interval_task,256,839955,839994,840020,840022
+[SEN] batch=454 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1819 a=(268,452,16472) g=(-954,382,-369)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=181 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=455 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1823 a=(300,408,16528) g=(-956,368,-359)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=456 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1827 a=(240,512,16524) g=(-942,398,-345)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=182 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=457 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1831 a=(356,444,16520) g=(-958,391,-369)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=458 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1835 a=(328,504,16372) g=(-956,369,-346)
+imu_interval_task,256,839951,839994,840020,840023
+[SEN] batch=459 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1839 a=(304,436,16508) g=(-952,397,-358)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=183 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=460 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1843 a=(288,444,16460) g=(-940,362,-374)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=461 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1847 a=(316,496,16476) g=(-931,391,-353)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=184 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=462 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1851 a=(272,352,16628) g=(-902,381,-369)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=463 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1855 a=(320,456,16532) g=(-973,350,-349)
+imu_interval_task,256,839958,839994,840020,840023
+[SEN] batch=464 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1859 a=(304,524,16580) g=(-978,398,-371)
+imu_interval_task,256,839971,839994,840028,840028
+[ACT] batch=185 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=465 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1863 a=(268,444,16432) g=(-945,414,-356)
+imu_interval_task,256,839976,840000,840020,840023
+[SEN] batch=466 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1867 a=(320,448,16428) g=(-917,360,-349)
+imu_interval_task,256,839963,840000,840020,840022
+[ACT] batch=186 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=467 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1871 a=(336,472,16560) g=(-945,407,-379)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=468 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1875 a=(292,436,16496) g=(-976,378,-320)
+imu_interval_task,256,839953,839994,840020,840022
+[SEN] batch=469 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1879 a=(268,416,16448) g=(-952,376,-341)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=187 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=470 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1883 a=(292,504,16436) g=(-947,403,-338)
+imu_interval_task,256,839971,840000,840020,840022
+[SEN] batch=471 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1887 a=(256,456,16528) g=(-964,392,-385)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=188 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=472 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1891 a=(296,448,16492) g=(-928,418,-343)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=473 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1895 a=(300,480,16572) g=(-939,388,-358)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=474 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1899 a=(300,412,16476) g=(-944,374,-377)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=189 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=475 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1903 a=(280,512,16520) g=(-898,398,-331)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=476 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1907 a=(292,452,16464) g=(-935,410,-353)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=190 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=477 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1911 a=(316,436,16524) g=(-962,370,-363)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=478 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1915 a=(228,488,16392) g=(-979,390,-384)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=479 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1919 a=(332,456,16552) g=(-947,404,-331)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=191 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=480 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1923 a=(312,444,16476) g=(-948,415,-376)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=481 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1927 a=(316,468,16484) g=(-966,402,-340)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=192 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=482 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1931 a=(268,508,16636) g=(-971,396,-349)
+imu_interval_task,256,839977,840000,840020,840025
+[SEN] batch=483 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1935 a=(272,456,16560) g=(-937,387,-377)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=484 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1939 a=(272,460,16404) g=(-975,402,-350)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=193 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=485 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1943 a=(256,472,16480) g=(-919,393,-379)
+imu_interval_task,256,839971,840000,840020,840022
+[SEN] batch=486 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1947 a=(324,500,16580) g=(-943,360,-385)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=194 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=487 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1951 a=(260,444,16444) g=(-938,407,-372)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=488 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1955 a=(296,440,16512) g=(-945,388,-351)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=489 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1959 a=(304,456,16556) g=(-960,404,-376)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=195 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=490 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1963 a=(304,432,16500) g=(-945,396,-381)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=491 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1967 a=(252,400,16456) g=(-922,405,-341)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=196 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=492 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1971 a=(304,432,16560) g=(-924,388,-345)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=493 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1975 a=(312,496,16584) g=(-946,394,-346)
+imu_interval_task,256,839953,839994,840020,840022
+[SEN] batch=494 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1979 a=(292,464,16500) g=(-950,389,-312)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=197 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=495 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1983 a=(312,444,16488) g=(-919,394,-361)
+imu_interval_task,256,839971,840000,840020,840022
+[SEN] batch=496 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1987 a=(332,412,16488) g=(-938,389,-337)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=198 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=497 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=1991 a=(296,488,16604) g=(-938,401,-366)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=498 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1995 a=(288,444,16572) g=(-945,399,-303)
+imu_interval_task,256,839956,839994,840020,840023
+[SEN] batch=499 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=1999 a=(332,448,16560) g=(-930,394,-335)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=199 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=500 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2003 a=(276,416,16416) g=(-946,388,-352)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=501 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2007 a=(264,412,16432) g=(-921,402,-364)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=200 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=502 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2011 a=(244,464,16460) g=(-962,350,-332)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=503 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2015 a=(304,488,16500) g=(-984,409,-329)
+imu_interval_task,256,839958,839994,840020,840023
+[SEN] batch=504 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2019 a=(216,372,16524) g=(-930,377,-342)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=201 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=505 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2023 a=(276,520,16436) g=(-921,364,-354)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=506 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2027 a=(316,516,16492) g=(-957,401,-328)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=202 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=507 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2031 a=(336,440,16464) g=(-930,401,-342)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=508 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2035 a=(272,460,16504) g=(-949,362,-379)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=509 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2039 a=(244,416,16412) g=(-986,383,-375)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=203 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=510 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2043 a=(308,516,16552) g=(-953,390,-329)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=511 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2047 a=(300,500,16644) g=(-931,361,-390)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=204 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=512 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2051 a=(288,492,16472) g=(-950,406,-364)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=513 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2055 a=(272,480,16592) g=(-924,378,-361)
+imu_interval_task,256,839955,839994,840020,840022
+[SEN] batch=514 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2059 a=(356,496,16444) g=(-930,405,-358)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=205 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=515 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2063 a=(312,508,16540) g=(-959,387,-359)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=516 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2067 a=(284,460,16480) g=(-976,391,-362)
+imu_interval_task,256,839963,840000,840020,840022
+[ACT] batch=206 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=517 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2071 a=(296,444,16572) g=(-964,386,-361)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=518 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2075 a=(336,400,16484) g=(-943,382,-341)
+imu_interval_task,256,839953,839994,840020,840022
+[SEN] batch=519 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2079 a=(284,456,16440) g=(-937,388,-371)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=207 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=520 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2083 a=(276,456,16608) g=(-936,390,-362)
+imu_interval_task,256,839975,840000,840020,840022
+[SEN] batch=521 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2087 a=(324,428,16496) g=(-939,396,-350)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=208 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=522 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2091 a=(236,508,16420) g=(-943,361,-361)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=523 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2095 a=(288,420,16628) g=(-939,356,-324)
+imu_interval_task,256,839953,839994,840020,840022
+[SEN] batch=524 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2099 a=(280,492,16568) g=(-972,385,-380)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=209 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=525 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2103 a=(304,424,16460) g=(-931,376,-327)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=526 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2107 a=(276,428,16568) g=(-959,405,-359)
+imu_interval_task,256,839963,840000,840020,840022
+[ACT] batch=210 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=527 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2111 a=(296,448,16524) g=(-920,397,-381)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=528 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2115 a=(268,508,16512) g=(-972,391,-364)
+imu_interval_task,256,839951,839994,840020,840022
+[SEN] batch=529 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2119 a=(272,476,16560) g=(-939,383,-354)
+imu_interval_task,256,839971,839994,840028,840028
+[ACT] batch=211 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=530 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2123 a=(296,432,16444) g=(-949,374,-347)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=531 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2127 a=(280,460,16576) g=(-983,376,-365)
+imu_interval_task,256,839963,840000,840020,840022
+[ACT] batch=212 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=532 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2131 a=(248,464,16456) g=(-958,416,-368)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=533 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2135 a=(284,424,16452) g=(-905,373,-335)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=534 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2139 a=(340,480,16488) g=(-906,365,-352)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=213 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=535 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2143 a=(352,528,16516) g=(-981,391,-365)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=536 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2147 a=(328,468,16452) g=(-913,398,-355)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=214 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=537 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2151 a=(284,452,16536) g=(-952,395,-342)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=538 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2155 a=(312,432,16440) g=(-945,404,-338)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=539 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2159 a=(268,500,16564) g=(-936,382,-379)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=215 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=540 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2163 a=(272,412,16568) g=(-947,432,-355)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=541 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2167 a=(220,456,16548) g=(-903,365,-371)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=216 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=542 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2171 a=(332,464,16624) g=(-942,376,-330)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=543 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2175 a=(300,480,16532) g=(-932,375,-349)
+imu_interval_task,256,839956,839994,840020,840023
+[SEN] batch=544 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2179 a=(308,392,16600) g=(-932,413,-381)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=217 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=545 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2183 a=(288,436,16520) g=(-967,396,-336)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=546 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2187 a=(348,420,16476) g=(-939,397,-342)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=218 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=547 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2191 a=(300,448,16504) g=(-955,390,-315)
+imu_interval_task,256,839977,840000,840020,840025
+[SEN] batch=548 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2195 a=(256,516,16640) g=(-973,394,-354)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=549 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2199 a=(332,452,16512) g=(-961,381,-369)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=219 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=550 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2203 a=(304,460,16520) g=(-956,413,-356)
+imu_interval_task,256,839977,840000,840020,840022
+[SEN] batch=551 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2207 a=(284,420,16484) g=(-976,396,-366)
+imu_interval_task,256,839967,840000,840020,840022
+[ACT] batch=220 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=552 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2211 a=(296,412,16484) g=(-939,355,-371)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=553 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2215 a=(256,496,16456) g=(-946,424,-345)
+imu_interval_task,256,839953,839994,840020,840022
+[SEN] batch=554 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2219 a=(320,416,16516) g=(-919,428,-354)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=221 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=555 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2223 a=(316,452,16440) g=(-921,392,-344)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=556 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2227 a=(312,492,16484) g=(-948,389,-331)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=222 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=557 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2231 a=(308,472,16536) g=(-944,366,-342)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=558 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2235 a=(304,428,16624) g=(-982,374,-355)
+imu_interval_task,256,839953,839994,840020,840022
+[SEN] batch=559 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2239 a=(260,384,16440) g=(-935,371,-335)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=223 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=560 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2243 a=(232,448,16628) g=(-951,396,-344)
+imu_interval_task,256,839971,840000,840020,840022
+[SEN] batch=561 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2247 a=(292,468,16444) g=(-942,412,-363)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=224 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=562 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2251 a=(304,440,16512) g=(-915,409,-316)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=563 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2255 a=(320,432,16468) g=(-935,351,-338)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=564 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2259 a=(320,424,16464) g=(-938,386,-322)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=225 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=565 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2263 a=(320,408,16472) g=(-908,369,-331)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=566 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2267 a=(284,432,16528) g=(-969,392,-351)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=226 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=567 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2271 a=(284,460,16416) g=(-949,399,-348)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=568 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2275 a=(324,476,16604) g=(-922,406,-370)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=569 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2279 a=(328,436,16512) g=(-960,380,-355)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=227 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=570 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2283 a=(288,472,16500) g=(-902,392,-340)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=571 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2287 a=(292,432,16560) g=(-966,386,-355)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=228 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=572 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2291 a=(300,472,16416) g=(-972,407,-323)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=573 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2295 a=(324,420,16540) g=(-937,392,-357)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=574 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2299 a=(264,508,16604) g=(-930,413,-330)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=229 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=575 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2303 a=(296,492,16516) g=(-943,391,-380)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=576 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2307 a=(304,420,16460) g=(-946,402,-336)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=230 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=577 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2311 a=(316,460,16568) g=(-955,363,-364)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=578 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2315 a=(272,468,16668) g=(-917,390,-338)
+imu_interval_task,256,839953,839994,840020,840023
+[SEN] batch=579 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2319 a=(284,472,16492) g=(-926,383,-369)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=231 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=580 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2323 a=(300,424,16428) g=(-961,414,-370)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=581 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2327 a=(280,464,16564) g=(-927,382,-371)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=232 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=582 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2331 a=(240,480,16532) g=(-916,367,-346)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=583 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2335 a=(320,432,16504) g=(-955,385,-337)
+imu_interval_task,256,839955,839994,840020,840023
+[SEN] batch=584 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2339 a=(276,440,16512) g=(-978,403,-385)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=233 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=585 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2343 a=(328,444,16540) g=(-946,403,-366)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=586 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2347 a=(252,504,16496) g=(-916,370,-356)
+imu_interval_task,256,839967,840000,840020,840022
+[ACT] batch=234 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=587 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2351 a=(320,480,16432) g=(-963,404,-369)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=588 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2355 a=(268,368,16612) g=(-984,366,-362)
+imu_interval_task,256,839953,839994,840020,840022
+[SEN] batch=589 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2359 a=(236,444,16508) g=(-964,357,-367)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=235 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=590 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2363 a=(300,392,16460) g=(-969,396,-355)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=591 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2367 a=(296,480,16436) g=(-921,404,-345)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=236 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=592 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2371 a=(280,476,16460) g=(-943,408,-313)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=593 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2375 a=(336,464,16500) g=(-936,370,-345)
+imu_interval_task,256,839951,839994,840020,840022
+[SEN] batch=594 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2379 a=(228,428,16392) g=(-943,396,-330)
+imu_interval_task,256,839975,839994,840028,840028
+[ACT] batch=237 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=595 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2383 a=(324,472,16540) g=(-937,391,-349)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=596 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2387 a=(320,408,16460) g=(-961,357,-365)
+imu_interval_task,256,839963,840000,840020,840022
+[ACT] batch=238 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=597 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2391 a=(396,456,16520) g=(-958,385,-377)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=598 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2395 a=(252,488,16452) g=(-959,393,-354)
+imu_interval_task,256,839953,839994,840020,840022
+[SEN] batch=599 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2399 a=(280,528,16456) g=(-947,404,-346)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=239 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=600 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2403 a=(260,540,16548) g=(-964,402,-351)
+imu_interval_task,256,839971,840000,840020,840022
+[SEN] batch=601 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2407 a=(196,488,16484) g=(-951,375,-393)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=240 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=602 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2411 a=(364,464,16524) g=(-951,409,-376)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=603 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2415 a=(204,480,16552) g=(-964,368,-362)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=604 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2419 a=(312,488,16508) g=(-936,366,-319)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=241 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=605 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2423 a=(284,408,16588) g=(-930,374,-347)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=606 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2427 a=(320,392,16604) g=(-946,399,-408)
+imu_interval_task,256,839967,840000,840020,840022
+[ACT] batch=242 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=607 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2431 a=(364,496,16536) g=(-956,387,-381)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=608 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2435 a=(288,436,16504) g=(-925,418,-404)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=609 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2439 a=(248,504,16432) g=(-937,396,-350)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=243 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=610 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2443 a=(284,444,16496) g=(-976,387,-364)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=611 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2447 a=(308,492,16420) g=(-937,378,-370)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=244 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=612 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2451 a=(336,436,16516) g=(-951,384,-329)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=613 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2455 a=(380,436,16520) g=(-946,390,-343)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=614 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2459 a=(284,440,16548) g=(-960,389,-351)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=245 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=615 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2463 a=(332,516,16556) g=(-922,393,-358)
+imu_interval_task,256,839971,840000,840020,840022
+[SEN] batch=616 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2467 a=(248,504,16472) g=(-963,393,-382)
+imu_interval_task,256,839967,840000,840020,840022
+[ACT] batch=246 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=617 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2471 a=(304,504,16564) g=(-978,396,-368)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=618 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2475 a=(224,508,16408) g=(-951,345,-335)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=619 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2479 a=(316,484,16488) g=(-972,385,-362)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=247 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=620 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2483 a=(316,448,16600) g=(-914,387,-368)
+imu_interval_task,256,839971,840000,840020,840022
+[SEN] batch=621 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2487 a=(240,436,16464) g=(-954,407,-369)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=248 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=622 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2491 a=(252,352,16476) g=(-968,406,-355)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=623 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2495 a=(276,484,16500) g=(-944,369,-370)
+imu_interval_task,256,839953,839994,840020,840023
+[SEN] batch=624 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2499 a=(364,456,16512) g=(-957,374,-351)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=249 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=625 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2503 a=(360,456,16580) g=(-954,401,-374)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=626 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2507 a=(340,472,16448) g=(-955,384,-329)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=250 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,775
+[SEN] batch=627 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2511 a=(360,524,16544) g=(-923,376,-341)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=628 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2515 a=(288,500,16480) g=(-938,373,-357)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=629 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2519 a=(260,452,16512) g=(-936,395,-314)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=251 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=630 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2523 a=(276,484,16400) g=(-944,414,-351)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=631 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2527 a=(284,472,16412) g=(-911,356,-329)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=252 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=632 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2531 a=(292,416,16492) g=(-939,424,-376)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=633 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2535 a=(300,532,16520) g=(-936,381,-325)
+imu_interval_task,256,839958,839994,840020,840022
+[SEN] batch=634 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2539 a=(332,492,16568) g=(-949,402,-329)
+imu_interval_task,256,839978,839994,840028,840028
+[ACT] batch=253 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=635 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2543 a=(340,460,16508) g=(-953,388,-339)
+imu_interval_task,256,839976,840000,840020,840022
+[SEN] batch=636 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2547 a=(300,432,16572) g=(-962,363,-362)
+imu_interval_task,256,839966,840000,840020,840022
+[ACT] batch=254 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=637 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2551 a=(240,412,16456) g=(-926,402,-412)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=638 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2555 a=(296,388,16464) g=(-931,407,-333)
+imu_interval_task,256,839956,839994,840020,840022
+[SEN] batch=639 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2559 a=(352,456,16568) g=(-938,387,-355)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=255 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=640 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2563 a=(232,444,16548) g=(-941,392,-374)
+imu_interval_task,256,839973,840000,840020,840022
+[SEN] batch=641 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2567 a=(316,496,16464) g=(-957,376,-365)
+imu_interval_task,256,839967,840000,840020,840022
+[ACT] batch=256 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,763,773,773,773
+[SEN] batch=642 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2571 a=(304,484,16512) g=(-934,401,-336)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=643 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2575 a=(284,436,16560) g=(-943,414,-362)
+imu_interval_task,256,839951,839994,840020,840022
+[SEN] batch=644 n=256 interval_us med=9999 p99=10000 max=10000 fail=0 skip=0 win=2579 a=(288,496,16392) g=(-972,416,-345)
+imu_interval_task,256,839976,839994,840028,840028
+[ACT] batch=257 n=128 lat_us med=9.2 p99=9.2 max=9.2 miss(1ms)=0 lost=0 skip=0
+action_latency,128,761,773,773,773
+[SEN] batch=645 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2583 a=(300,468,16504) g=(-930,396,-359)
+imu_interval_task,256,839978,840000,840020,840022
+[SEN] batch=646 n=256 interval_us med=10000 p99=10000 max=10000 fail=0 skip=0 win=2587 a=(264,460,16540) g=(-941,397,-353)
+imu_interval_task,256,839966,840000,840020,840022

@@ -1,0 +1,1733 @@
+
+=== stm32-edge W2 bringup ===
+SystemCoreClock : 84000000 Hz
+HAL tick        : TIM10 (SysTick은 FreeRTOS 소유)
+DWT 32bit wrap  : 51130 ms
+
+--- DWT selftest ---
+[1] alive    : PASS  193582 -> 194608
+[2] scale    : PASS  expect=8400000 meas=8466515 err=+7 permille
+[3] overhead : n=100 min=24 med=24 p99=24 max=24 (cycles)
+--- DWT selftest: PASS ---
+tag,n,min,median,p99,max
+dwt_overhead,100,24,24,24,24
+
+--- I2C bus scan ---
+  found 0x68
+--- scan done: 1 device(s) ---
+
+--- MPU6050 bringup ---
+[2] who_am_i : PASS  0x70 (MPU-6500)
+[3] wake     : PASS  SLEEP cleared
+[4] accel    : 2초간 20샘플 - 지금 보드를 기울여 보세요
+     i,ax,ay,az
+     0,332,456,16532
+     1,232,452,16516
+     2,308,424,16520
+     3,320,444,16540
+     4,300,408,16476
+     5,300,472,16468
+     6,260,432,16520
+     7,240,456,16444
+     8,228,512,16512
+     9,264,396,16508
+     10,300,480,16524
+     11,284,456,16444
+     12,264,456,16568
+     13,324,488,16524
+     14,252,468,16464
+     15,288,412,16564
+     16,348,480,16492
+     17,300,448,16512
+     18,284,456,16532
+     19,232,416,16444
+     (참고: 기본 +-2g에서 1g = 16384 LSB)
+[5] stream   : n=100 (target 100Hz)
+     interval cycles  med=923996 p99=924020 max=924020  -> 10.99 ms (med)
+     read cost cycles med=70490 p99=70490 max=70490
+tag,n,min,median,p99,max
+imu_interval,100,923984,923996,924020,924020
+imu_read_cost,100,70489,70490,70490,70490
+--- MPU6050 bringup: PASS ---
+
+=== W3 sweep up: action(48) sensor(40) log(16) load(8/50) ===
+event=50ms deadline=1ms(관측 기준선) batch: act=128 sen=256 inf=128 warmup=16
+load: busy=20ms period=53ms (=37%, 전 config 동일) cfg마다 4배치
+  cfg[0] L0-noload   load=off prio=8  chunks=1
+  cfg[1] A-mono      load=on  prio=8  chunks=1
+  cfg[2] B-mono      load=on  prio=50 chunks=1
+  cfg[3] C-chunk5ms  load=on  prio=50 chunks=4
+  cfg[4] D-chunk1ms  load=on  prio=50 chunks=20
+tag,config,n,min,median,p99,max
+[SEN] cfg=L0-noload   batch=0 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=3 a=(264,488,16560) g=(-954,373,-329)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=1 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=7 a=(468,392,16220) g=(-1013,374,-356)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=0 n=128 lat_us med=9.2 p99=14.9 max=16.5 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1389
+[SEN] cfg=L0-noload   batch=2 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=11 a=(304,468,16468) g=(-952,404,-316)
+imu_interval_task,L0-noload,256,839807,840000,840180,840187
+[SEN] cfg=L0-noload   batch=3 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=15 a=(260,412,16476) g=(-934,397,-369)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=4 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=19 a=(268,516,16544) g=(-934,398,-328)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=1 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=5 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=23 a=(328,404,16520) g=(-931,381,-365)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=6 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=27 a=(340,396,16552) g=(-933,382,-349)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=2 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=7 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=31 a=(352,504,16476) g=(-935,366,-371)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=8 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=35 a=(312,432,16556) g=(-931,380,-378)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=9 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=39 a=(160,472,16528) g=(-951,393,-389)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=3 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=A-mono      batch=10 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=43 a=(424,432,16188) g=(-926,498,-349)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=11 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=47 a=(324,448,16524) g=(-932,418,-359)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=12 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=51 a=(276,452,16624) g=(-936,357,-332)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=4 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[INF] cfg=A-mono      batch=0 n=128 job_us med=20001 p99=20001 max=48486 skip=0
+load_job,A-mono,128,1680091,1680099,1680132,4072844
+[SEN] cfg=A-mono      batch=13 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=55 a=(284,484,16500) g=(-953,399,-347)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=14 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=59 a=(264,464,16488) g=(-950,403,-361)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=5 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[INF] cfg=A-mono      batch=1 n=128 job_us med=20001 p99=20001 max=43678 skip=0
+load_job,A-mono,128,1680091,1680098,1680132,3668978
+[SEN] cfg=A-mono      batch=15 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=63 a=(280,476,16500) g=(-944,399,-374)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=16 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=67 a=(296,440,16476) g=(-941,401,-346)
+imu_interval_task,A-mono,256,839799,840000,840180,840193
+[SEN] cfg=A-mono      batch=17 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=71 a=(376,456,16588) g=(-920,383,-329)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=6 n=128 lat_us med=9.2 p99=17.0 max=17.1 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1442
+[INF] cfg=A-mono      batch=2 n=128 job_us med=20001 p99=20001 max=38775 skip=0
+load_job,A-mono,128,1680091,1680099,1680132,3257112
+[SEN] cfg=A-mono      batch=18 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=75 a=(344,400,16420) g=(-955,409,-338)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=19 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=79 a=(280,484,16552) g=(-943,407,-369)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=7 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[SEN] cfg=B-mono      batch=20 n=256 interval_us med=10000 p99=29031 max=30017 fail=0 skip=0 win=83 a=(248,428,16464) g=(-964,426,-346)
+imu_interval_task,B-mono,256,131630,840000,2438642,2521463
+[SEN] cfg=B-mono      batch=21 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=87 a=(328,448,16456) g=(-933,446,-363)
+imu_interval_task,B-mono,256,131631,839993,2521454,2522258
+[SEN] cfg=B-mono      batch=22 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=91 a=(268,456,16448) g=(-926,410,-355)
+imu_interval_task,B-mono,256,131631,839993,2521454,2522258
+[ACT] cfg=B-mono      batch=8 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=51 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[INF] cfg=B-mono      batch=3 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680130
+[SEN] cfg=B-mono      batch=23 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=95 a=(340,428,16516) g=(-945,411,-380)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=24 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=99 a=(244,408,16520) g=(-928,368,-386)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=9 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=47 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[SEN] cfg=B-mono      batch=25 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=103 a=(292,492,16640) g=(-912,393,-350)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[INF] cfg=B-mono      batch=4 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680090,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=26 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=107 a=(304,464,16544) g=(-954,383,-362)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=27 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=111 a=(264,476,16396) g=(-933,398,-357)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=10 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=46 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[INF] cfg=B-mono      batch=5 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=28 n=256 interval_us med=9999 p99=30017 max=30041 fail=0 skip=0 win=115 a=(240,436,16552) g=(-969,398,-348)
+imu_interval_task,B-mono,256,131631,839993,2521463,2523502
+[SEN] cfg=B-mono      batch=29 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=119 a=(236,476,16484) g=(-954,357,-375)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=11 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=49 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[SEN] cfg=C-chunk5ms  batch=30 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=123 a=(264,424,16456) g=(-938,374,-365)
+imu_interval_task,C-chunk5ms,256,131631,839993,2521454,2522256
+[SEN] cfg=C-chunk5ms  batch=31 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=127 a=(312,436,16560) g=(-936,394,-374)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=32 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=131 a=(324,440,16484) g=(-973,380,-341)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=12 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=49 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[INF] cfg=C-chunk5ms  batch=6 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931865,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=33 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=135 a=(268,452,16400) g=(-937,386,-351)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=34 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=139 a=(252,444,16568) g=(-981,409,-358)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=35 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=143 a=(320,464,16500) g=(-954,399,-360)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=13 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=50 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[INF] cfg=C-chunk5ms  batch=7 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931861,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=36 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=147 a=(248,396,16540) g=(-972,372,-342)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=37 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=151 a=(280,504,16544) g=(-944,385,-326)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=14 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=44 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[SEN] cfg=C-chunk5ms  batch=38 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=155 a=(280,416,16612) g=(-899,373,-384)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[INF] cfg=C-chunk5ms  batch=8 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931865,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=39 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=159 a=(296,440,16564) g=(-943,390,-364)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=40 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=163 a=(312,524,16552) g=(-968,388,-349)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=15 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=49 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[SEN] cfg=D-chunk1ms  batch=41 n=256 interval_us med=10000 p99=14013 max=15015 fail=0 skip=0 win=167 a=(276,452,16468) g=(-953,379,-327)
+imu_interval_task,D-chunk1ms,256,418600,840000,1177139,1261307
+[SEN] cfg=D-chunk1ms  batch=42 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=171 a=(284,500,16428) g=(-935,404,-346)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=16 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=48 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[SEN] cfg=D-chunk1ms  batch=43 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=175 a=(348,452,16456) g=(-934,377,-372)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[INF] cfg=D-chunk1ms  batch=9 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275892,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=44 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=179 a=(280,460,16460) g=(-961,394,-348)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=45 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=183 a=(304,432,16508) g=(-939,393,-381)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=17 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=49 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[INF] cfg=D-chunk1ms  batch=10 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275893,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=46 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=187 a=(300,488,16516) g=(-962,426,-366)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=47 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=191 a=(296,532,16452) g=(-953,368,-342)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=18 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=47 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[SEN] cfg=D-chunk1ms  batch=48 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=195 a=(348,468,16564) g=(-912,390,-364)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[INF] cfg=D-chunk1ms  batch=11 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275893,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=49 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=199 a=(252,436,16560) g=(-944,408,-376)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=50 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=203 a=(292,460,16516) g=(-964,390,-345)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=19 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=48 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[SEN] cfg=L0-noload   batch=51 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=207 a=(260,428,16480) g=(-956,384,-345)
+imu_interval_task,L0-noload,256,754572,840000,925290,925335
+[SEN] cfg=L0-noload   batch=52 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=211 a=(304,484,16584) g=(-930,390,-361)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=53 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=215 a=(316,544,16516) g=(-972,393,-350)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=20 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=54 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=219 a=(284,528,16540) g=(-959,381,-379)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=55 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=223 a=(320,476,16540) g=(-947,413,-335)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=21 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=56 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=227 a=(272,508,16468) g=(-968,391,-362)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=57 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=231 a=(340,424,16492) g=(-936,399,-344)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=58 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=235 a=(292,424,16508) g=(-956,395,-349)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=22 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=59 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=239 a=(340,452,16444) g=(-935,397,-386)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=60 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=243 a=(296,448,16424) g=(-952,390,-353)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=23 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=A-mono      batch=61 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=247 a=(312,436,16548) g=(-945,377,-351)
+imu_interval_task,A-mono,256,839807,840000,840180,840187
+[SEN] cfg=A-mono      batch=62 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=251 a=(272,384,16468) g=(-936,385,-353)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=63 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=255 a=(256,420,16452) g=(-959,383,-370)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=24 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[INF] cfg=A-mono      batch=12 n=128 job_us med=20001 p99=20001 max=48680 skip=0
+load_job,A-mono,128,1680091,1680101,1680132,4089138
+[SEN] cfg=A-mono      batch=64 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=259 a=(276,468,16480) g=(-931,367,-352)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=65 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=263 a=(324,460,16572) g=(-938,382,-362)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=66 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=267 a=(264,500,16580) g=(-971,368,-334)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=25 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[INF] cfg=A-mono      batch=13 n=128 job_us med=20001 p99=29317 max=43872 skip=0
+load_job,A-mono,128,1680091,1680098,2462700,3685299
+[SEN] cfg=A-mono      batch=67 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=271 a=(312,464,16524) g=(-986,400,-364)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=68 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=275 a=(332,512,16516) g=(-917,409,-340)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=26 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[SEN] cfg=A-mono      batch=69 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=279 a=(240,468,16504) g=(-949,372,-359)
+imu_interval_task,A-mono,256,839806,840000,840180,840196
+[INF] cfg=A-mono      batch=14 n=128 job_us med=20001 p99=20001 max=38683 skip=0
+load_job,A-mono,128,1680091,1680100,1680132,3249388
+[SEN] cfg=A-mono      batch=70 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=283 a=(256,448,16476) g=(-962,413,-318)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=71 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=287 a=(268,440,16524) g=(-939,400,-362)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=27 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[SEN] cfg=B-mono      batch=72 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=291 a=(240,476,16456) g=(-954,398,-362)
+imu_interval_task,B-mono,256,131619,839993,2521463,2522256
+[SEN] cfg=B-mono      batch=73 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=295 a=(260,460,16516) g=(-934,425,-336)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=28 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=46 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[SEN] cfg=B-mono      batch=74 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=299 a=(320,496,16492) g=(-975,409,-334)
+imu_interval_task,B-mono,256,131631,839993,2521454,2522258
+[INF] cfg=B-mono      batch=15 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680130
+[SEN] cfg=B-mono      batch=75 n=256 interval_us med=9999 p99=30017 max=30027 fail=0 skip=0 win=303 a=(352,440,16556) g=(-929,409,-334)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522288
+[SEN] cfg=B-mono      batch=76 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=307 a=(292,492,16532) g=(-947,372,-373)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=29 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=48 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[INF] cfg=B-mono      batch=16 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=77 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=311 a=(328,448,16488) g=(-953,373,-360)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=78 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=315 a=(284,464,16544) g=(-912,380,-342)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=30 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=51 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[SEN] cfg=B-mono      batch=79 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=319 a=(276,468,16436) g=(-953,411,-400)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[INF] cfg=B-mono      batch=17 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680090,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=80 n=256 interval_us med=9999 p99=30026 max=30032 fail=0 skip=0 win=323 a=(344,440,16480) g=(-974,368,-331)
+imu_interval_task,B-mono,256,131631,839993,2522256,2522693
+[SEN] cfg=B-mono      batch=81 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=327 a=(260,456,16568) g=(-943,420,-350)
+imu_interval_task,B-mono,256,131631,839993,2521456,2522258
+[ACT] cfg=B-mono      batch=31 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=48 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[SEN] cfg=C-chunk5ms  batch=82 n=256 interval_us med=10000 p99=29024 max=30026 fail=0 skip=0 win=331 a=(244,452,16504) g=(-945,348,-364)
+imu_interval_task,C-chunk5ms,256,131631,840000,2438078,2522256
+[SEN] cfg=C-chunk5ms  batch=83 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=335 a=(236,460,16420) g=(-936,375,-358)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=84 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=339 a=(296,488,16484) g=(-940,403,-367)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=32 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=44 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[INF] cfg=C-chunk5ms  batch=18 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931865,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=85 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=343 a=(328,436,16536) g=(-978,369,-341)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=86 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=347 a=(340,504,16488) g=(-932,373,-349)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=33 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=48 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[SEN] cfg=C-chunk5ms  batch=87 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=351 a=(252,492,16540) g=(-958,398,-342)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[INF] cfg=C-chunk5ms  batch=19 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931861,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=88 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=355 a=(272,444,16532) g=(-909,365,-369)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=89 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=359 a=(272,496,16576) g=(-933,371,-373)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=34 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=50 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[INF] cfg=C-chunk5ms  batch=20 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931865,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=90 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=363 a=(272,392,16412) g=(-954,372,-374)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=91 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=367 a=(268,524,16512) g=(-902,398,-349)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=35 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=50 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[SEN] cfg=D-chunk1ms  batch=92 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=371 a=(272,480,16428) g=(-972,380,-335)
+imu_interval_task,D-chunk1ms,256,418593,840000,1261314,1261324
+[SEN] cfg=D-chunk1ms  batch=93 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=375 a=(292,492,16472) g=(-975,398,-349)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=94 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=379 a=(332,428,16472) g=(-940,363,-397)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=36 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=48 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[INF] cfg=D-chunk1ms  batch=21 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275892,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=95 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=383 a=(304,404,16496) g=(-925,394,-323)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=96 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=387 a=(308,416,16528) g=(-949,381,-343)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=97 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=391 a=(256,500,16488) g=(-921,385,-386)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=37 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=48 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[INF] cfg=D-chunk1ms  batch=22 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275893,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=98 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=395 a=(328,412,16552) g=(-965,418,-367)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=99 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=399 a=(272,460,16516) g=(-921,387,-373)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=38 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=49 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[SEN] cfg=D-chunk1ms  batch=100 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=403 a=(288,440,16544) g=(-969,403,-344)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[INF] cfg=D-chunk1ms  batch=23 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275893,3276073,3276243,3276251
+[SEN] cfg=D-chunk1ms  batch=101 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=407 a=(276,476,16500) g=(-984,358,-383)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=102 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=411 a=(256,504,16664) g=(-950,377,-344)
+imu_interval_task,D-chunk1ms,256,754562,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=39 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=49 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[SEN] cfg=L0-noload   batch=103 n=256 interval_us med=10000 p99=10013 max=11015 fail=0 skip=0 win=415 a=(332,440,16500) g=(-965,404,-384)
+imu_interval_task,L0-noload,256,754572,840000,841148,925287
+[SEN] cfg=L0-noload   batch=104 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=419 a=(352,508,16568) g=(-938,377,-323)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=40 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=105 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=423 a=(312,448,16500) g=(-950,375,-342)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=106 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=427 a=(340,464,16424) g=(-977,399,-332)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=107 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=431 a=(292,444,16600) g=(-988,380,-362)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=41 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=108 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=435 a=(304,476,16456) g=(-955,388,-347)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=109 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=439 a=(228,460,16536) g=(-969,373,-371)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=42 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=110 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=443 a=(276,428,16496) g=(-944,385,-358)
+imu_interval_task,L0-noload,256,839820,840000,840180,840180
+[SEN] cfg=L0-noload   batch=111 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=447 a=(324,456,16504) g=(-970,431,-350)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=112 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=451 a=(296,504,16432) g=(-933,387,-374)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=43 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=A-mono      batch=113 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=455 a=(252,484,16548) g=(-977,397,-367)
+imu_interval_task,A-mono,256,839806,840000,840180,840187
+[SEN] cfg=A-mono      batch=114 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=459 a=(348,384,16544) g=(-944,381,-310)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=115 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=463 a=(324,492,16568) g=(-955,379,-349)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=44 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[INF] cfg=A-mono      batch=24 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,A-mono,128,1680091,1680101,1680132,1680132
+[SEN] cfg=A-mono      batch=116 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=467 a=(312,480,16520) g=(-922,414,-322)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=117 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=471 a=(276,400,16548) g=(-969,390,-340)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=45 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[SEN] cfg=A-mono      batch=118 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=475 a=(340,496,16556) g=(-958,387,-366)
+imu_interval_task,A-mono,256,839793,840000,840180,840187
+[INF] cfg=A-mono      batch=25 n=128 job_us med=20001 p99=20001 max=48865 skip=0
+load_job,A-mono,128,1680091,1680101,1680132,4104719
+[SEN] cfg=A-mono      batch=119 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=479 a=(284,384,16360) g=(-957,394,-343)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=120 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=483 a=(284,428,16572) g=(-952,362,-357)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=46 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[INF] cfg=A-mono      batch=26 n=128 job_us med=20001 p99=20001 max=43780 skip=0
+load_job,A-mono,128,1680091,1680098,1680132,3677534
+[SEN] cfg=A-mono      batch=121 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=487 a=(320,472,16532) g=(-935,403,-344)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=122 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=491 a=(236,492,16496) g=(-968,367,-336)
+imu_interval_task,A-mono,256,839799,840000,840180,840193
+[ACT] cfg=A-mono      batch=47 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[SEN] cfg=B-mono      batch=123 n=256 interval_us med=10000 p99=29014 max=30016 fail=0 skip=0 win=495 a=(248,452,16508) g=(-977,381,-348)
+imu_interval_task,B-mono,256,131619,840000,2437259,2521426
+[SEN] cfg=B-mono      batch=124 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=499 a=(272,460,16504) g=(-942,388,-348)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=125 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=503 a=(316,436,16504) g=(-952,366,-373)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=48 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=51 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[INF] cfg=B-mono      batch=27 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=126 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=507 a=(288,456,16532) g=(-931,383,-347)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=127 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=511 a=(292,464,16544) g=(-945,396,-366)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=49 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=49 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[SEN] cfg=B-mono      batch=128 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=515 a=(228,468,16600) g=(-943,399,-333)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[INF] cfg=B-mono      batch=28 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=129 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=519 a=(308,480,16592) g=(-982,406,-346)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=130 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=523 a=(336,420,16596) g=(-941,412,-323)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=50 n=128 lat_us med=9.2 p99=20008.8 max=20023.7 miss(1ms)=47 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1681997
+[INF] cfg=B-mono      batch=29 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=131 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=527 a=(296,468,16464) g=(-935,404,-345)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=132 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=531 a=(340,444,16556) g=(-948,362,-365)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=51 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=46 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[SEN] cfg=C-chunk5ms  batch=133 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=535 a=(220,496,16508) g=(-970,383,-366)
+imu_interval_task,C-chunk5ms,256,131631,839993,2521454,2522258
+[SEN] cfg=C-chunk5ms  batch=134 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=539 a=(340,456,16520) g=(-925,391,-377)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=135 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=543 a=(260,536,16468) g=(-962,390,-351)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=52 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=50 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[INF] cfg=C-chunk5ms  batch=30 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931865,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=136 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=547 a=(256,464,16572) g=(-918,389,-346)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=137 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=551 a=(308,488,16532) g=(-957,379,-349)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=138 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=555 a=(300,448,16560) g=(-939,422,-348)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=53 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=50 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[INF] cfg=C-chunk5ms  batch=31 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931865,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=139 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=559 a=(304,452,16492) g=(-957,409,-339)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261314
+[SEN] cfg=C-chunk5ms  batch=140 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=563 a=(280,464,16500) g=(-940,406,-366)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261314
+[ACT] cfg=C-chunk5ms  batch=54 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=48 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[SEN] cfg=C-chunk5ms  batch=141 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=567 a=(352,436,16560) g=(-964,407,-389)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[INF] cfg=C-chunk5ms  batch=32 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931861,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=142 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=571 a=(384,476,16532) g=(-956,369,-340)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=143 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=575 a=(316,472,16560) g=(-964,410,-361)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=55 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=44 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[SEN] cfg=D-chunk1ms  batch=144 n=256 interval_us med=10000 p99=14013 max=15015 fail=0 skip=0 win=579 a=(264,460,16552) g=(-946,387,-339)
+imu_interval_task,D-chunk1ms,256,418593,840000,1177132,1261324
+[SEN] cfg=D-chunk1ms  batch=145 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=583 a=(352,484,16500) g=(-980,371,-339)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=146 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=587 a=(272,396,16468) g=(-953,364,-377)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=56 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=50 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[INF] cfg=D-chunk1ms  batch=33 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275877,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=147 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=591 a=(236,464,16488) g=(-935,397,-366)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=148 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=595 a=(280,468,16600) g=(-931,371,-325)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=57 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=48 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[INF] cfg=D-chunk1ms  batch=34 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275893,3276073,3276246,3276251
+[SEN] cfg=D-chunk1ms  batch=149 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=599 a=(252,448,16592) g=(-938,411,-371)
+imu_interval_task,D-chunk1ms,256,754562,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=150 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=603 a=(296,492,16488) g=(-960,410,-344)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=151 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=607 a=(292,436,16492) g=(-971,420,-350)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=58 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=48 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[INF] cfg=D-chunk1ms  batch=35 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275878,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=152 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=611 a=(312,416,16460) g=(-947,398,-366)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=153 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=615 a=(260,420,16548) g=(-939,400,-365)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=59 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=48 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[SEN] cfg=L0-noload   batch=154 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=619 a=(272,440,16460) g=(-964,381,-339)
+imu_interval_task,L0-noload,256,754570,840000,925335,925342
+[SEN] cfg=L0-noload   batch=155 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=623 a=(288,468,16444) g=(-952,388,-366)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=156 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=627 a=(268,492,16468) g=(-954,383,-332)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=60 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=157 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=631 a=(292,452,16424) g=(-926,379,-378)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=158 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=635 a=(272,468,16588) g=(-971,375,-345)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=61 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=159 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=639 a=(256,504,16500) g=(-947,399,-364)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=160 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=643 a=(288,448,16500) g=(-963,396,-356)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=161 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=647 a=(304,476,16480) g=(-937,363,-340)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=62 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=162 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=651 a=(316,484,16536) g=(-977,396,-359)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=163 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=655 a=(288,424,16568) g=(-943,376,-350)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=63 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=A-mono      batch=164 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=659 a=(292,396,16512) g=(-962,368,-350)
+imu_interval_task,A-mono,256,839813,840000,840180,840187
+[SEN] cfg=A-mono      batch=165 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=663 a=(300,424,16508) g=(-952,377,-346)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=166 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=667 a=(228,452,16380) g=(-935,381,-380)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=64 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[INF] cfg=A-mono      batch=36 n=128 job_us med=20001 p99=20001 max=37873 skip=0
+load_job,A-mono,128,1680091,1680098,1680132,3181333
+[SEN] cfg=A-mono      batch=167 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=671 a=(288,456,16428) g=(-922,374,-362)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=168 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=675 a=(324,472,16400) g=(-955,402,-348)
+imu_interval_task,A-mono,256,839806,840000,840180,840187
+[SEN] cfg=A-mono      batch=169 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=679 a=(328,468,16612) g=(-963,410,-329)
+imu_interval_task,A-mono,256,839806,840000,840180,840180
+[ACT] cfg=A-mono      batch=65 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[INF] cfg=A-mono      batch=37 n=128 job_us med=20001 p99=34845 max=48773 skip=0
+load_job,A-mono,128,1680091,1680099,2927004,4096960
+[SEN] cfg=A-mono      batch=170 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=683 a=(308,504,16424) g=(-937,395,-357)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=171 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=687 a=(252,492,16568) g=(-942,371,-349)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=66 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[SEN] cfg=A-mono      batch=172 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=691 a=(324,408,16456) g=(-953,399,-345)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[INF] cfg=A-mono      batch=38 n=128 job_us med=20001 p99=23318 max=43965 skip=0
+load_job,A-mono,128,1680091,1680098,1958731,3693128
+[SEN] cfg=A-mono      batch=173 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=695 a=(236,448,16624) g=(-948,387,-327)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=174 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=699 a=(220,468,16512) g=(-928,389,-367)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=67 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[SEN] cfg=B-mono      batch=175 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=703 a=(256,460,16500) g=(-919,384,-335)
+imu_interval_task,B-mono,256,131629,839995,2521447,2522258
+[SEN] cfg=B-mono      batch=176 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=707 a=(272,408,16552) g=(-970,404,-352)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=177 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=711 a=(272,440,16312) g=(-937,357,-328)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=68 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=47 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[INF] cfg=B-mono      batch=39 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=178 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=715 a=(288,460,16464) g=(-966,420,-366)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=179 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=719 a=(316,400,16564) g=(-944,397,-359)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=69 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=46 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[INF] cfg=B-mono      batch=40 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=180 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=723 a=(276,436,16480) g=(-932,361,-351)
+imu_interval_task,B-mono,256,131631,839993,2521454,2522256
+[SEN] cfg=B-mono      batch=181 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=727 a=(284,420,16620) g=(-909,394,-373)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522256
+[SEN] cfg=B-mono      batch=182 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=731 a=(332,496,16512) g=(-944,408,-359)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=70 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=50 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[INF] cfg=B-mono      batch=41 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680130
+[SEN] cfg=B-mono      batch=183 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=735 a=(304,400,16636) g=(-958,405,-341)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522256
+[SEN] cfg=B-mono      batch=184 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=739 a=(316,456,16576) g=(-925,382,-356)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=71 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=50 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[SEN] cfg=C-chunk5ms  batch=185 n=256 interval_us med=10000 p99=29032 max=30026 fail=0 skip=0 win=743 a=(232,436,16516) g=(-939,372,-334)
+imu_interval_task,C-chunk5ms,256,131631,840000,2438690,2522258
+[SEN] cfg=C-chunk5ms  batch=186 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=747 a=(252,428,16524) g=(-959,396,-340)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=187 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=751 a=(256,524,16448) g=(-943,419,-364)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=72 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=49 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[INF] cfg=C-chunk5ms  batch=42 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931860,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=188 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=755 a=(240,424,16472) g=(-963,395,-348)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=189 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=759 a=(296,432,16500) g=(-946,365,-373)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=73 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=44 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[SEN] cfg=C-chunk5ms  batch=190 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=763 a=(312,400,16460) g=(-988,385,-337)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[INF] cfg=C-chunk5ms  batch=43 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931865,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=191 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=767 a=(220,444,16460) g=(-965,371,-317)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=192 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=771 a=(316,408,16524) g=(-908,377,-342)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=74 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=50 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[INF] cfg=C-chunk5ms  batch=44 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931865,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=193 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=775 a=(284,476,16576) g=(-945,356,-381)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=194 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=779 a=(304,380,16420) g=(-923,374,-335)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=75 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=49 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[SEN] cfg=D-chunk1ms  batch=195 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=783 a=(352,448,16480) g=(-985,374,-326)
+imu_interval_task,D-chunk1ms,256,418593,840000,1261314,1261314
+[SEN] cfg=D-chunk1ms  batch=196 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=787 a=(316,428,16572) g=(-928,424,-339)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=197 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=791 a=(248,424,16460) g=(-948,385,-359)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=76 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=48 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[INF] cfg=D-chunk1ms  batch=45 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275893,3276073,3276243,3276251
+[SEN] cfg=D-chunk1ms  batch=198 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=795 a=(272,428,16376) g=(-927,390,-361)
+imu_interval_task,D-chunk1ms,256,754569,840000,925335,925335
+[SEN] cfg=D-chunk1ms  batch=199 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=799 a=(304,400,16496) g=(-928,400,-361)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925335
+[SEN] cfg=D-chunk1ms  batch=200 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=803 a=(324,416,16552) g=(-931,355,-384)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=77 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=47 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[INF] cfg=D-chunk1ms  batch=46 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275877,3276073,3276243,3276248
+[SEN] cfg=D-chunk1ms  batch=201 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=807 a=(268,472,16540) g=(-920,398,-347)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=202 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=811 a=(292,372,16484) g=(-955,395,-359)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=78 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=49 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[SEN] cfg=D-chunk1ms  batch=203 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=815 a=(348,436,16464) g=(-923,400,-343)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[INF] cfg=D-chunk1ms  batch=47 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275893,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=204 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=819 a=(228,468,16432) g=(-974,371,-380)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=205 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=823 a=(276,408,16532) g=(-994,370,-347)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=79 n=128 lat_us med=14.3 p99=1008.4 max=1008.6 miss(1ms)=49 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84727
+[SEN] cfg=L0-noload   batch=206 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=827 a=(288,432,16544) g=(-971,407,-366)
+imu_interval_task,L0-noload,256,754570,840000,925288,925335
+[SEN] cfg=L0-noload   batch=207 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=831 a=(316,432,16548) g=(-935,379,-356)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=80 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=208 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=835 a=(276,468,16544) g=(-922,360,-365)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=209 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=839 a=(240,424,16468) g=(-938,401,-347)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=210 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=843 a=(300,504,16432) g=(-955,381,-371)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=81 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=211 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=847 a=(288,456,16472) g=(-924,400,-336)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=212 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=851 a=(324,448,16472) g=(-934,392,-387)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=82 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=213 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=855 a=(288,520,16496) g=(-930,427,-352)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=214 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=859 a=(296,412,16520) g=(-934,414,-378)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=215 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=863 a=(280,464,16488) g=(-956,383,-364)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=83 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=A-mono      batch=216 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=867 a=(276,444,16436) g=(-964,370,-361)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=217 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=871 a=(272,412,16532) g=(-943,408,-333)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=218 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=875 a=(240,464,16560) g=(-958,403,-359)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=84 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[INF] cfg=A-mono      batch=48 n=128 job_us med=20001 p99=24839 max=37876 skip=0
+load_job,A-mono,128,1680091,1680098,2086497,3181596
+[SEN] cfg=A-mono      batch=219 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=879 a=(276,480,16432) g=(-929,387,-363)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=220 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=883 a=(368,436,16516) g=(-974,380,-351)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=85 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[SEN] cfg=A-mono      batch=221 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=887 a=(244,440,16496) g=(-933,385,-330)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[INF] cfg=A-mono      batch=49 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,A-mono,128,1680091,1680099,1680132,1680132
+[SEN] cfg=A-mono      batch=222 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=891 a=(280,456,16476) g=(-915,373,-334)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=223 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=895 a=(260,480,16388) g=(-941,387,-360)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=86 n=128 lat_us med=9.2 p99=17.0 max=17.1 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1442
+[INF] cfg=A-mono      batch=50 n=128 job_us med=20001 p99=20001 max=48967 skip=0
+load_job,A-mono,128,1680091,1680097,1680132,4113266
+[SEN] cfg=A-mono      batch=224 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=899 a=(284,464,16476) g=(-937,401,-308)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=225 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=903 a=(260,428,16484) g=(-936,407,-372)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=87 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[SEN] cfg=B-mono      batch=226 n=256 interval_us med=10000 p99=28024 max=30017 fail=0 skip=0 win=907 a=(224,476,16484) g=(-992,398,-365)
+imu_interval_task,B-mono,256,131631,840000,2354025,2521442
+[SEN] cfg=B-mono      batch=227 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=911 a=(256,460,16496) g=(-923,394,-344)
+imu_interval_task,B-mono,256,131630,839993,2521454,2522258
+[SEN] cfg=B-mono      batch=228 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=915 a=(324,488,16484) g=(-938,388,-337)
+imu_interval_task,B-mono,256,131631,839993,2521469,2522258
+[ACT] cfg=B-mono      batch=88 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=49 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[INF] cfg=B-mono      batch=51 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680132
+[SEN] cfg=B-mono      batch=229 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=919 a=(308,432,16500) g=(-983,392,-349)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=230 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=923 a=(336,428,16620) g=(-961,381,-340)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=231 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=927 a=(328,444,16468) g=(-914,418,-359)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=89 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=51 lost=0 skip=0
+action_latency,B-mono,128,764,774,1680747,1680747
+[INF] cfg=B-mono      batch=52 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=232 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=931 a=(316,420,16504) g=(-948,370,-377)
+imu_interval_task,B-mono,256,131631,839993,2521454,2522258
+[SEN] cfg=B-mono      batch=233 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=935 a=(348,416,16616) g=(-891,369,-339)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=90 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=47 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[SEN] cfg=B-mono      batch=234 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=939 a=(236,408,16464) g=(-961,377,-327)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[INF] cfg=B-mono      batch=53 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=235 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=943 a=(304,488,16436) g=(-930,371,-375)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=236 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=947 a=(252,468,16612) g=(-934,386,-356)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=91 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=47 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[SEN] cfg=C-chunk5ms  batch=237 n=256 interval_us med=10000 p99=27015 max=30017 fail=0 skip=0 win=951 a=(300,532,16472) g=(-983,421,-349)
+imu_interval_task,C-chunk5ms,256,131632,840000,2269280,2521454
+[SEN] cfg=C-chunk5ms  batch=238 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=955 a=(240,468,16540) g=(-925,397,-344)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=92 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=49 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[SEN] cfg=C-chunk5ms  batch=239 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=959 a=(292,464,16504) g=(-964,379,-333)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[INF] cfg=C-chunk5ms  batch=54 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931861,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=240 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=963 a=(292,464,16440) g=(-987,345,-355)
+imu_interval_task,C-chunk5ms,256,417370,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=241 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=967 a=(340,452,16400) g=(-952,390,-357)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=93 n=128 lat_us med=9.2 p99=5008.2 max=5008.3 miss(1ms)=50 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420705
+[INF] cfg=C-chunk5ms  batch=55 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931865,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=242 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=971 a=(300,524,16524) g=(-940,401,-353)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=243 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=975 a=(276,460,16476) g=(-960,390,-356)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=94 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=49 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[SEN] cfg=C-chunk5ms  batch=244 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=979 a=(364,508,16600) g=(-957,391,-347)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[INF] cfg=C-chunk5ms  batch=56 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931865,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=245 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=983 a=(368,420,16392) g=(-911,384,-364)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=246 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=987 a=(272,424,16592) g=(-963,400,-351)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=95 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=48 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[SEN] cfg=D-chunk1ms  batch=247 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=991 a=(300,436,16512) g=(-945,371,-347)
+imu_interval_task,D-chunk1ms,256,418593,840000,1261267,1261314
+[SEN] cfg=D-chunk1ms  batch=248 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=995 a=(264,412,16440) g=(-935,379,-383)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=249 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=999 a=(424,524,16368) g=(-962,389,-394)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=96 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=48 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[INF] cfg=D-chunk1ms  batch=57 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275893,3276073,3276251,3276251
+[SEN] cfg=D-chunk1ms  batch=250 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1003 a=(296,420,16448) g=(-948,372,-390)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=251 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1007 a=(296,432,16540) g=(-919,353,-337)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=97 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=50 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[SEN] cfg=D-chunk1ms  batch=252 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1011 a=(296,448,16532) g=(-949,397,-342)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[INF] cfg=D-chunk1ms  batch=58 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275878,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=253 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1015 a=(292,464,16504) g=(-932,376,-330)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=254 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1019 a=(340,392,16464) g=(-948,392,-375)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=98 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=48 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[INF] cfg=D-chunk1ms  batch=59 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275893,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=255 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1023 a=(332,436,16408) g=(-972,413,-337)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=256 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1027 a=(320,508,16564) g=(-954,405,-355)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=99 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=47 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[SEN] cfg=L0-noload   batch=257 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1031 a=(276,484,16556) g=(-926,367,-338)
+imu_interval_task,L0-noload,256,754572,840000,925328,925335
+[SEN] cfg=L0-noload   batch=258 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1035 a=(216,432,16508) g=(-957,395,-363)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=259 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1039 a=(304,420,16468) g=(-974,422,-365)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=100 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=260 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1043 a=(304,520,16544) g=(-939,368,-347)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=261 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1047 a=(312,444,16424) g=(-971,387,-359)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=262 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1051 a=(272,412,16460) g=(-971,411,-361)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=101 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=263 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1055 a=(316,456,16392) g=(-958,373,-341)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=264 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1059 a=(304,444,16452) g=(-955,369,-351)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=102 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=265 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1063 a=(348,456,16528) g=(-986,391,-341)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=266 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1067 a=(252,496,16484) g=(-972,358,-367)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=267 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1071 a=(340,456,16504) g=(-961,402,-354)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=103 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=A-mono      batch=268 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1075 a=(316,472,16536) g=(-937,414,-355)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=269 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1079 a=(344,444,16488) g=(-929,406,-378)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=104 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[SEN] cfg=A-mono      batch=270 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1083 a=(348,464,16564) g=(-960,376,-333)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[INF] cfg=A-mono      batch=60 n=128 job_us med=20001 p99=20001 max=41288 skip=0
+load_job,A-mono,128,1680091,1680098,1680132,3468225
+[SEN] cfg=A-mono      batch=271 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1087 a=(276,468,16372) g=(-975,373,-349)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=272 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1091 a=(292,428,16536) g=(-969,387,-381)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=105 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[INF] cfg=A-mono      batch=61 n=128 job_us med=20001 p99=20001 max=37966 skip=0
+load_job,A-mono,128,1680091,1680099,1680132,3189144
+[SEN] cfg=A-mono      batch=273 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1095 a=(304,436,16552) g=(-986,382,-336)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=274 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1099 a=(316,412,16520) g=(-936,408,-339)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=106 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[SEN] cfg=A-mono      batch=275 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1103 a=(304,384,16452) g=(-923,374,-383)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[INF] cfg=A-mono      batch=62 n=128 job_us med=20001 p99=30513 max=48875 skip=0
+load_job,A-mono,128,1680091,1680104,2563118,4105551
+[SEN] cfg=A-mono      batch=276 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1107 a=(248,408,16552) g=(-958,393,-351)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=277 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1111 a=(224,464,16604) g=(-919,413,-369)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=107 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[SEN] cfg=B-mono      batch=278 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1115 a=(268,452,16436) g=(-899,399,-353)
+imu_interval_task,B-mono,256,131631,839995,2521433,2522256
+[SEN] cfg=B-mono      batch=279 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1119 a=(272,424,16420) g=(-956,400,-384)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=280 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1123 a=(204,444,16544) g=(-948,365,-371)
+imu_interval_task,B-mono,256,131631,839993,2521454,2522258
+[ACT] cfg=B-mono      batch=108 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=48 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[INF] cfg=B-mono      batch=63 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680130
+[SEN] cfg=B-mono      batch=281 n=256 interval_us med=9999 p99=30017 max=30027 fail=0 skip=0 win=1127 a=(304,472,16588) g=(-960,387,-355)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522311
+[SEN] cfg=B-mono      batch=282 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1131 a=(316,396,16608) g=(-928,376,-368)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=109 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=47 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[SEN] cfg=B-mono      batch=283 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1135 a=(344,480,16540) g=(-922,397,-388)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[INF] cfg=B-mono      batch=64 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=284 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1139 a=(308,488,16508) g=(-946,386,-336)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=285 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1143 a=(296,448,16488) g=(-956,388,-364)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=110 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=47 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[INF] cfg=B-mono      batch=65 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=286 n=256 interval_us med=9999 p99=30017 max=30042 fail=0 skip=0 win=1147 a=(252,480,16400) g=(-929,373,-370)
+imu_interval_task,B-mono,256,131631,839993,2521454,2523538
+[SEN] cfg=B-mono      batch=287 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1151 a=(312,492,16464) g=(-936,409,-354)
+imu_interval_task,B-mono,256,131631,839993,2521454,2522258
+[ACT] cfg=B-mono      batch=111 n=128 lat_us med=9.2 p99=20008.8 max=20023.7 miss(1ms)=51 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1681991
+[SEN] cfg=C-chunk5ms  batch=288 n=256 interval_us med=10000 p99=30017 max=30026 fail=0 skip=0 win=1155 a=(284,460,16512) g=(-956,392,-322)
+imu_interval_task,C-chunk5ms,256,131631,840000,2521463,2522258
+[SEN] cfg=C-chunk5ms  batch=289 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1159 a=(284,488,16596) g=(-958,364,-353)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=290 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1163 a=(276,540,16480) g=(-934,396,-325)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=112 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=50 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[INF] cfg=C-chunk5ms  batch=66 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931865,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=291 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1167 a=(356,448,16516) g=(-958,404,-367)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=292 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1171 a=(296,388,16524) g=(-950,377,-343)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=113 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=48 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[SEN] cfg=C-chunk5ms  batch=293 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1175 a=(252,452,16496) g=(-928,424,-332)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[INF] cfg=C-chunk5ms  batch=67 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931858,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=294 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1179 a=(328,524,16536) g=(-958,368,-393)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=295 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1183 a=(284,472,16432) g=(-943,387,-349)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=114 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=44 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[INF] cfg=C-chunk5ms  batch=68 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931865,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=296 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1187 a=(324,376,16568) g=(-915,366,-333)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=297 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1191 a=(308,460,16480) g=(-927,369,-326)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=115 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=52 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[SEN] cfg=D-chunk1ms  batch=298 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1195 a=(288,396,16504) g=(-971,364,-326)
+imu_interval_task,D-chunk1ms,256,418593,840000,1261314,1261324
+[SEN] cfg=D-chunk1ms  batch=299 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1199 a=(312,460,16508) g=(-941,382,-339)
+imu_interval_task,D-chunk1ms,256,541255,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=300 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1203 a=(280,444,16576) g=(-947,359,-340)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=116 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=49 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[INF] cfg=D-chunk1ms  batch=69 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275893,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=301 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1207 a=(380,388,16460) g=(-965,408,-367)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=302 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1211 a=(264,476,16596) g=(-963,393,-367)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=303 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1215 a=(252,452,16428) g=(-941,374,-352)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=117 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=47 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[INF] cfg=D-chunk1ms  batch=70 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275893,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=304 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1219 a=(320,460,16448) g=(-955,387,-375)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=305 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1223 a=(332,476,16396) g=(-914,396,-375)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=118 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=48 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[SEN] cfg=D-chunk1ms  batch=306 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1227 a=(284,420,16492) g=(-928,386,-364)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[INF] cfg=D-chunk1ms  batch=71 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275878,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=307 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1231 a=(312,492,16476) g=(-916,378,-369)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=308 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1235 a=(312,392,16548) g=(-965,427,-316)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=119 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=49 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[SEN] cfg=L0-noload   batch=309 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1239 a=(280,452,16528) g=(-920,406,-365)
+imu_interval_task,L0-noload,256,754570,840000,925288,925328
+[SEN] cfg=L0-noload   batch=310 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1243 a=(248,396,16600) g=(-947,401,-351)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=311 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1247 a=(320,400,16560) g=(-979,398,-368)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=120 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=312 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1251 a=(332,472,16512) g=(-934,406,-323)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=313 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1255 a=(276,476,16492) g=(-934,379,-366)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=121 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=314 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1259 a=(276,468,16652) g=(-937,395,-367)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=315 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1263 a=(320,436,16496) g=(-951,396,-336)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=316 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1267 a=(284,500,16432) g=(-946,382,-315)
+imu_interval_task,L0-noload,256,839820,840000,840180,840180
+[ACT] cfg=L0-noload   batch=122 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=317 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1271 a=(304,456,16456) g=(-939,370,-363)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=318 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1275 a=(248,448,16500) g=(-940,386,-340)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=123 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=A-mono      batch=319 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1279 a=(332,492,16536) g=(-935,406,-343)
+imu_interval_task,A-mono,256,839806,840000,840180,840187
+[SEN] cfg=A-mono      batch=320 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1283 a=(272,436,16424) g=(-945,393,-359)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=321 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1287 a=(300,492,16512) g=(-964,392,-363)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=124 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[INF] cfg=A-mono      batch=72 n=128 job_us med=20001 p99=33511 max=41386 skip=0
+load_job,A-mono,128,1680091,1680104,2815006,3476456
+[SEN] cfg=A-mono      batch=322 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1291 a=(272,420,16432) g=(-939,393,-352)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=323 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1295 a=(280,476,16432) g=(-935,390,-341)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=125 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[SEN] cfg=A-mono      batch=324 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1299 a=(308,420,16436) g=(-922,388,-336)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[INF] cfg=A-mono      batch=73 n=128 job_us med=20001 p99=20524 max=37874 skip=0
+load_job,A-mono,128,1680091,1680097,1724074,3181459
+[SEN] cfg=A-mono      batch=325 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1303 a=(276,436,16508) g=(-958,381,-334)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=326 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1307 a=(292,496,16396) g=(-948,374,-360)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=126 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[INF] cfg=A-mono      batch=74 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,A-mono,128,1680091,1680100,1680132,1680132
+[SEN] cfg=A-mono      batch=327 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1311 a=(288,488,16508) g=(-938,412,-381)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=328 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1315 a=(300,408,16592) g=(-965,384,-309)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=127 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[SEN] cfg=B-mono      batch=329 n=256 interval_us med=10000 p99=22015 max=28014 fail=0 skip=0 win=1319 a=(340,480,16556) g=(-955,372,-372)
+imu_interval_task,B-mono,256,131619,840000,1849280,2353259
+[SEN] cfg=B-mono      batch=330 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1323 a=(228,448,16520) g=(-956,377,-363)
+imu_interval_task,B-mono,256,131630,839993,2521463,2522256
+[SEN] cfg=B-mono      batch=331 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1327 a=(316,464,16464) g=(-905,375,-338)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=128 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=46 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[INF] cfg=B-mono      batch=75 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=332 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1331 a=(284,480,16500) g=(-950,422,-353)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=333 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1335 a=(300,520,16388) g=(-952,366,-340)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=334 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1339 a=(248,420,16540) g=(-893,367,-363)
+imu_interval_task,B-mono,256,131631,839993,2521471,2522258
+[ACT] cfg=B-mono      batch=129 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=51 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[INF] cfg=B-mono      batch=76 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=335 n=256 interval_us med=9999 p99=30017 max=30042 fail=0 skip=0 win=1343 a=(348,484,16528) g=(-961,400,-344)
+imu_interval_task,B-mono,256,131631,839993,2521463,2523540
+[SEN] cfg=B-mono      batch=336 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1347 a=(264,416,16392) g=(-939,400,-342)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=130 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=49 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[SEN] cfg=B-mono      batch=337 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1351 a=(300,452,16432) g=(-951,393,-353)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[INF] cfg=B-mono      batch=77 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=338 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1355 a=(272,456,16536) g=(-948,367,-353)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=339 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1359 a=(320,476,16440) g=(-937,391,-348)
+imu_interval_task,B-mono,256,131631,839993,2521454,2522258
+[ACT] cfg=B-mono      batch=131 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=47 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[SEN] cfg=C-chunk5ms  batch=340 n=256 interval_us med=10000 p99=29024 max=30026 fail=0 skip=0 win=1363 a=(340,448,16500) g=(-924,390,-355)
+imu_interval_task,C-chunk5ms,256,131632,840000,2438078,2522255
+[SEN] cfg=C-chunk5ms  batch=341 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1367 a=(332,428,16516) g=(-935,378,-329)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=342 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1371 a=(268,428,16464) g=(-944,379,-395)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=132 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=44 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[INF] cfg=C-chunk5ms  batch=78 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931865,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=343 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1375 a=(284,432,16460) g=(-946,382,-353)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=344 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1379 a=(308,476,16420) g=(-931,391,-332)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=133 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=51 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[INF] cfg=C-chunk5ms  batch=79 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931865,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=345 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1383 a=(288,468,16436) g=(-948,404,-378)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261314
+[SEN] cfg=C-chunk5ms  batch=346 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1387 a=(312,432,16432) g=(-953,425,-372)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261314
+[SEN] cfg=C-chunk5ms  batch=347 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1391 a=(304,436,16420) g=(-950,387,-397)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=134 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=49 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[INF] cfg=C-chunk5ms  batch=80 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931861,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=348 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1395 a=(240,396,16612) g=(-906,391,-324)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261314
+[SEN] cfg=C-chunk5ms  batch=349 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1399 a=(364,396,16640) g=(-958,399,-356)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=135 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=48 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[SEN] cfg=D-chunk1ms  batch=350 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1403 a=(316,432,16484) g=(-940,391,-321)
+imu_interval_task,D-chunk1ms,256,418593,840000,1261267,1261324
+[SEN] cfg=D-chunk1ms  batch=351 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1407 a=(304,440,16520) g=(-946,406,-343)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=352 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1411 a=(316,484,16536) g=(-935,368,-321)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=136 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=48 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[INF] cfg=D-chunk1ms  batch=81 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275877,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=353 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1415 a=(320,396,16556) g=(-949,407,-350)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=354 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1419 a=(312,508,16480) g=(-986,442,-343)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=137 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=48 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[SEN] cfg=D-chunk1ms  batch=355 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1423 a=(288,448,16460) g=(-962,402,-346)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[INF] cfg=D-chunk1ms  batch=82 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275893,3276073,3276243,3276251
+[SEN] cfg=D-chunk1ms  batch=356 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1427 a=(300,488,16492) g=(-921,380,-353)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=357 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1431 a=(324,440,16604) g=(-928,404,-353)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=138 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=50 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[INF] cfg=D-chunk1ms  batch=83 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275877,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=358 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1435 a=(304,496,16500) g=(-959,413,-374)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=359 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1439 a=(272,468,16516) g=(-913,387,-357)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=139 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=47 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[SEN] cfg=L0-noload   batch=360 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1443 a=(268,444,16548) g=(-976,390,-321)
+imu_interval_task,L0-noload,256,754570,840000,925335,925342
+[SEN] cfg=L0-noload   batch=361 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1447 a=(276,496,16484) g=(-965,398,-388)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=362 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1451 a=(336,436,16496) g=(-955,398,-365)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=140 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=363 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1455 a=(260,476,16456) g=(-934,356,-364)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=364 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1459 a=(360,344,16544) g=(-958,388,-352)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=365 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1463 a=(316,404,16480) g=(-958,369,-383)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=141 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=366 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1467 a=(268,408,16484) g=(-937,371,-360)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=367 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1471 a=(276,440,16444) g=(-960,375,-328)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=142 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=368 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1475 a=(312,472,16592) g=(-957,382,-376)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=369 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1479 a=(364,372,16556) g=(-957,395,-351)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=370 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1483 a=(304,456,16528) g=(-929,416,-373)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=143 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=A-mono      batch=371 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1487 a=(320,456,16524) g=(-935,354,-364)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=372 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1491 a=(276,496,16496) g=(-945,407,-329)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=144 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[SEN] cfg=A-mono      batch=373 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1495 a=(252,404,16484) g=(-935,379,-385)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[INF] cfg=A-mono      batch=84 n=128 job_us med=20001 p99=20001 max=48056 skip=0
+load_job,A-mono,128,1680091,1680100,1680132,4036763
+[SEN] cfg=A-mono      batch=374 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1499 a=(304,432,16508) g=(-964,395,-351)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=375 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1503 a=(328,444,16544) g=(-893,383,-338)
+imu_interval_task,A-mono,256,839806,840000,840180,840180
+[ACT] cfg=A-mono      batch=145 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[INF] cfg=A-mono      batch=85 n=128 job_us med=20001 p99=20001 max=41285 skip=0
+load_job,A-mono,128,1680091,1680098,1680132,3468013
+[SEN] cfg=A-mono      batch=376 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1507 a=(376,416,16548) g=(-972,413,-370)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=377 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1511 a=(308,460,16388) g=(-916,391,-342)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=146 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[SEN] cfg=A-mono      batch=378 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1515 a=(300,480,16468) g=(-951,413,-360)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[INF] cfg=A-mono      batch=86 n=128 job_us med=20001 p99=20001 max=37964 skip=0
+load_job,A-mono,128,1680091,1680101,1680132,3188986
+[SEN] cfg=A-mono      batch=379 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1519 a=(256,412,16552) g=(-941,387,-344)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=380 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1523 a=(236,456,16496) g=(-988,344,-364)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=147 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[SEN] cfg=B-mono      batch=381 n=256 interval_us med=10000 p99=29024 max=30026 fail=0 skip=0 win=1527 a=(316,416,16540) g=(-933,379,-367)
+imu_interval_task,B-mono,256,131619,840000,2438080,2522237
+[SEN] cfg=B-mono      batch=382 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1531 a=(264,460,16416) g=(-923,410,-356)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=383 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1535 a=(280,464,16476) g=(-954,362,-324)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=148 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=50 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[INF] cfg=B-mono      batch=87 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=384 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1539 a=(276,440,16548) g=(-951,373,-341)
+imu_interval_task,B-mono,256,131631,839993,2521469,2522258
+[SEN] cfg=B-mono      batch=385 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1543 a=(244,444,16484) g=(-926,380,-351)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=149 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=47 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[SEN] cfg=B-mono      batch=386 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1547 a=(340,392,16488) g=(-943,404,-355)
+imu_interval_task,B-mono,256,131631,839993,2521454,2522256
+[INF] cfg=B-mono      batch=88 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=387 n=256 interval_us med=9999 p99=30017 max=30027 fail=0 skip=0 win=1551 a=(328,460,16496) g=(-918,349,-299)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522273
+[SEN] cfg=B-mono      batch=388 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1555 a=(304,440,16488) g=(-974,388,-359)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=150 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=47 lost=0 skip=0
+action_latency,B-mono,128,764,774,1680747,1680747
+[INF] cfg=B-mono      batch=89 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680130
+[SEN] cfg=B-mono      batch=389 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1559 a=(276,460,16500) g=(-943,394,-359)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=390 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1563 a=(276,468,16564) g=(-931,367,-347)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=151 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=49 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[SEN] cfg=C-chunk5ms  batch=391 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1567 a=(332,444,16416) g=(-952,386,-329)
+imu_interval_task,C-chunk5ms,256,131631,839993,2521463,2522258
+[SEN] cfg=C-chunk5ms  batch=392 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1571 a=(268,440,16436) g=(-930,385,-356)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=393 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1575 a=(260,448,16468) g=(-949,358,-341)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=152 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=49 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[INF] cfg=C-chunk5ms  batch=90 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931861,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=394 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1579 a=(272,528,16428) g=(-940,381,-352)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=395 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1583 a=(308,404,16440) g=(-932,377,-375)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=396 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1587 a=(268,436,16348) g=(-950,400,-356)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=153 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=49 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[INF] cfg=C-chunk5ms  batch=91 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931865,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=397 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1591 a=(308,404,16464) g=(-937,394,-369)
+imu_interval_task,C-chunk5ms,256,417370,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=398 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1595 a=(288,452,16500) g=(-952,365,-366)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=154 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=48 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[SEN] cfg=C-chunk5ms  batch=399 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1599 a=(244,416,16560) g=(-923,404,-354)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261308,1261324
+[INF] cfg=C-chunk5ms  batch=92 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931865,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=400 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1603 a=(328,432,16460) g=(-937,377,-336)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=401 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1607 a=(280,472,16528) g=(-914,396,-352)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=155 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=46 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[SEN] cfg=D-chunk1ms  batch=402 n=256 interval_us med=10000 p99=13013 max=15015 fail=0 skip=0 win=1611 a=(292,460,16504) g=(-946,369,-348)
+imu_interval_task,D-chunk1ms,256,418602,840000,1093139,1261314
+[SEN] cfg=D-chunk1ms  batch=403 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1615 a=(260,516,16360) g=(-944,368,-364)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=156 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=49 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[SEN] cfg=D-chunk1ms  batch=404 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1619 a=(280,460,16632) g=(-969,373,-372)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925335
+[INF] cfg=D-chunk1ms  batch=93 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275878,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=405 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1623 a=(260,428,16520) g=(-969,368,-375)
+imu_interval_task,D-chunk1ms,256,753349,840000,925335,925335
+[SEN] cfg=D-chunk1ms  batch=406 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1627 a=(260,488,16592) g=(-945,404,-357)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=157 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=48 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[INF] cfg=D-chunk1ms  batch=94 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275893,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=407 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1631 a=(280,428,16508) g=(-943,396,-359)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=408 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1635 a=(316,472,16532) g=(-953,369,-357)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=158 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=48 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[SEN] cfg=D-chunk1ms  batch=409 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1639 a=(384,476,16496) g=(-953,385,-365)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[INF] cfg=D-chunk1ms  batch=95 n=128 job_us med=39000 p99=39002 max=39003 skip=0
+load_job,D-chunk1ms,128,3275893,3276073,3276243,3276254
+[SEN] cfg=D-chunk1ms  batch=410 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1643 a=(244,436,16552) g=(-949,386,-365)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=411 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1647 a=(232,480,16500) g=(-999,354,-365)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=159 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=48 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[SEN] cfg=L0-noload   batch=412 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1651 a=(280,464,16436) g=(-937,402,-359)
+imu_interval_task,L0-noload,256,754570,840000,925290,925342
+[SEN] cfg=L0-noload   batch=413 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1655 a=(232,496,16576) g=(-973,404,-356)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=414 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1659 a=(352,368,16488) g=(-949,387,-385)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=160 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=415 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1663 a=(212,464,16588) g=(-936,392,-337)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=416 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1667 a=(356,432,16552) g=(-934,387,-353)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=161 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=417 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1671 a=(276,444,16592) g=(-932,404,-350)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=418 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1675 a=(312,468,16504) g=(-948,432,-347)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=419 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1679 a=(232,472,16496) g=(-965,402,-382)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=162 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=420 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1683 a=(284,472,16552) g=(-970,339,-354)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=421 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1687 a=(268,520,16444) g=(-901,381,-343)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=163 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=A-mono      batch=422 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1691 a=(296,504,16508) g=(-958,371,-347)
+imu_interval_task,A-mono,256,839806,840000,840180,840187
+[SEN] cfg=A-mono      batch=423 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1695 a=(324,444,16500) g=(-919,404,-388)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=424 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1699 a=(332,528,16468) g=(-905,375,-366)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=164 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[INF] cfg=A-mono      batch=96 n=128 job_us med=20001 p99=20001 max=47964 skip=0
+load_job,A-mono,128,1680091,1680099,1680132,4029024
+[SEN] cfg=A-mono      batch=425 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1703 a=(264,396,16524) g=(-967,402,-364)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=426 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1707 a=(324,456,16536) g=(-958,372,-309)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=427 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1711 a=(244,496,16512) g=(-942,377,-356)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=165 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[INF] cfg=A-mono      batch=97 n=128 job_us med=20001 p99=27511 max=41384 skip=0
+load_job,A-mono,128,1680091,1680097,2311006,3476294
+[SEN] cfg=A-mono      batch=428 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1715 a=(308,428,16524) g=(-940,392,-357)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=429 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1719 a=(296,472,16536) g=(-918,406,-339)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=166 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[SEN] cfg=A-mono      batch=430 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1723 a=(264,500,16604) g=(-946,389,-365)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[INF] cfg=A-mono      batch=98 n=128 job_us med=20001 p99=20001 max=37967 skip=0
+load_job,A-mono,128,1680091,1680099,1680132,3189272
+[SEN] cfg=A-mono      batch=431 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1727 a=(268,476,16536) g=(-960,391,-345)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=432 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1731 a=(280,456,16496) g=(-955,385,-356)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=167 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[SEN] cfg=B-mono      batch=433 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1735 a=(296,424,16556) g=(-965,411,-372)
+imu_interval_task,B-mono,256,131629,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=434 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1739 a=(304,440,16488) g=(-937,350,-354)
+imu_interval_task,B-mono,256,131631,839993,2521454,2522258
+[ACT] cfg=B-mono      batch=168 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=47 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[SEN] cfg=B-mono      batch=435 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1743 a=(248,468,16468) g=(-970,426,-347)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[INF] cfg=B-mono      batch=99 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=436 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1747 a=(304,456,16532) g=(-919,408,-357)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=437 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1751 a=(308,472,16556) g=(-952,403,-380)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=169 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=48 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[INF] cfg=B-mono      batch=100 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=438 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1755 a=(244,616,16408) g=(-926,424,-351)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=439 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1759 a=(280,400,16520) g=(-930,382,-382)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=170 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=51 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[SEN] cfg=B-mono      batch=440 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1763 a=(260,436,16500) g=(-934,365,-342)
+imu_interval_task,B-mono,256,131631,839993,2521469,2522258
+[INF] cfg=B-mono      batch=101 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=441 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1767 a=(360,472,16500) g=(-913,366,-346)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=442 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1771 a=(276,344,16544) g=(-919,420,-361)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=171 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=47 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[SEN] cfg=C-chunk5ms  batch=443 n=256 interval_us med=10000 p99=29032 max=30017 fail=0 skip=0 win=1775 a=(300,488,16548) g=(-936,384,-372)
+imu_interval_task,C-chunk5ms,256,131631,840000,2438690,2521463
+[SEN] cfg=C-chunk5ms  batch=444 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1779 a=(340,456,16568) g=(-964,372,-336)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=445 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1783 a=(256,408,16524) g=(-955,407,-348)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=172 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=48 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[INF] cfg=C-chunk5ms  batch=102 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931861,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=446 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1787 a=(268,488,16520) g=(-939,376,-377)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=447 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1791 a=(300,512,16476) g=(-931,386,-343)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=173 n=128 lat_us med=9.2 p99=5008.2 max=5008.3 miss(1ms)=45 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420705
+[INF] cfg=C-chunk5ms  batch=103 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931857,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=448 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1795 a=(368,664,16588) g=(-960,387,-377)
+imu_interval_task,C-chunk5ms,256,417370,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=449 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1799 a=(220,472,16456) g=(-944,392,-350)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=450 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1803 a=(252,480,16636) g=(-949,406,-346)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=174 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=52 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[INF] cfg=C-chunk5ms  batch=104 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931865,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=451 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1807 a=(328,456,16592) g=(-931,370,-366)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=452 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1811 a=(252,388,16488) g=(-957,401,-352)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=175 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=47 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[SEN] cfg=D-chunk1ms  batch=453 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1815 a=(304,496,16528) g=(-960,401,-339)
+imu_interval_task,D-chunk1ms,256,418593,840000,1261314,1261324
+[SEN] cfg=D-chunk1ms  batch=454 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1819 a=(264,440,16564) g=(-929,371,-373)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=455 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1823 a=(220,320,16620) g=(-928,406,-356)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=176 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=47 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[INF] cfg=D-chunk1ms  batch=105 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275893,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=456 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1827 a=(304,432,16580) g=(-947,393,-345)
+imu_interval_task,D-chunk1ms,256,753347,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=457 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1831 a=(292,440,16484) g=(-935,367,-389)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=177 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=49 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[SEN] cfg=D-chunk1ms  batch=458 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1835 a=(264,452,16476) g=(-975,349,-356)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[INF] cfg=D-chunk1ms  batch=106 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275878,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=459 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1839 a=(288,396,16452) g=(-947,374,-344)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=460 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1843 a=(260,304,16544) g=(-953,397,-359)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=178 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=48 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[INF] cfg=D-chunk1ms  batch=107 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275893,3276073,3276243,3276251
+[SEN] cfg=D-chunk1ms  batch=461 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1847 a=(320,488,16496) g=(-945,397,-365)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=462 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1851 a=(352,392,16536) g=(-952,379,-356)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=179 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=50 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[SEN] cfg=L0-noload   batch=463 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=1855 a=(308,444,16528) g=(-943,368,-324)
+imu_interval_task,L0-noload,256,754570,840000,925335,925335
+[SEN] cfg=L0-noload   batch=464 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1859 a=(240,412,16528) g=(-974,390,-377)
+imu_interval_task,L0-noload,256,836522,840000,840180,840215
+[SEN] cfg=L0-noload   batch=465 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1863 a=(268,416,16552) g=(-942,394,-350)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=180 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=466 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1867 a=(280,480,16532) g=(-911,375,-364)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=467 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1871 a=(332,484,16476) g=(-935,376,-361)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=468 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1875 a=(276,428,16520) g=(-916,364,-367)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=181 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=469 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1879 a=(328,472,16484) g=(-950,360,-360)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=470 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1883 a=(300,448,16596) g=(-933,392,-370)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=182 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=L0-noload   batch=471 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1887 a=(176,440,16552) g=(-964,389,-359)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=472 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1891 a=(244,468,16420) g=(-930,366,-336)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[SEN] cfg=L0-noload   batch=473 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1895 a=(284,464,16472) g=(-940,397,-352)
+imu_interval_task,L0-noload,256,839813,840000,840180,840187
+[ACT] cfg=L0-noload   batch=183 n=128 lat_us med=9.2 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,772,774,1254,1254
+[SEN] cfg=A-mono      batch=474 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1899 a=(332,388,16444) g=(-970,379,-359)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=475 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1903 a=(272,420,16496) g=(-972,386,-368)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=476 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1907 a=(272,444,16536) g=(-944,391,-346)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=184 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[INF] cfg=A-mono      batch=108 n=128 job_us med=20001 p99=20001 max=51194 skip=0
+load_job,A-mono,128,1680091,1680097,1680132,4300334
+[SEN] cfg=A-mono      batch=477 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1911 a=(364,456,16512) g=(-957,374,-351)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=478 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1915 a=(380,416,16460) g=(-950,380,-349)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=185 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[INF] cfg=A-mono      batch=109 n=128 job_us med=20001 p99=20001 max=48072 skip=0
+load_job,A-mono,128,1680091,1680099,1680132,4038053
+[SEN] cfg=A-mono      batch=479 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1919 a=(272,488,16504) g=(-969,393,-365)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=480 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1923 a=(256,500,16552) g=(-933,409,-347)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=481 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1927 a=(296,420,16500) g=(-918,387,-345)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=186 n=128 lat_us med=9.2 p99=17.0 max=17.1 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1442
+[INF] cfg=A-mono      batch=110 n=128 job_us med=20001 p99=20001 max=41196 skip=0
+load_job,A-mono,128,1680091,1680098,1680132,3460544
+[SEN] cfg=A-mono      batch=482 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1931 a=(284,448,16384) g=(-953,366,-353)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[SEN] cfg=A-mono      batch=483 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 win=1935 a=(300,400,16512) g=(-953,390,-375)
+imu_interval_task,A-mono,256,839799,840000,840180,840187
+[ACT] cfg=A-mono      batch=187 n=128 lat_us med=9.2 p99=17.0 max=17.0 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,759,774,1434,1434
+[SEN] cfg=B-mono      batch=484 n=256 interval_us med=10000 p99=29024 max=30026 fail=0 skip=0 win=1939 a=(324,392,16540) g=(-942,395,-361)
+imu_interval_task,B-mono,256,131629,840000,2438078,2522203
+[SEN] cfg=B-mono      batch=485 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1943 a=(304,420,16512) g=(-930,389,-337)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=486 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1947 a=(288,472,16512) g=(-943,367,-328)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=188 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=51 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[INF] cfg=B-mono      batch=111 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=487 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1951 a=(340,456,16564) g=(-961,391,-327)
+imu_interval_task,B-mono,256,131631,839993,2521454,2522258
+[SEN] cfg=B-mono      batch=488 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1955 a=(228,508,16480) g=(-966,379,-346)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=189 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=48 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[SEN] cfg=B-mono      batch=489 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1959 a=(304,448,16384) g=(-890,375,-332)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[INF] cfg=B-mono      batch=112 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=490 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1963 a=(252,432,16488) g=(-947,376,-336)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[SEN] cfg=B-mono      batch=491 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1967 a=(328,444,16500) g=(-954,377,-354)
+imu_interval_task,B-mono,256,131631,839993,2521463,2522258
+[ACT] cfg=B-mono      batch=190 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=47 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[INF] cfg=B-mono      batch=113 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680091,1680105,1680129,1680129
+[SEN] cfg=B-mono      batch=492 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1971 a=(252,452,16520) g=(-914,393,-349)
+imu_interval_task,B-mono,256,131631,839993,2521454,2522258
+[SEN] cfg=B-mono      batch=493 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1975 a=(280,496,16456) g=(-957,385,-326)
+imu_interval_task,B-mono,256,131631,839993,2521469,2522258
+[ACT] cfg=B-mono      batch=191 n=128 lat_us med=9.2 p99=20008.8 max=20008.8 miss(1ms)=47 lost=0 skip=0
+action_latency,B-mono,128,772,774,1680747,1680747
+[SEN] cfg=C-chunk5ms  batch=494 n=256 interval_us med=9999 p99=30017 max=30026 fail=0 skip=0 win=1979 a=(288,460,16536) g=(-940,386,-394)
+imu_interval_task,C-chunk5ms,256,131631,839993,2521463,2522258
+[SEN] cfg=C-chunk5ms  batch=495 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1983 a=(304,428,16468) g=(-979,386,-325)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=496 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1987 a=(292,440,16456) g=(-928,395,-404)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=192 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=52 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[INF] cfg=C-chunk5ms  batch=114 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931865,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=497 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1991 a=(220,488,16460) g=(-914,374,-347)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=498 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1995 a=(292,396,16540) g=(-945,373,-355)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=499 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=1999 a=(268,448,16564) g=(-941,394,-383)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=193 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=48 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[INF] cfg=C-chunk5ms  batch=115 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931858,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=500 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=2003 a=(316,432,16556) g=(-942,322,-335)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=501 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=2007 a=(316,480,16404) g=(-945,387,-359)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=194 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=48 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[SEN] cfg=C-chunk5ms  batch=502 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=2011 a=(276,512,16500) g=(-921,385,-381)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[INF] cfg=C-chunk5ms  batch=116 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931865,1932037,1932220,1932220
+[SEN] cfg=C-chunk5ms  batch=503 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=2015 a=(292,420,16512) g=(-939,394,-367)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[SEN] cfg=C-chunk5ms  batch=504 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=2019 a=(268,432,16452) g=(-916,366,-342)
+imu_interval_task,C-chunk5ms,256,418593,840000,1261314,1261324
+[ACT] cfg=C-chunk5ms  batch=195 n=128 lat_us med=9.2 p99=5008.2 max=5008.2 miss(1ms)=48 lost=0 skip=0
+action_latency,C-chunk5ms,128,772,774,420696,420696
+[SEN] cfg=D-chunk1ms  batch=505 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 win=2023 a=(288,488,16500) g=(-933,388,-355)
+imu_interval_task,D-chunk1ms,256,418593,840000,1261267,1261314
+[SEN] cfg=D-chunk1ms  batch=506 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=2027 a=(212,456,16460) g=(-945,372,-368)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=507 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=2031 a=(276,448,16476) g=(-948,388,-354)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=196 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=49 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[INF] cfg=D-chunk1ms  batch=117 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275893,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=508 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=2035 a=(248,456,16460) g=(-955,377,-351)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=509 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=2039 a=(228,496,16460) g=(-939,381,-341)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=197 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=49 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[INF] cfg=D-chunk1ms  batch=118 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275893,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=510 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=2043 a=(276,500,16576) g=(-934,387,-340)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=511 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=2047 a=(344,476,16528) g=(-978,424,-381)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=512 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=2051 a=(268,472,16440) g=(-951,401,-385)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=198 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=47 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[INF] cfg=D-chunk1ms  batch=119 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275877,3276073,3276243,3276243
+[SEN] cfg=D-chunk1ms  batch=513 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=2055 a=(324,428,16548) g=(-962,372,-363)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[SEN] cfg=D-chunk1ms  batch=514 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=2059 a=(288,496,16508) g=(-944,389,-368)
+imu_interval_task,D-chunk1ms,256,754570,840000,925335,925342
+[ACT] cfg=D-chunk1ms  batch=199 n=128 lat_us med=14.3 p99=1008.4 max=1008.4 miss(1ms)=49 lost=0 skip=0
+action_latency,D-chunk1ms,128,772,1207,84712,84712
+[SEN] cfg=L0-noload   batch=515 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 win=2063 a=(232,416,16472) g=(-945,411,-365)
+imu_interval_task,L0-noload,256,754570,840000,925290,925335

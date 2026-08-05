@@ -74,6 +74,13 @@ void dwt_csv_header(void);
 void dwt_csv_row(const char *tag, const dwt_stats_t *s);
 
 /**
+  * @brief  config 열이 붙은 요약 CSV 한 줄 (스케줄링 스윕용).
+  * @note   같은 tag가 config별로 여러 번 나오므로, tag만으로는 행을 구분할 수 없다.
+  *         measurements/action_latency.csv의 config 열과 대응한다.
+  */
+void dwt_csv_row_cfg(const char *tag, const char *config, const dwt_stats_t *s);
+
+/**
   * @brief  원본 사이클 전량을 CSV로 덤프 (히스토그램용).
   * @note   측정 중에 printf하면 probe effect가 생긴다. 반드시 측정을 다 끝내고
   *         RAM 버퍼에 모은 뒤 한꺼번에 부를 것.
