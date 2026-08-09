@@ -29,6 +29,8 @@
 #include "dwt.h"
 #include "i2c_scan.h"
 #include "mpu6050.h"
+#include "ae_bench.h"
+#include "collect.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -108,7 +110,17 @@ int main(void)
   /*stdio buffering stop*/
   setvbuf(stdout, NULL, _IONBF, 0);
 
+  /* B1은 **여기서** 본다. 브링업 뒤에 보면 사용자가 6초 넘게 버튼을 누르고 있어야
+   * 하고, 그건 "리셋하면서 잠깐 누른다"는 조작과 안 맞는다(2026-08-08에 실제로
+   * 이것 때문에 수집 모드 진입에 실패했다). 여기서 걸어 잠그고 결과만 들고 간다. */
+  const bool want_collect = collect_requested();
+
   printf("\r\n=== stm32-edge W2 bringup ===\r\n");
+  if (want_collect)
+  {
+    printf("[BOOT] B1 눌림 감지 - 브링업이 끝나면 수집 모드로 들어갑니다.\r\n");
+    printf("[BOOT] 버튼에서 손 떼셔도 됩니다.\r\n");
+  }
   printf("SystemCoreClock : %lu Hz\r\n", (unsigned long)SystemCoreClock);
   printf("HAL tick        : TIM10 (SysTick은 FreeRTOS 소유)\r\n");
   printf("DWT 32bit wrap  : %lu ms\r\n",
@@ -130,6 +142,18 @@ int main(void)
 
   /* I2C 브링업 2~5단계: WHO_AM_I -> sleep 해제 -> 값 확인 -> 100Hz 스트림 검증 */
   (void)mpu6050_bringup(&hi2c1);
+
+  /* B1을 누른 채 부팅했으면 수집 모드로 빠진다 (돌아오지 않는다).
+   * mpu6050_bringup() 뒤에 두는 이유: 레인지·DLPF 설정을 거친 뒤여야
+   * 학습 데이터가 추론과 같은 센서 설정에서 나온 것이 된다. */
+  if (want_collect)
+  {
+    collect_run(&hi2c1);
+  }
+
+  /* 브링업 6~7단계: 추론 자가검증(보드 == PC) + float32/int8 커널 사이클.
+   * 스케줄러 전에 해야 태스크 선점 없이 커널 자체의 비용이 나온다. */
+  (void)ae_bench();
 
   /* USER CODE END 2 */
 

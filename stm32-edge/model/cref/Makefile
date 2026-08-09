@@ -12,7 +12,7 @@ CFLAGS  := -std=c99 -O2 -Wall -Wextra -Werror -Wconversion -Wshadow \
 LDLIBS  := -lm
 
 TARGET  := test_ae_int8
-OBJS    := ae_infer.o test_ae_int8.o
+OBJS    := ae_infer.o ae_infer_f32.o test_ae_int8.o
 
 .PHONY: all test clean
 
@@ -22,7 +22,8 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDLIBS)
 
 ae_infer.o: ae_infer.c ae_infer.h model_weights.h
-test_ae_int8.o: test_ae_int8.c ae_infer.h model_weights.h
+ae_infer_f32.o: ae_infer_f32.c ae_infer_f32.h ae_infer.h model_weights.h
+test_ae_int8.o: test_ae_int8.c ae_infer.h ae_infer_f32.h model_weights.h
 
 test: $(TARGET) testvec.bin
 	./$(TARGET) testvec.bin

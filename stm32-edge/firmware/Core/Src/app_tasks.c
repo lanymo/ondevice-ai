@@ -17,14 +17,23 @@
 #include "i2c.h"
 #include "dwt.h"
 #include "mpu6050.h"
+#include "ae_infer.h"
 
 #include <stdio.h>
+#include <string.h>
 
 /* ------------------------------------------------------------------ 파라미터 */
 
 #define PRIO_ACTION        48u
 #define PRIO_SENSOR        40u
 #define PRIO_LOG           16u
+
+/* 진짜 추론 태스크(W3 축 B). 로그(16)보다 아래인 건 system-design.md 1-1의
+ * "로그를 추론보다 위에 둔다"는 결정을 유지하는 것이고, 합성 부하의 LOW(8)보다
+ * 위인 건 **실제 일이 더미 부하보다 아래로 밀리면 안 되기 때문**이다.
+ * 추론은 실측상 CPU의 0.2%라 이 배치가 축 A 스윕을 흔들지 않는다 - 오히려
+ * 같은 8로 두면 부하 태스크와 라운드로빈이 돌아 부하 잡 완료시간에 잡음이 낀다. */
+#define PRIO_INFER         12u
 
 /* 합성 부하 태스크의 두 우선순위. LOW는 액션보다 아래(정상 배치),
  * HIGH는 액션보다 위(일부러 뒤집은 배치). configMAX_PRIORITIES=56이라 50은 유효. */
@@ -59,9 +68,27 @@
 #define LOAD_PERIOD_MS     53u   /* 잡 주기. 부하율 = 20/53 = 37.7% (전 config 동일) */
 
 /* W3 추론 입력 윈도우. model/config.py의 WIN_LEN=128 / HOP=64와 일치시킬 것 -
- * 어긋나면 학습된 특징 분포와 온보드 특징이 다른 것을 재게 된다. (2^n 필수) */
+ * 어긋나면 학습된 특징 분포와 온보드 특징이 다른 것을 재게 된다. (2^n 필수)
+ * 값 자체는 model_weights.h가 굽는 AE_WIN_LEN/AE_HOP이 원본이고, 아래 정적 단언이
+ * 둘이 갈라지는 걸 막는다. */
 #define WIN_N             128u
 #define WIN_HOP            64u
+
+_Static_assert(WIN_N == AE_WIN_LEN, "윈도우 길이가 model_weights.h와 다르다");
+_Static_assert(WIN_HOP == AE_HOP,   "hop이 model_weights.h와 다르다");
+_Static_assert(1000u / SENSOR_PERIOD_MS == AE_FS_HZ,
+               "센서 주기가 모델 학습 샘플레이트와 다르다");
+
+/* 추론 배치. 윈도우가 hop마다 = 0.64초마다 하나씩 나오므로 128개면 81.9초다.
+ * 이 프로젝트 규칙(반복 >= 100)을 지키면서 스윕 한 바퀴(128초)와 얼추 맞는 크기.
+ * 그동안 화면이 조용하면 죽은 것처럼 보이므로, 윈도우마다 한 줄씩 따로 찍는다
+ * (그 printf는 로그 태스크에서 도니 측정 구간에 안 섞인다). */
+#define AE_BATCH_N        128u
+
+/* 이상 판정 디바운스. 윈도우 한 개로 액션을 걸면 스파이크 하나에 오경보가 난다.
+ * 2개 연속(= 0.64초 간격 두 번, 50% 겹침이라 실제로는 1.92초 구간)을 요구한다.
+ * 대가는 감지 지연 +0.64초 - 윈도우 자체가 이미 1.28초라 비율로는 작다. */
+#define AE_DEBOUNCE_N       2u
 
 /* ------------------------------------------------------------------ 스윕 config */
 
@@ -107,6 +134,9 @@ typedef enum
   APP_MSG_ACT = 0,   /* 액션 지연 배치 */
   APP_MSG_SEN,       /* 센서 주기 배치 */
   APP_MSG_INF,       /* 합성 부하 잡 소요시간 배치 (결정성의 대가= 처리량) */
+  APP_MSG_EDGE,      /* 윈도우 1개의 추론 결과 (축 B 데모의 눈에 보이는 부분) */
+  APP_MSG_AECYC,     /* 추론 파이프라인 사이클 배치 -> inference_cycles.csv */
+  APP_MSG_AELAT,     /* 윈도우 완성 -> 판정 지연 배치 */
   APP_MSG_ERR,       /* 오류 통지 (aux0 = 코드) */
 } app_msg_type_t;
 
@@ -121,7 +151,11 @@ typedef struct
   uint32_t  aux0;      /* ACT: 마감 초과 수 / SEN: 읽기 실패 수 / ERR: 코드 */
   uint32_t  aux1;      /* ACT: 이벤트 유실 수(coalesced) */
   uint32_t  aux2;      /* 로그 백프레셔로 측정에서 빠진 샘플 수 */
-  uint32_t  aux3;      /* SEN: 지금까지 완성된 윈도우 수 */
+  uint32_t  aux3;      /* SEN: 지금까지 완성된 윈도우 수 / EDGE: 판정 지연(사이클) */
+  uint32_t  aux4;      /* SEN: 포화 근접 샘플 수 / EDGE: 추론 소요(사이클) */
+  int32_t   err;       /* EDGE: 재구성 오차 (int8 경로) */
+  uint8_t   anom;      /* EDGE: 이상 판정 (디바운스 후) */
+  uint8_t   edge_flag; /* EDGE: 이번 윈도우에서 판정이 전환됐나 = 로컬 액션 발동 */
   int16_t   ax, ay, az;/* SEN: 생존 신호용 최근 샘플 (가속도) */
   int16_t   gx, gy, gz;/* SEN: 생존 신호용 최근 샘플 (자이로) */
 } app_msg_t;
@@ -138,16 +172,22 @@ static QueueHandle_t  s_logq;
 #define STK_ACTION 256u
 #define STK_SENSOR 384u
 #define STK_LOG    512u   /* printf가 여기서만 돈다 */
-#define STK_INFER  192u
+#define STK_LOAD   192u   /* 합성 부하 - busy 루프뿐이라 얕다 */
 
-static StaticTask_t s_tcb_action, s_tcb_sensor, s_tcb_log, s_tcb_infer;
+/* 추론 태스크. 큰 버퍼(윈도우 float 3KB, 층간 핑퐁)는 전부 파일 스코프 static이라
+ * 여기 안 쌓인다. 320워드(1,280B)는 여유를 둔 값이고, W4에서 high-water로 확정한다. */
+#define STK_INFER  320u
+
+static StaticTask_t s_tcb_action, s_tcb_sensor, s_tcb_log, s_tcb_load, s_tcb_infer;
 static StackType_t  s_stk_action[STK_ACTION];
 static StackType_t  s_stk_sensor[STK_SENSOR];
 static StackType_t  s_stk_log[STK_LOG];
+static StackType_t  s_stk_load[STK_LOAD];
 static StackType_t  s_stk_infer[STK_INFER];
 
 static TaskHandle_t s_action_task;
 static TaskHandle_t s_load_task;    /* config 전환 시 우선순위를 바꾼다 */
+static TaskHandle_t s_infer_task;   /* 센서 태스크가 윈도우 완성 시 깨운다 */
 
 /* ------------------------------------------------------------------ 측정 버퍼 */
 
@@ -161,12 +201,38 @@ static volatile uint8_t s_act_busy[2];
 static volatile uint8_t s_sen_busy[2];
 static volatile uint8_t s_inf_busy[2];
 
-/* W3 대비: 추론 입력 윈도우 링버퍼 (지금은 쌓기만 한다).
- * 6축 raw int16 = 12B/샘플, 128샘플 = 1536B. g/dps 환산과 특징 추출은 W3에서
- * 윈도우를 뽑는 시점에 한다. */
+/* 추론 입력 윈도우 링버퍼. 6축 raw int16 = 12B/샘플, 128샘플 = 1536B.
+ * g/dps 환산은 추론 태스크가 스냅숏에서 한다 - 링에 float로 담으면 4KB가 된다. */
 static mpu6050_imu_t     s_win[WIN_N];
 static volatile uint32_t s_win_wr;      /* 총 기록 샘플 수 (인덱스는 & (WIN_N-1)) */
 static volatile uint32_t s_win_ready;   /* hop마다 1 증가 = 완성된 윈도우 수 */
+
+/* 윈도우 스냅숏 - **센서 태스크가** 채운다.
+ *
+ * 추론 태스크가 링을 직접 읽으면 안 된다. 링 크기가 WIN_N과 같아서, 윈도우가
+ * 완성된 순간부터 10ms 뒤에는 가장 오래된 샘플이 이미 덮인다. 추론 태스크는
+ * 우선순위 12라 config B(부하 50)에서는 20ms 넘게 못 깨어날 수 있고, 그러면
+ * 윈도우 앞부분과 뒷부분이 서로 다른 시각의 데이터로 찢어진다.
+ * 그래서 소유권을 생산자 쪽에 두고, 완성 즉시 센서 태스크가 복사한다
+ * (1,536B memcpy, 0.64초에 한 번 - 10ms 예산에 영향 없다).
+ *
+ * busy=1이면 추론이 아직 이전 것을 들고 있다는 뜻이라 이번 윈도우는 버린다
+ * (s_win_drop). 조용히 삼키지 않고 세는 건 1-9의 실패 모드 원칙 그대로다. */
+static mpu6050_imu_t     s_snap[WIN_N];
+static volatile uint8_t  s_snap_busy;
+static volatile uint32_t s_snap_t0;     /* 윈도우 완성 시각 (판정 지연의 기준점) */
+static volatile uint32_t s_win_drop;    /* 추론이 못 따라가 버린 윈도우 수 */
+
+/* 스냅숏 -> 물리 단위 float. [128][6] 채널 인터리브 = ae_features의 입력 계약.
+ * 3,072B라 태스크 스택에 못 올린다. 추론 태스크만 만진다(재진입 없음). */
+static float s_winf[WIN_N * AE_N_CH];
+
+/* 추론 측정 버퍼. 더블버퍼는 안 쓴다 - 윈도우가 0.64초에 하나라, 로그가
+ * 배치 하나를 정렬하는 동안(수 ms) 다음 배치가 찰 일이 원리적으로 없다.
+ * 대신 소유권 플래그는 그대로 둬서 만약을 세게 한다. */
+static uint32_t s_ae_cyc[AE_BATCH_N];   /* 파이프라인 전체 소요 (특징+양자화+순전파) */
+static uint32_t s_ae_lat[AE_BATCH_N];   /* 윈도우 완성 -> 판정 완료 */
+static volatile uint8_t s_ae_busy;
 
 /* ------------------------------------------------------------------ TIM2 이벤트 */
 
@@ -325,10 +391,30 @@ static void prv_action_task(void *arg)
   * MPU6050을 vTaskDelayUntil로 100Hz 폴링. 실제 주기를 DWT로 재서
   * "태스크 환경에서도 100Hz가 유지되는가"를 배치 통계로 보고한다.
   */
+/**
+  * 완성된 윈도우를 링에서 펴서 스냅숏으로 복사한다. **센서 태스크에서만** 부른다.
+  *
+  * 링이 가득 찬 상태이므로 "다음에 쓸 자리"가 곧 가장 오래된 샘플이다.
+  * 거기서 끝까지 한 번, 처음부터 거기까지 한 번 - 두 memcpy로 시간순이 된다.
+  */
+static void prv_snapshot_window(void)
+{
+  const uint32_t oldest = s_win_wr & (WIN_N - 1u);
+  const uint32_t tail = WIN_N - oldest;
+
+  memcpy(&s_snap[0], &s_win[oldest], tail * sizeof(mpu6050_imu_t));
+  if (oldest != 0u)
+  {
+    memcpy(&s_snap[tail], &s_win[0], oldest * sizeof(mpu6050_imu_t));
+  }
+  s_snap_t0 = dwt_now();
+}
+
 static void prv_sensor_task(void *arg)
 {
   TickType_t last;
   uint32_t prev, warm = 0u, idx = 0u, batch = 0u, fails = 0u, skip = 0u;
+  uint32_t sat = 0u, run_fail = 0u;
   uint8_t  side = 0u;
   mpu6050_imu_t s = { 0, 0, 0, 0, 0, 0 };
 
@@ -336,6 +422,7 @@ static void prv_sensor_task(void *arg)
 
   /* 브링업이 이미 깨웠어도 무해(멱등). 브링업을 건너뛴 부팅도 여기서 복구 */
   (void)mpu6050_wake(&hi2c1);
+  (void)mpu6050_configure(&hi2c1, NULL);   /* 레인지/DLPF도 같은 이유로 재적용 */
 
   last = xTaskGetTickCount();
   prev = dwt_now();
@@ -350,18 +437,46 @@ static void prv_sensor_task(void *arg)
 
     if (mpu6050_read_imu(&hi2c1, &s))
     {
-      s_win[s_win_wr & (WIN_N - 1u)] = s;   /* W3 추론 입력 윈도우 */
+      run_fail = 0u;
+      /* 포화 근접 샘플을 센다. "+-2g로 충분한가"를 추측이 아니라 데이터로
+       * 답하기 위한 카운터다 - 0이 아니면 클리핑이 특징을 망치고 있다는 뜻이고,
+       * 그때 AFS_SEL을 올린다(mpu6050.h 주석). */
+      if (mpu6050_accel_saturated(&s) || mpu6050_gyro_saturated(&s))
+      {
+        sat++;
+      }
+
+      s_win[s_win_wr & (WIN_N - 1u)] = s;   /* 추론 입력 윈도우 */
       s_win_wr++;
 
       /* 첫 윈도우는 버퍼가 다 찬 뒤(WIN_N), 이후로는 hop마다 하나씩 완성된다 */
       if ((s_win_wr >= WIN_N) && (((s_win_wr - WIN_N) % WIN_HOP) == 0u))
       {
-        s_win_ready++;   /* W3: 여기서 추론 태스크를 깨우게 된다 */
+        s_win_ready++;
+
+        if (s_snap_busy == 0u)
+        {
+          prv_snapshot_window();
+          s_snap_busy = 1u;              /* 소유권을 추론 태스크로 넘긴다 */
+          (void)xTaskNotifyGive(s_infer_task);
+        }
+        else
+        {
+          s_win_drop++;                  /* 추론이 아직 이전 윈도우를 들고 있다 */
+        }
       }
     }
     else
     {
       fails++;
+      /* 수집 중 실측(2026-08-08)에서 배선이 흔들리자 버스가 잠긴 채 5,000샘플이
+       * 통째로 날아갔다. 여기서도 같은 일이 나면 센서가 영영 안 돌아온다 -
+       * 스케줄러가 도는 중이라 리셋 말고는 손쓸 방법이 없어진다. */
+      if (++run_fail >= 5u)
+      {
+        run_fail = 0u;
+        (void)mpu6050_recover(&hi2c1);   /* 수 ms 블로킹. 우선순위 40이라 액션은 안 문다 */
+      }
     }
 
     if (warm < WARMUP_N)
@@ -386,7 +501,7 @@ static void prv_sensor_task(void *arg)
       app_msg_t m = {
         .type = APP_MSG_SEN, .cfg = s_cfg_idx, .n = SEN_BATCH_N, .batch = batch,
         .buf = s_sen_int[side], .owner = &s_sen_busy[side],
-        .aux0 = fails, .aux2 = skip, .aux3 = s_win_ready,
+        .aux0 = fails, .aux2 = skip, .aux3 = s_win_ready, .aux4 = sat,
         .ax = s.ax, .ay = s.ay, .az = s.az,
         .gx = s.gx, .gy = s.gy, .gz = s.gz,
       };
@@ -396,7 +511,162 @@ static void prv_sensor_task(void *arg)
         s_sen_busy[side] = 0u;
       }
       side ^= 1u;
-      idx = 0u; fails = 0u; skip = 0u;
+      idx = 0u; fails = 0u; skip = 0u; sat = 0u;
+      batch++;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ 추론 태스크 */
+
+/**
+  * 스냅숏(raw int16) -> 물리 단위 float, 채널 인터리브.
+  *
+  * 여기서 g/dps로 바꾸는 이유: 모델의 정규화 상수(ae_norm_mean/std)가 물리 단위
+  * 기준이라 LSB 그대로 넣으면 z-score가 통째로 어긋난다. 그리고 이렇게 두면
+  * **풀스케일 레인지를 바꿔도 모델을 다시 학습할 필요가 없다** - 환산 상수만
+  * 바뀌고 그 위 층은 그대로다 (model/config.py의 그 약속이 여기서 지켜진다).
+  */
+static void prv_window_to_float(void)
+{
+  const float ka = 1.0f / (float)MPU6050_ACCEL_LSB_PER_G;
+  const float kg = 1.0f / MPU6050_GYRO_LSB_PER_DPS;
+  uint32_t i;
+
+  for (i = 0u; i < WIN_N; i++)
+  {
+    float *o = &s_winf[i * AE_N_CH];
+    o[0] = (float)s_snap[i].ax * ka;
+    o[1] = (float)s_snap[i].ay * ka;
+    o[2] = (float)s_snap[i].az * ka;
+    o[3] = (float)s_snap[i].gx * kg;
+    o[4] = (float)s_snap[i].gy * kg;
+    o[5] = (float)s_snap[i].gz * kg;
+  }
+}
+
+/**
+  * 축 B의 본체: 센서 -> 로컬 추론 -> 로컬 액션.
+  *
+  * 측정 두 가지를 같이 낸다.
+  *   (1) 파이프라인 사이클 - 환산+특징+양자화+순전파. 실제 태스크 환경이라
+  *       상위 태스크 선점이 꼬리에 섞인다. 선점 없는 순수 커널 비용은 부팅 시
+  *       ae_bench()가 따로 잰다. **둘은 다른 질문에 답하는 다른 숫자다.**
+  *   (2) 윈도우 완성 -> 판정 완료 지연. 축 B판 "이벤트 -> 액션"이고,
+  *       config에 따라 이게 얼마나 벌어지는지가 축 A와 축 B를 잇는 지점이다.
+  *
+  * 로컬 액션은 판정이 **전환될 때** 발동한다(디바운스 AE_DEBOUNCE_N). LD2는
+  * 마감시한 태스크가 20Hz로 쓰고 있어서 여기서 못 쓴다 - 이 데모의 액추에이터는
+  * UART 경보다. 액추에이터가 무엇이든 판정까지의 경로와 지연은 동일하다.
+  */
+static void prv_infer_task(void *arg)
+{
+  uint32_t idx = 0u, batch = 0u, skip = 0u, bdrop = 0u, nwin = 0u;
+  uint32_t run = 0u;          /* 현재 판정이 연속으로 나온 횟수 (디바운스) */
+  uint8_t  raw = 0u;          /* 이번 윈도우의 생 판정 */
+  uint8_t  state = 0u;        /* 디바운스를 통과한 확정 상태 */
+  uint32_t acts = 0u;         /* 로컬 액션 발동 횟수 */
+
+  (void)arg;
+
+  for (;;)
+  {
+    int32_t  err;
+    uint32_t t0, t_snap, cyc, lat;
+    uint8_t  flipped = 0u;
+
+    (void)ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+
+    /* 기준 시각을 **소유권을 놓기 전에** 복사해 둔다. 반납한 뒤에 s_snap_t0를 읽으면,
+     * 그 사이 센서 태스크(우선순위 40)가 다음 스냅숏을 떠서 값을 덮을 수 있다.
+     * 그러면 지연이 엉뚱하게 작게(또는 unsigned 언더플로로 거대하게) 나온다.
+     * 창은 수 마이크로초라 드물게 터지지만, 드물게 터지는 게 정확히 max를 망친다. */
+    t_snap = s_snap_t0;
+
+    /* --- 측정 구간 시작. 여기서 printf/큐 전송을 하지 않는다 --- */
+    t0 = dwt_now();
+    prv_window_to_float();
+    err = ae_run_window(s_winf, (int)WIN_N);
+    cyc = dwt_elapsed(t0);
+    /* --- 측정 구간 끝 --- */
+
+    s_snap_busy = 0u;          /* 스냅숏 소유권 반납 - 다음 윈도우를 받을 수 있다 */
+
+    raw = (uint8_t)(ae_is_anomaly(err) ? 1u : 0u);
+    if (raw == state)
+    {
+      run = 0u;                /* 현재 상태와 같으면 전환 후보가 리셋된다 */
+    }
+    else if (++run >= AE_DEBOUNCE_N)
+    {
+      state = raw;             /* 연속 N회 반대로 나왔다 -> 상태 전환 = 로컬 액션 */
+      run = 0u;
+      flipped = 1u;
+      acts++;
+    }
+
+    /* 지연은 액션(=판정 확정)까지다. 큐 전송은 그 뒤라 여기 안 들어간다. */
+    lat = dwt_now() - t_snap;
+    nwin++;
+
+    /* 윈도우마다 한 줄 - 데모의 눈에 보이는 부분이자 생존 신호.
+     * 0.64초에 한 번이고 printf는 로그 태스크에서 도니 위 측정과 무관하다. */
+    {
+      app_msg_t m = {
+        .type = APP_MSG_EDGE, .cfg = s_cfg_idx, .batch = nwin,
+        .aux0 = s_win_drop, .aux3 = lat, .aux4 = cyc,
+        .err = err, .anom = state, .edge_flag = flipped,
+      };
+      (void)xQueueSend(s_logq, &m, 0u);   /* 드롭돼도 무해 - 통계는 아래 배치가 낸다 */
+    }
+
+    if (s_ae_busy != 0u)
+    {
+      skip++;
+      continue;
+    }
+
+    s_ae_cyc[idx] = cyc;
+    s_ae_lat[idx] = lat;
+    idx++;
+
+    if (idx >= AE_BATCH_N)
+    {
+      app_msg_t mc = {
+        .type = APP_MSG_AECYC, .cfg = s_cfg_idx, .n = AE_BATCH_N, .batch = batch,
+        .buf = s_ae_cyc, .owner = NULL,
+        .aux0 = acts, .aux2 = skip, .aux3 = bdrop,
+      };
+      app_msg_t ml = {
+        .type = APP_MSG_AELAT, .cfg = s_cfg_idx, .n = AE_BATCH_N, .batch = batch,
+        .buf = s_ae_lat, .owner = &s_ae_busy, .aux2 = skip,
+      };
+
+      /* 두 배열이라 메시지도 둘이다. 소유권 반납은 **뒤엣것**에만 건다 -
+       * 로그 태스크가 FIFO로 처리하므로 뒤엣것이 끝났다면 앞엣것도 끝났다.
+       *
+       * 자리를 먼저 확인하는 건 흔한 경우에 둘을 같이 넣기 위해서지, 원자성을
+       * 보장하지는 않는다 - 확인과 전송 사이에 상위 태스크가 큐를 채울 수 있다.
+       * 그래서 **실패 경로를 반드시 닫는다.** ml이 못 들어가면 소유권을 놓아줄
+       * 주체가 없어져 s_ae_busy가 영영 1로 남고, 그 뒤 모든 배치가 조용히 막힌다.
+       *
+       * mc만 들어간 채 busy를 푸는 게 이론상 "로그가 정렬 중인 배열에 덮어쓰기"인데,
+       * 정렬은 ms 단위고 다음 배치가 차는 데는 82초 걸린다. 도달 불가능한 창이다. */
+      if (uxQueueSpacesAvailable(s_logq) >= 2u)
+      {
+        s_ae_busy = 1u;
+        if ((xQueueSend(s_logq, &mc, 0u) != pdTRUE) ||
+            (xQueueSend(s_logq, &ml, 0u) != pdTRUE))
+        {
+          s_ae_busy = 0u;
+          bdrop++;
+        }
+      }
+      else
+      {
+        bdrop++;               /* 큐 포화 - 이 배치는 통째로 못 나갔다 */
+      }
+      idx = 0u; skip = 0u;
       batch++;
     }
   }
@@ -518,9 +788,14 @@ static void prv_log_task(void *arg)
 
   (void)arg;
 
-  printf("\r\n=== W3 sweep up: action(%u) sensor(%u) log(%u) load(%u/%u) ===\r\n",
+  printf("\r\n=== W3 up: action(%u) sensor(%u) log(%u) infer(%u) load(%u/%u) ===\r\n",
          (unsigned)PRIO_ACTION, (unsigned)PRIO_SENSOR, (unsigned)PRIO_LOG,
-         (unsigned)PRIO_LOAD_LOW, (unsigned)PRIO_LOAD_HIGH);
+         (unsigned)PRIO_INFER, (unsigned)PRIO_LOAD_LOW, (unsigned)PRIO_LOAD_HIGH);
+  printf("edge: win=%lu hop=%lu (%lums/추론) debounce=%lu batch=%lu (%lu초)\r\n",
+         (unsigned long)WIN_N, (unsigned long)WIN_HOP,
+         (unsigned long)(WIN_HOP * SENSOR_PERIOD_MS), (unsigned long)AE_DEBOUNCE_N,
+         (unsigned long)AE_BATCH_N,
+         (unsigned long)(AE_BATCH_N * WIN_HOP * SENSOR_PERIOD_MS / 1000u));
   printf("event=%lums deadline=%lums(관측 기준선) batch: act=%lu sen=%lu inf=%lu warmup=%lu\r\n",
          (unsigned long)EVENT_PERIOD_MS, (unsigned long)DEADLINE_MS,
          (unsigned long)ACT_BATCH_N, (unsigned long)SEN_BATCH_N,
@@ -550,8 +825,26 @@ static void prv_log_task(void *arg)
       continue;
     }
 
-    dwt_stats(m.buf, m.n, &st);
     cfg = s_cfg[m.cfg].name;
+
+    /* EDGE는 배치가 아니라 윈도우 한 개짜리 결과라 통계를 뽑지 않는다.
+     * 오차는 정수라 그대로 찍고, 임계값과 나란히 둬서 판정 근거가 보이게 한다. */
+    if (m.type == APP_MSG_EDGE)
+    {
+      printf("[EDGE]%s win=%-4lu cfg=%-11s err=%-8ld thr=%d %s"
+             " infer=%lu.%luus lat=%lu.%luus drop=%lu\r\n",
+             m.edge_flag ? "*" : " ",
+             (unsigned long)m.batch, cfg, (long)m.err, AE_THRESHOLD_INT,
+             m.anom ? "ANOMALY" : "normal ",
+             (unsigned long)(prv_cyc_to_us10(m.aux4) / 10u),
+             (unsigned long)(prv_cyc_to_us10(m.aux4) % 10u),
+             (unsigned long)(prv_cyc_to_us10(m.aux3) / 10u),
+             (unsigned long)(prv_cyc_to_us10(m.aux3) % 10u),
+             (unsigned long)m.aux0);
+      continue;   /* 소유권 반납 대상이 아니다 (buf == NULL) */
+    }
+
+    dwt_stats(m.buf, m.n, &st);
 
     if (m.type == APP_MSG_ACT)
     {
@@ -579,17 +872,40 @@ static void prv_log_task(void *arg)
              (unsigned long)m.aux2);
       dwt_csv_row_cfg("load_job", cfg, &st);
     }
+    else if (m.type == APP_MSG_AECYC)
+    {
+      uint32_t med10 = prv_cyc_to_us10(st.med);
+      uint32_t max10 = prv_cyc_to_us10(st.max);
+      printf("[AE ] cfg=%-11s batch=%lu n=%u infer_us med=%lu.%lu max=%lu.%lu"
+             " (min=%lu cyc) act=%lu skip=%lu bdrop=%lu\r\n",
+             cfg, (unsigned long)m.batch, (unsigned)m.n,
+             (unsigned long)(med10 / 10u), (unsigned long)(med10 % 10u),
+             (unsigned long)(max10 / 10u), (unsigned long)(max10 % 10u),
+             (unsigned long)st.min, (unsigned long)m.aux0,
+             (unsigned long)m.aux2, (unsigned long)m.aux3);
+      dwt_csv_row_cfg("inference_cycles", cfg, &st);
+    }
+    else if (m.type == APP_MSG_AELAT)
+    {
+      uint32_t med10 = prv_cyc_to_us10(st.med);
+      uint32_t max10 = prv_cyc_to_us10(st.max);
+      printf("[AE ] cfg=%-11s batch=%lu n=%u decide_us med=%lu.%lu max=%lu.%lu\r\n",
+             cfg, (unsigned long)m.batch, (unsigned)m.n,
+             (unsigned long)(med10 / 10u), (unsigned long)(med10 % 10u),
+             (unsigned long)(max10 / 10u), (unsigned long)(max10 % 10u));
+      dwt_csv_row_cfg("infer_decide_latency", cfg, &st);
+    }
     else
     {
       uint32_t med10 = prv_cyc_to_us10(st.med) / 10u;   /* 주기는 us 정수면 충분 */
       printf("[SEN] cfg=%-11s batch=%lu n=%u interval_us med=%lu p99=%lu max=%lu"
-             " fail=%lu skip=%lu win=%lu a=(%d,%d,%d) g=(%d,%d,%d)\r\n",
+             " fail=%lu skip=%lu sat=%lu win=%lu a=(%d,%d,%d) g=(%d,%d,%d)\r\n",
              cfg, (unsigned long)m.batch, (unsigned)m.n,
              (unsigned long)med10,
              (unsigned long)(prv_cyc_to_us10(st.p99) / 10u),
              (unsigned long)(prv_cyc_to_us10(st.max) / 10u),
              (unsigned long)m.aux0, (unsigned long)m.aux2,
-             (unsigned long)m.aux3,
+             (unsigned long)m.aux4, (unsigned long)m.aux3,
              (int)m.ax, (int)m.ay, (int)m.az,
              (int)m.gx, (int)m.gy, (int)m.gz);
       dwt_csv_row_cfg("imu_interval_task", cfg, &st);
@@ -646,12 +962,17 @@ void app_tasks_init(void)
 
   (void)xTaskCreateStatic(prv_log_task, "log", STK_LOG, NULL,
                           PRIO_LOG, s_stk_log, &s_tcb_log);
-  s_load_task = xTaskCreateStatic(prv_load_task, "load", STK_INFER, NULL,
-                                  s_cfg[0].prio, s_stk_infer, &s_tcb_infer);
+  s_load_task = xTaskCreateStatic(prv_load_task, "load", STK_LOAD, NULL,
+                                  s_cfg[0].prio, s_stk_load, &s_tcb_load);
+  /* 추론 태스크는 센서보다 **먼저** 만든다 - 센서가 첫 윈도우에서
+   * xTaskNotifyGive(s_infer_task)를 부르는데, 그때 핸들이 NULL이면 죽는다. */
+  s_infer_task = xTaskCreateStatic(prv_infer_task, "infer", STK_INFER, NULL,
+                                   PRIO_INFER, s_stk_infer, &s_tcb_infer);
   (void)xTaskCreateStatic(prv_sensor_task, "sensor", STK_SENSOR, NULL,
                           PRIO_SENSOR, s_stk_sensor, &s_tcb_sensor);
   s_action_task = xTaskCreateStatic(prv_action_task, "action", STK_ACTION, NULL,
                                     PRIO_ACTION, s_stk_action, &s_tcb_action);
   configASSERT(s_action_task != NULL);
   configASSERT(s_load_task != NULL);
+  configASSERT(s_infer_task != NULL);
 }

@@ -31,10 +31,15 @@ step "5/6 순수 C 순전파 비트정확 검증 (펌웨어에 올릴 코드 그
 make -C cref clean >/dev/null
 make -C cref test
 
-step "6/6 그래프 → measurements/plots/"
+step "6/7 그래프 → measurements/plots/"
 python3 plot.py
 
+step "7/7 펌웨어 트리로 커널·헤더 동기화 (cref → firmware/Core)"
+./sync_firmware.sh
+
 printf '\n\033[1m완료.\033[0m 산출물:\n'
-printf '  cref/model_weights.h            펌웨어가 컴파일해 넣을 유일한 파일\n'
+printf '  cref/model_weights.h            가중치 + 파이프라인 상수 (int8 + float32 대조군)\n'
+printf '  cref/ae_testvec_board.h         보드 자가검증용 윈도우 2개 + 기대 출력\n'
+printf '  ../firmware/Core/               위 파일들의 사본 (원본은 cref)\n'
 printf '  ../measurements/accuracy.csv    float vs int8 정확도\n'
 printf '  ../measurements/plots/*.png     그래프 4장\n'

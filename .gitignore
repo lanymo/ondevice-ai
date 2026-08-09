@@ -20,7 +20,10 @@ mini-infer/tests/data/
 
 # stm32-edge/model — 시드에서 결정적으로 재생성되는 것들 (README의 재현 절차 참고)
 # 주의: .gitignore는 줄 끝 주석을 지원하지 않는다. 주석은 반드시 별도 줄에.
-# synth_data.py 생성 CSV (실측 CSV를 넣을 자리이기도 하다)
+# 학습 데이터 CSV — 생성물이라 추적하지 않는다.
+# W3부터는 **보드 실측**이고, 원본은 measurements/raw/w3_collect_final.log 다:
+#   python3 stm32-edge/model/import_board_csv.py measurements/raw/w3_collect_final.log
+# (합성으로 되돌리려면 synth_data.py. manifest_synth.csv에 옛 manifest가 보존돼 있다)
 stm32-edge/model/data/
 # 학습된 npz 등 중간 산출물
 stm32-edge/model/artifacts/

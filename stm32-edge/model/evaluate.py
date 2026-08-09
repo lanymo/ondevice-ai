@@ -18,7 +18,7 @@ from autoencoder import MLPAutoencoder
 from baseline import (Mahalanobis, MaxAbsZ, confusion, roc_auc,
                       threshold_from_normal)
 from config import ARTIFACT_DIR, MEAS_DIR, SEED, THRESHOLD_PCT, VAL_FRAC
-from dataset import is_anomaly, load_split
+from dataset import is_anomaly, load_split, read_manifest
 from features import Normalizer
 from quantize import calibrate
 from train import split_train_val
@@ -174,9 +174,16 @@ def main():
         print()
 
     rows, qae, _, _ = evaluate_all(margin, args.seed, verbose=True)
+    # data_source를 하드코딩하면 안 된다 — 실측으로 갈아끼운 뒤에도 "synthetic_proxy"라
+    # 적혀 있으면 CSV가 거짓말을 하게 되고, 그건 이 프로젝트에서 제일 하면 안 되는 짓이다.
+    # manifest의 파일명으로 판정한다(import_board_csv.py가 board_* 로 쓴다).
+    files = [f for f, _s, _l in read_manifest()]
+    n_board = sum(1 for f in files if f.startswith("board_"))
+    source = ("board_measured" if n_board == len(files) else
+              "synthetic_proxy" if n_board == 0 else "mixed")
     write_csv(rows, MEAS_DIR / "accuracy.csv",
               extra={"in_margin": margin, "threshold_pct": THRESHOLD_PCT,
-                     "data_source": "synthetic_proxy"})
+                     "data_source": source})
 
     np.savez(ARTIFACT_DIR / "int8_model.npz",
              in_scale=qae.in_scale, in_zp=qae.in_zp, in_margin=margin,

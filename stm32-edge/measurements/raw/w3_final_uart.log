@@ -1,0 +1,797 @@
+[EDGE]  win=311  cfg=B-mono      err=220112   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=B-mono      batch=77 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=311 a=(732,472,16516) g=(-941,401,-344)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522280
+[EDGE]  win=312  cfg=B-mono      err=224490   thr=4294 ANOMALY infer=716.0us lat=742.5us drop=0
+[EDGE]  win=313  cfg=B-mono      err=217434   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=314  cfg=B-mono      err=220430   thr=4294 ANOMALY infer=713.3us lat=739.8us drop=0
+[EDGE]  win=315  cfg=B-mono      err=227457   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[SEN] cfg=B-mono      batch=78 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=315 a=(668,468,16568) g=(-960,399,-350)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522280
+[EDGE]  win=316  cfg=B-mono      err=222163   thr=4294 ANOMALY infer=713.3us lat=739.8us drop=0
+[EDGE]  win=317  cfg=B-mono      err=234277   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[EDGE]  win=318  cfg=B-mono      err=234885   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[ACT] cfg=B-mono      batch=30 n=128 lat_us med=9.1 p99=20008.9 max=20008.9 miss(1ms)=48 lost=0 skip=0
+action_latency,B-mono,128,754,769,1680755,1680755
+[EDGE]  win=319  cfg=B-mono      err=214560   thr=4294 ANOMALY infer=2302.2us lat=40578.8us drop=0
+[SEN] cfg=B-mono      batch=79 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=319 a=(624,476,16508) g=(-946,390,-332)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522280
+[EDGE]  win=320  cfg=B-mono      err=213262   thr=4294 ANOMALY infer=716.1us lat=3880.2us drop=0
+[INF] cfg=B-mono      batch=17 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680096,1680112,1680125,1680125
+[EDGE]  win=321  cfg=B-mono      err=216898   thr=4294 ANOMALY infer=713.7us lat=2308.9us drop=0
+[EDGE]  win=322  cfg=B-mono      err=214461   thr=4294 ANOMALY infer=713.6us lat=2308.8us drop=0
+[EDGE]  win=323  cfg=B-mono      err=216438   thr=4294 ANOMALY infer=716.0us lat=2311.4us drop=0
+[SEN] cfg=B-mono      batch=80 n=256 interval_us med=10000 p99=30027 max=30034 fail=0 skip=0 sat=0 win=323 a=(648,476,16608) g=(-952,399,-341)
+imu_interval_task,B-mono,256,131770,840000,2522278,2522859
+[EDGE]  win=324  cfg=B-mono      err=234871   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=325  cfg=B-mono      err=236465   thr=4294 ANOMALY infer=716.0us lat=742.5us drop=0
+[EDGE]  win=326  cfg=B-mono      err=208504   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[EDGE]  win=327  cfg=B-mono      err=202114   thr=4294 ANOMALY infer=713.3us lat=739.9us drop=0
+[SEN] cfg=B-mono      batch=81 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=327 a=(648,504,16436) g=(-963,403,-342)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522280
+
+=== stm32-edge W2 bringup ===
+SystemCoreClock : 84000000 Hz
+HAL tick        : TIM10 (SysTick은 FreeRTOS 소유)
+DWT 32bit wrap  : 51130 ms
+
+--- DWT selftest ---
+[1] alive    : PASS  193582 -> 194607
+[2] scale    : PASS  expect=8400000 meas=8466483 err=+7 permille
+[3] overhead : n=100 min=24 med=24 p99=24 max=24 (cycles)
+--- DWT selftest: PASS ---
+tag,n,min,median,p99,max
+dwt_overhead,100,24,24,24,24
+
+--- I2C bus scan ---
+  found 0x68
+--- scan done: 1 device(s) ---
+
+--- MPU6050 bringup ---
+[2] who_am_i : PASS  0x70 (MPU-6500)
+[3] wake     : PASS  SLEEP cleared
+[3b] config  : PASS  SMPLRT_DIV=0x00 CONFIG=0x03 GYRO_CFG=0x00 ACCEL_CFG=0x00
+     accel AFS_SEL=0 -> +-2g (16384 LSB/g), gyro FS_SEL=0 -> +-250dps
+     DLPF_CFG=3 -> accel BW 44Hz (나이퀴스트 50Hz 대비 좁음(OK))
+[4] accel    : 2초간 20샘플 - 지금 보드를 기울여 보세요
+     i,ax,ay,az
+     0,632,496,16452
+     1,584,452,16500
+     2,688,468,16372
+     3,708,532,16284
+     4,588,508,16532
+     5,672,476,16444
+     6,612,488,16472
+     7,676,524,16488
+     8,664,512,16500
+     9,604,480,16500
+     10,652,480,16480
+     11,684,480,16528
+     12,592,496,16528
+     13,608,504,16440
+     14,640,428,16436
+     15,664,476,16520
+     16,632,452,16528
+     17,624,472,16444
+     18,624,444,16476
+     19,604,420,16508
+     (참고: 설정된 +-2g에서 1g = 16384 LSB, 포화선 32000)
+[5] stream   : n=100 (target 100Hz)
+     interval cycles  med=924007 p99=924010 max=924010  -> 11.00 ms (med)
+     read cost cycles med=70486 p99=70486 max=70486
+tag,n,min,median,p99,max
+imu_interval,100,923983,924007,924010,924010
+imu_read_cost,100,70485,70486,70486,70486
+--- MPU6050 bringup: PASS ---
+
+--- AE 추론 자가검증 + 커널 비교 ---
+모델 24->...->24, 특징 24, 윈도우 128샘플(100 Hz), 임계값 int=4294
+[6] infer(normal  ): PASS  판정 int8=정상 float32=정상 (기대 정상)
+[6] infer(impact  ): PASS  판정 int8=이상 float32=이상 (기대 이상)
+[7] kernel   : float32 vs int8 순전파 (-> measurements/kernel_compare.csv)
+tag,config,n,min,median,p99,max
+  [normal] n=200 (워밍업 16 제외)
+     feat+norm      min= 28816 med= 28818 p99= 29033 max= 29033 cyc  (343.0 / 343.0 / 345.6 us)
+kernel_feat,normal,200,28816,28818,29033,29033
+     quantize       min=  1347 med=  1347 p99=  1550 max=  1563 cyc  (16.0 / 16.0 / 18.6 us)
+kernel_quant,normal,200,1347,1347,1550,1563
+     fwd int8       min= 11616 med= 11625 p99= 11834 max= 11836 cyc  (138.2 / 138.3 / 140.9 us)
+kernel_fwd_i8,normal,200,11616,11625,11834,11836
+     fwd float32    min=  7267 med=  7269 p99=  7483 max=  7484 cyc  (86.5 / 86.5 / 89.0 us)
+kernel_fwd_f32,normal,200,7267,7269,7483,7484
+     -> int8/float32 중앙값 비 = 1.59  (float32가 빠름)
+  [impact] n=200 (워밍업 16 제외)
+     feat+norm      min= 28787 med= 28789 p99= 29003 max= 29004 cyc  (342.7 / 342.7 / 345.2 us)
+kernel_feat,impact,200,28787,28789,29003,29004
+     quantize       min=  1365 med=  1365 p99=  1579 max=  1580 cyc  (16.2 / 16.2 / 18.8 us)
+kernel_quant,impact,200,1365,1365,1579,1580
+     fwd int8       min= 11551 med= 11560 p99= 11769 max= 11769 cyc  (137.5 / 137.6 / 140.1 us)
+kernel_fwd_i8,impact,200,11551,11560,11769,11769
+     fwd float32    min=  7284 med=  7284 p99=  7499 max=  7500 cyc  (86.7 / 86.7 / 89.2 us)
+kernel_fwd_f32,impact,200,7284,7284,7499,7500
+     -> int8/float32 중앙값 비 = 1.58  (float32가 빠름)
+     (입력별 차이가 크면 추론 시간이 데이터 의존적이라는 뜻 = WCET 논점)
+--- AE bench: PASS ---
+
+=== W3 up: action(48) sensor(40) log(16) infer(12) load(8/50) ===
+edge: win=128 hop=64 (640ms/추론) debounce=2 batch=128 (81초)
+event=50ms deadline=1ms(관측 기준선) batch: act=128 sen=256 inf=128 warmup=16
+load: busy=20ms period=53ms (=37%, 전 config 동일) cfg마다 4배치
+  cfg[0] L0-noload   load=off prio=8  chunks=1
+  cfg[1] A-mono      load=on  prio=8  chunks=1
+  cfg[2] B-mono      load=on  prio=50 chunks=1
+  cfg[3] C-chunk5ms  load=on  prio=50 chunks=4
+  cfg[4] D-chunk1ms  load=on  prio=50 chunks=20
+tag,config,n,min,median,p99,max
+[EDGE]  win=1    cfg=L0-noload   err=224660   thr=4294 normal  infer=713.3us lat=739.7us drop=0
+[EDGE]* win=2    cfg=L0-noload   err=216694   thr=4294 ANOMALY infer=713.5us lat=740.2us drop=0
+[EDGE]  win=3    cfg=L0-noload   err=215433   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=L0-noload   batch=0 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=3 a=(688,416,16420) g=(-950,396,-347)
+imu_interval_task,L0-noload,256,839820,840000,840180,840180
+[EDGE]  win=4    cfg=L0-noload   err=213523   thr=4294 ANOMALY infer=713.3us lat=739.9us drop=0
+[EDGE]  win=5    cfg=L0-noload   err=214319   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=6    cfg=L0-noload   err=214379   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=7    cfg=L0-noload   err=215641   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[SEN] cfg=L0-noload   batch=1 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=7 a=(616,424,16452) g=(-957,396,-343)
+imu_interval_task,L0-noload,256,839820,840000,840180,840180
+[EDGE]  win=8    cfg=L0-noload   err=252492   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[EDGE]  win=9    cfg=L0-noload   err=246170   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[EDGE]  win=10   cfg=L0-noload   err=239923   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[ACT] cfg=L0-noload   batch=0 n=128 lat_us med=9.1 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,769,769,1257,1257
+[EDGE]  win=11   cfg=L0-noload   err=245044   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=L0-noload   batch=2 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=11 a=(660,560,16468) g=(-941,396,-341)
+imu_interval_task,L0-noload,256,839820,840000,840180,840180
+[EDGE]  win=12   cfg=L0-noload   err=216509   thr=4294 ANOMALY infer=713.3us lat=739.9us drop=0
+[EDGE]  win=13   cfg=L0-noload   err=263563   thr=4294 ANOMALY infer=713.5us lat=740.2us drop=0
+[EDGE]  win=14   cfg=L0-noload   err=261758   thr=4294 ANOMALY infer=713.5us lat=740.2us drop=0
+[EDGE]  win=15   cfg=L0-noload   err=223382   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=L0-noload   batch=3 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=15 a=(572,396,16436) g=(-945,386,-352)
+imu_interval_task,L0-noload,256,839820,840000,840180,840180
+[EDGE]  win=16   cfg=L0-noload   err=259693   thr=4294 ANOMALY infer=713.6us lat=740.1us drop=0
+[EDGE]  win=17   cfg=L0-noload   err=246449   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[EDGE]  win=18   cfg=L0-noload   err=234240   thr=4294 ANOMALY infer=713.3us lat=739.8us drop=0
+[EDGE]  win=19   cfg=L0-noload   err=222123   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[SEN] cfg=L0-noload   batch=4 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=19 a=(652,448,16428) g=(-950,398,-350)
+imu_interval_task,L0-noload,256,839820,840000,840180,840180
+[EDGE]  win=20   cfg=L0-noload   err=216428   thr=4294 ANOMALY infer=713.3us lat=739.8us drop=0
+[ACT] cfg=L0-noload   batch=1 n=128 lat_us med=9.1 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,769,769,1257,1257
+[EDGE]  win=21   cfg=L0-noload   err=218833   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=22   cfg=L0-noload   err=219160   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[EDGE]  win=23   cfg=L0-noload   err=216877   thr=4294 ANOMALY infer=713.2us lat=739.8us drop=0
+[SEN] cfg=L0-noload   batch=5 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=23 a=(660,488,16376) g=(-949,393,-347)
+imu_interval_task,L0-noload,256,839820,840000,840180,840180
+[EDGE]  win=24   cfg=L0-noload   err=218794   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[EDGE]  win=25   cfg=L0-noload   err=215383   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=26   cfg=L0-noload   err=215075   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[EDGE]  win=27   cfg=L0-noload   err=216963   thr=4294 ANOMALY infer=713.5us lat=740.2us drop=0
+[SEN] cfg=L0-noload   batch=6 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=27 a=(660,440,16512) g=(-955,395,-335)
+imu_interval_task,L0-noload,256,839806,840000,840180,840194
+[EDGE]  win=28   cfg=L0-noload   err=216454   thr=4294 ANOMALY infer=716.2us lat=742.9us drop=0
+[EDGE]  win=29   cfg=L0-noload   err=214916   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[EDGE]  win=30   cfg=L0-noload   err=214566   thr=4294 ANOMALY infer=713.3us lat=739.9us drop=0
+[ACT] cfg=L0-noload   batch=2 n=128 lat_us med=9.1 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,759,769,1257,1257
+[EDGE]  win=31   cfg=L0-noload   err=215371   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[SEN] cfg=L0-noload   batch=7 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=31 a=(624,444,16480) g=(-953,402,-341)
+imu_interval_task,L0-noload,256,839820,840000,840180,840180
+[EDGE]  win=32   cfg=L0-noload   err=224291   thr=4294 ANOMALY infer=713.3us lat=739.8us drop=0
+[EDGE]  win=33   cfg=L0-noload   err=218370   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=34   cfg=L0-noload   err=217168   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=35   cfg=L0-noload   err=217070   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[SEN] cfg=L0-noload   batch=8 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=35 a=(676,480,16504) g=(-930,394,-337)
+imu_interval_task,L0-noload,256,839820,840000,840180,840180
+[EDGE]  win=36   cfg=L0-noload   err=216319   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=37   cfg=L0-noload   err=215126   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[EDGE]  win=38   cfg=L0-noload   err=215595   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[EDGE]  win=39   cfg=L0-noload   err=217348   thr=4294 ANOMALY infer=713.6us lat=740.1us drop=0
+[SEN] cfg=L0-noload   batch=9 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=39 a=(640,460,16376) g=(-945,381,-360)
+imu_interval_task,L0-noload,256,839820,840000,840180,840180
+[EDGE]  win=40   cfg=L0-noload   err=217907   thr=4294 ANOMALY infer=713.5us lat=740.2us drop=0
+[ACT] cfg=L0-noload   batch=3 n=128 lat_us med=9.1 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,765,769,1257,1257
+[EDGE]  win=41   cfg=A-mono      err=219326   thr=4294 ANOMALY infer=713.3us lat=740.0us drop=0
+[EDGE]  win=42   cfg=A-mono      err=231463   thr=4294 ANOMALY infer=713.2us lat=739.8us drop=0
+[EDGE]  win=43   cfg=A-mono      err=238748   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=A-mono      batch=10 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=43 a=(656,412,16412) g=(-949,396,-346)
+imu_interval_task,A-mono,256,839800,840000,840180,840194
+[EDGE]  win=44   cfg=A-mono      err=215828   thr=4294 ANOMALY infer=713.5us lat=740.1us drop=0
+[EDGE]  win=45   cfg=A-mono      err=214946   thr=4294 ANOMALY infer=713.5us lat=740.1us drop=0
+[EDGE]  win=46   cfg=A-mono      err=216940   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=47   cfg=A-mono      err=217334   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=A-mono      batch=11 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=47 a=(632,452,16484) g=(-955,397,-348)
+imu_interval_task,A-mono,256,839800,840000,840180,840180
+[EDGE]  win=48   cfg=A-mono      err=217763   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[EDGE]  win=49   cfg=A-mono      err=217401   thr=4294 ANOMALY infer=713.2us lat=739.8us drop=0
+[EDGE]  win=50   cfg=A-mono      err=213982   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[EDGE]  win=51   cfg=A-mono      err=219707   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[SEN] cfg=A-mono      batch=12 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=51 a=(608,448,16572) g=(-947,383,-347)
+imu_interval_task,A-mono,256,839800,840000,840180,840180
+[ACT] cfg=A-mono      batch=4 n=128 lat_us med=9.1 p99=9.1 max=17.5 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,757,769,771,1475
+[EDGE]  win=52   cfg=A-mono      err=218183   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[INF] cfg=A-mono      batch=0 n=128 job_us med=20001 p99=30480 max=37799 skip=0
+load_job,A-mono,128,1680096,1680127,2560350,3175120
+[EDGE]  win=53   cfg=A-mono      err=215673   thr=4294 ANOMALY infer=713.5us lat=740.2us drop=0
+[EDGE]  win=54   cfg=A-mono      err=218176   thr=4294 ANOMALY infer=713.6us lat=740.3us drop=0
+[EDGE]  win=55   cfg=A-mono      err=225577   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[SEN] cfg=A-mono      batch=13 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=55 a=(628,432,16536) g=(-969,395,-356)
+imu_interval_task,A-mono,256,839802,840000,840180,840180
+[EDGE]  win=56   cfg=A-mono      err=219646   thr=4294 ANOMALY infer=713.5us lat=740.1us drop=0
+[EDGE]  win=57   cfg=A-mono      err=218790   thr=4294 ANOMALY infer=713.2us lat=739.7us drop=0
+[EDGE]  win=58   cfg=A-mono      err=217929   thr=4294 ANOMALY infer=713.3us lat=739.8us drop=0
+[EDGE]  win=59   cfg=A-mono      err=217630   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=A-mono      batch=14 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=59 a=(668,440,16444) g=(-945,398,-345)
+imu_interval_task,A-mono,256,839800,840000,840180,840180
+[EDGE]  win=60   cfg=A-mono      err=217459   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=61   cfg=A-mono      err=224201   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[ACT] cfg=A-mono      batch=5 n=128 lat_us med=9.1 p99=17.5 max=17.5 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,757,769,1475,1475
+[EDGE]  win=62   cfg=A-mono      err=220569   thr=4294 ANOMALY infer=713.6us lat=740.1us drop=0
+[INF] cfg=A-mono      batch=1 n=128 job_us med=20001 p99=33277 max=49193 skip=0
+load_job,A-mono,128,1680096,1680127,2795272,4132262
+[EDGE]  win=63   cfg=A-mono      err=214793   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=A-mono      batch=15 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=63 a=(668,484,16396) g=(-943,396,-353)
+imu_interval_task,A-mono,256,839802,840000,840180,840180
+[EDGE]  win=64   cfg=A-mono      err=215268   thr=4294 ANOMALY infer=713.6us lat=740.1us drop=0
+[EDGE]  win=65   cfg=A-mono      err=221652   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[EDGE]  win=66   cfg=A-mono      err=217740   thr=4294 ANOMALY infer=713.5us lat=740.2us drop=0
+[EDGE]  win=67   cfg=A-mono      err=213410   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[SEN] cfg=A-mono      batch=16 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=67 a=(624,440,16448) g=(-937,389,-355)
+imu_interval_task,A-mono,256,839802,840000,840180,840180
+[EDGE]  win=68   cfg=A-mono      err=218744   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=69   cfg=A-mono      err=222643   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[EDGE]  win=70   cfg=A-mono      err=213916   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[EDGE]  win=71   cfg=A-mono      err=215320   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=A-mono      batch=17 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=71 a=(692,480,16568) g=(-952,403,-335)
+imu_interval_task,A-mono,256,839800,840000,840180,840180
+[ACT] cfg=A-mono      batch=6 n=128 lat_us med=9.1 p99=17.5 max=17.5 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,757,769,1475,1475
+[EDGE]  win=72   cfg=A-mono      err=218414   thr=4294 ANOMALY infer=713.6us lat=740.1us drop=0
+[EDGE]  win=73   cfg=A-mono      err=230229   thr=4294 ANOMALY infer=713.2us lat=739.7us drop=0
+[INF] cfg=A-mono      batch=2 n=128 job_us med=20001 p99=31888 max=44377 skip=0
+load_job,A-mono,128,1680096,1680127,2678634,3727680
+[EDGE]  win=74   cfg=A-mono      err=215405   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[EDGE]  win=75   cfg=A-mono      err=222528   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[SEN] cfg=A-mono      batch=18 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=75 a=(612,524,16436) g=(-955,400,-352)
+imu_interval_task,A-mono,256,839800,840000,840180,840180
+[EDGE]  win=76   cfg=A-mono      err=217760   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=77   cfg=A-mono      err=216615   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=78   cfg=A-mono      err=222326   thr=4294 ANOMALY infer=713.6us lat=740.1us drop=0
+[EDGE]  win=79   cfg=A-mono      err=218990   thr=4294 ANOMALY infer=713.5us lat=740.2us drop=0
+[SEN] cfg=A-mono      batch=19 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=79 a=(636,428,16492) g=(-946,385,-344)
+imu_interval_task,A-mono,256,839790,840000,840180,840194
+[EDGE]  win=80   cfg=A-mono      err=218005   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[EDGE]  win=81   cfg=A-mono      err=219826   thr=4294 ANOMALY infer=716.0us lat=742.7us drop=0
+[ACT] cfg=A-mono      batch=7 n=128 lat_us med=9.1 p99=17.5 max=17.5 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,757,769,1475,1475
+[EDGE]  win=82   cfg=B-mono      err=222532   thr=4294 ANOMALY infer=716.0us lat=3880.0us drop=0
+[EDGE]  win=83   cfg=B-mono      err=216448   thr=4294 ANOMALY infer=713.5us lat=2308.7us drop=0
+[SEN] cfg=B-mono      batch=20 n=256 interval_us med=10000 p99=30017 max=30026 fail=0 skip=0 sat=0 win=83 a=(656,464,16404) g=(-943,398,-332)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522223
+[EDGE]  win=84   cfg=B-mono      err=217574   thr=4294 ANOMALY infer=716.1us lat=2311.5us drop=0
+[EDGE]  win=85   cfg=B-mono      err=216113   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=86   cfg=B-mono      err=215660   thr=4294 ANOMALY infer=713.6us lat=740.1us drop=0
+[EDGE]  win=87   cfg=B-mono      err=223611   thr=4294 ANOMALY infer=715.9us lat=742.4us drop=0
+[SEN] cfg=B-mono      batch=21 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=87 a=(640,504,16508) g=(-960,406,-350)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522280
+[EDGE]  win=88   cfg=B-mono      err=223351   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=89   cfg=B-mono      err=220286   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=90   cfg=B-mono      err=222581   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[EDGE]  win=91   cfg=B-mono      err=218729   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=B-mono      batch=22 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=91 a=(700,496,16560) g=(-949,397,-354)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522280
+[EDGE]  win=92   cfg=B-mono      err=219069   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[ACT] cfg=B-mono      batch=8 n=128 lat_us med=9.1 p99=20008.9 max=20008.9 miss(1ms)=47 lost=0 skip=0
+action_latency,B-mono,128,769,769,1680755,1680755
+[EDGE]  win=93   cfg=B-mono      err=219029   thr=4294 ANOMALY infer=713.5us lat=740.2us drop=0
+[INF] cfg=B-mono      batch=3 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680096,1680112,1680125,1680125
+[EDGE]  win=94   cfg=B-mono      err=219839   thr=4294 ANOMALY infer=713.3us lat=740.0us drop=0
+[EDGE]  win=95   cfg=B-mono      err=224325   thr=4294 ANOMALY infer=716.0us lat=3880.1us drop=0
+[SEN] cfg=B-mono      batch=23 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=95 a=(616,488,16608) g=(-952,401,-348)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522280
+[EDGE]  win=96   cfg=B-mono      err=218660   thr=4294 ANOMALY infer=713.4us lat=2308.8us drop=0
+[EDGE]  win=97   cfg=B-mono      err=215992   thr=4294 ANOMALY infer=713.6us lat=2308.8us drop=0
+[EDGE]  win=98   cfg=B-mono      err=223070   thr=4294 ANOMALY infer=715.9us lat=2311.2us drop=0
+[EDGE]  win=99   cfg=B-mono      err=217006   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=B-mono      batch=24 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=99 a=(672,488,16520) g=(-951,397,-356)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522280
+[EDGE]  win=100  cfg=B-mono      err=214603   thr=4294 ANOMALY infer=716.0us lat=742.5us drop=0
+[EDGE]  win=101  cfg=B-mono      err=219887   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[EDGE]  win=102  cfg=B-mono      err=217088   thr=4294 ANOMALY infer=713.3us lat=739.9us drop=0
+[ACT] cfg=B-mono      batch=9 n=128 lat_us med=9.1 p99=20008.9 max=20008.9 miss(1ms)=47 lost=0 skip=0
+action_latency,B-mono,128,754,769,1680755,1680755
+[EDGE]  win=103  cfg=B-mono      err=219671   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[SEN] cfg=B-mono      batch=25 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=103 a=(636,480,16432) g=(-946,392,-346)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522278
+[INF] cfg=B-mono      batch=4 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680096,1680112,1680125,1680125
+[EDGE]  win=104  cfg=B-mono      err=225478   thr=4294 ANOMALY infer=713.5us lat=3101.8us drop=0
+[EDGE]  win=105  cfg=B-mono      err=225852   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[EDGE]  win=106  cfg=B-mono      err=222460   thr=4294 ANOMALY infer=713.3us lat=740.0us drop=0
+[EDGE]  win=107  cfg=B-mono      err=221648   thr=4294 ANOMALY infer=713.3us lat=740.0us drop=0
+[SEN] cfg=B-mono      batch=26 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=107 a=(648,488,16308) g=(-944,389,-358)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522280
+[EDGE]  win=108  cfg=B-mono      err=217999   thr=4294 ANOMALY infer=716.0us lat=3880.1us drop=0
+[EDGE]  win=109  cfg=B-mono      err=213970   thr=4294 ANOMALY infer=713.4us lat=2308.6us drop=0
+[EDGE]  win=110  cfg=B-mono      err=215783   thr=4294 ANOMALY infer=713.5us lat=2308.7us drop=0
+[EDGE]  win=111  cfg=B-mono      err=218067   thr=4294 ANOMALY infer=716.1us lat=2311.5us drop=0
+[SEN] cfg=B-mono      batch=27 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=111 a=(696,508,16428) g=(-944,403,-345)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522278
+[EDGE]  win=112  cfg=B-mono      err=219174   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[ACT] cfg=B-mono      batch=10 n=128 lat_us med=9.1 p99=20008.9 max=20008.9 miss(1ms)=48 lost=0 skip=0
+action_latency,B-mono,128,754,769,1680755,1680755
+[EDGE]  win=113  cfg=B-mono      err=217453   thr=4294 ANOMALY infer=716.0us lat=742.5us drop=0
+[EDGE]  win=114  cfg=B-mono      err=214784   thr=4294 ANOMALY infer=713.6us lat=740.1us drop=0
+[INF] cfg=B-mono      batch=5 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680096,1680112,1680125,1680125
+[EDGE]  win=115  cfg=B-mono      err=216625   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=B-mono      batch=28 n=256 interval_us med=9999 p99=30017 max=30027 fail=0 skip=0 sat=0 win=115 a=(636,468,16492) g=(-934,408,-347)
+imu_interval_task,B-mono,256,131770,839994,2521463,2522278
+[EDGE]  win=116  cfg=B-mono      err=230214   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[EDGE]  win=117  cfg=B-mono      err=228526   thr=4294 ANOMALY infer=713.3us lat=739.9us drop=0
+[EDGE]  win=118  cfg=B-mono      err=226724   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=119  cfg=B-mono      err=220678   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[SEN] cfg=B-mono      batch=29 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=119 a=(612,448,16508) g=(-950,395,-353)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522280
+[EDGE]  win=120  cfg=B-mono      err=213203   thr=4294 ANOMALY infer=713.6us lat=740.3us drop=0
+[EDGE]  win=121  cfg=B-mono      err=215202   thr=4294 ANOMALY infer=716.1us lat=3880.3us drop=0
+[EDGE]  win=122  cfg=B-mono      err=214972   thr=4294 ANOMALY infer=716.1us lat=3880.2us drop=0
+[ACT] cfg=B-mono      batch=11 n=128 lat_us med=9.1 p99=20008.9 max=20025.6 miss(1ms)=51 lost=0 skip=0
+action_latency,B-mono,128,754,769,1680755,1682151
+[EDGE]  win=123  cfg=C-chunk5ms  err=220739   thr=4294 ANOMALY infer=713.5us lat=7185.0us drop=0
+[SEN] cfg=C-chunk5ms  batch=30 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=123 a=(572,472,16492) g=(-958,400,-344)
+imu_interval_task,C-chunk5ms,256,131770,840000,2521463,2522280
+[EDGE]  win=124  cfg=C-chunk5ms  err=217572   thr=4294 ANOMALY infer=713.5us lat=2308.3us drop=0
+[EDGE]  win=125  cfg=C-chunk5ms  err=219922   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=126  cfg=C-chunk5ms  err=217626   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=127  cfg=C-chunk5ms  err=216618   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=C-chunk5ms  batch=31 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 sat=0 win=127 a=(616,480,16588) g=(-944,411,-352)
+imu_interval_task,C-chunk5ms,256,418605,840000,1261319,1261319
+[EDGE]  win=128  cfg=C-chunk5ms  err=222018   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[AE ] cfg=C-chunk5ms  batch=0 n=128 infer_us med=713.5 max=716.2 (min=59911 cyc) act=1 skip=0 bdrop=0
+inference_cycles,C-chunk5ms,128,59911,59935,60157,60161
+[AE ] cfg=C-chunk5ms  batch=0 n=128 decide_us med=740.0 max=7185.0
+infer_decide_latency,C-chunk5ms,128,62139,62165,325946,603540
+[EDGE]  win=129  cfg=C-chunk5ms  err=222273   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=130  cfg=C-chunk5ms  err=215182   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=131  cfg=C-chunk5ms  err=215890   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=C-chunk5ms  batch=32 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 sat=0 win=131 a=(640,528,16564) g=(-958,404,-341)
+imu_interval_task,C-chunk5ms,256,418605,840000,1261319,1261319
+[EDGE]  win=132  cfg=C-chunk5ms  err=215956   thr=4294 ANOMALY infer=713.5us lat=740.2us drop=0
+[EDGE]  win=133  cfg=C-chunk5ms  err=218307   thr=4294 ANOMALY infer=713.3us lat=740.0us drop=0
+[ACT] cfg=C-chunk5ms  batch=12 n=128 lat_us med=9.1 p99=5008.7 max=5008.7 miss(1ms)=49 lost=0 skip=0
+action_latency,C-chunk5ms,128,759,769,420736,420736
+[EDGE]  win=134  cfg=C-chunk5ms  err=222290   thr=4294 ANOMALY infer=2302.2us lat=40591.1us drop=0
+[INF] cfg=C-chunk5ms  batch=6 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931853,1932035,1932205,1932209
+[EDGE]  win=135  cfg=C-chunk5ms  err=231475   thr=4294 ANOMALY infer=13773.5us lat=13800.2us drop=0
+[SEN] cfg=C-chunk5ms  batch=33 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 sat=0 win=135 a=(628,416,16432) g=(-949,386,-355)
+imu_interval_task,C-chunk5ms,256,418605,840000,1261319,1261334
+[EDGE]  win=136  cfg=C-chunk5ms  err=219531   thr=4294 ANOMALY infer=713.6us lat=7200.0us drop=0
+[EDGE]  win=137  cfg=C-chunk5ms  err=226203   thr=4294 ANOMALY infer=713.4us lat=2308.4us drop=0
+[EDGE]  win=138  cfg=C-chunk5ms  err=222931   thr=4294 ANOMALY infer=2299.7us lat=2326.2us drop=0
+[EDGE]  win=139  cfg=C-chunk5ms  err=221322   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=C-chunk5ms  batch=34 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 sat=0 win=139 a=(656,412,16516) g=(-961,406,-330)
+imu_interval_task,C-chunk5ms,256,418605,840000,1261319,1261319
+[EDGE]  win=140  cfg=C-chunk5ms  err=217320   thr=4294 ANOMALY infer=713.8us lat=740.3us drop=0
+[EDGE]  win=141  cfg=C-chunk5ms  err=218839   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=142  cfg=C-chunk5ms  err=216171   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[EDGE]  win=143  cfg=C-chunk5ms  err=223074   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=C-chunk5ms  batch=35 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 sat=0 win=143 a=(672,440,16392) g=(-945,382,-352)
+imu_interval_task,C-chunk5ms,256,418605,840000,1261319,1261319
+[ACT] cfg=C-chunk5ms  batch=13 n=128 lat_us med=9.1 p99=5008.7 max=5008.7 miss(1ms)=48 lost=0 skip=0
+action_latency,C-chunk5ms,128,754,769,420736,420736
+[EDGE]  win=144  cfg=C-chunk5ms  err=243193   thr=4294 ANOMALY infer=2302.1us lat=40612.3us drop=0
+[EDGE]  win=145  cfg=C-chunk5ms  err=219885   thr=4294 ANOMALY infer=713.6us lat=740.1us drop=0
+[INF] cfg=C-chunk5ms  batch=7 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931861,1932035,1932205,1932205
+[EDGE]  win=146  cfg=C-chunk5ms  err=219163   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[EDGE]  win=147  cfg=C-chunk5ms  err=216606   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[SEN] cfg=C-chunk5ms  batch=36 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 sat=0 win=147 a=(688,432,16564) g=(-944,401,-352)
+imu_interval_task,C-chunk5ms,256,418605,840000,1261319,1261319
+[EDGE]  win=148  cfg=C-chunk5ms  err=216396   thr=4294 ANOMALY infer=713.5us lat=13766.5us drop=0
+[EDGE]  win=149  cfg=C-chunk5ms  err=214967   thr=4294 ANOMALY infer=12205.0us lat=12231.7us drop=0
+[EDGE]  win=150  cfg=C-chunk5ms  err=216078   thr=4294 ANOMALY infer=7314.4us lat=7341.1us drop=0
+[EDGE]  win=151  cfg=C-chunk5ms  err=218380   thr=4294 ANOMALY infer=713.6us lat=2308.8us drop=0
+[SEN] cfg=C-chunk5ms  batch=37 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 sat=0 win=151 a=(620,444,16580) g=(-958,420,-349)
+imu_interval_task,C-chunk5ms,256,418595,840000,1261319,1261319
+[EDGE]  win=152  cfg=C-chunk5ms  err=214448   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=153  cfg=C-chunk5ms  err=215333   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[ACT] cfg=C-chunk5ms  batch=14 n=128 lat_us med=9.1 p99=5008.7 max=5008.9 miss(1ms)=45 lost=0 skip=0
+action_latency,C-chunk5ms,128,759,769,420736,420753
+[EDGE]  win=154  cfg=C-chunk5ms  err=214950   thr=4294 ANOMALY infer=713.5us lat=17520.1us drop=0
+[EDGE]  win=155  cfg=C-chunk5ms  err=214169   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[SEN] cfg=C-chunk5ms  batch=38 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 sat=0 win=155 a=(712,464,16412) g=(-950,399,-325)
+imu_interval_task,C-chunk5ms,256,418605,840000,1261319,1261319
+[INF] cfg=C-chunk5ms  batch=8 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931870,1932035,1932205,1932205
+[EDGE]  win=156  cfg=C-chunk5ms  err=215093   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[EDGE]  win=157  cfg=C-chunk5ms  err=214281   thr=4294 ANOMALY infer=713.5us lat=740.1us drop=0
+[EDGE]  win=158  cfg=C-chunk5ms  err=214361   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=159  cfg=C-chunk5ms  err=214858   thr=4294 ANOMALY infer=713.5us lat=740.2us drop=0
+[SEN] cfg=C-chunk5ms  batch=39 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 sat=0 win=159 a=(720,472,16516) g=(-959,394,-351)
+imu_interval_task,C-chunk5ms,256,418597,840000,1261319,1261319
+[EDGE]  win=160  cfg=C-chunk5ms  err=221821   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[EDGE]  win=161  cfg=C-chunk5ms  err=221431   thr=4294 ANOMALY infer=713.4us lat=13767.2us drop=0
+[EDGE]  win=162  cfg=C-chunk5ms  err=215216   thr=4294 ANOMALY infer=12205.0us lat=12231.7us drop=0
+[EDGE]  win=163  cfg=C-chunk5ms  err=215233   thr=4294 ANOMALY infer=7316.3us lat=7343.0us drop=0
+[SEN] cfg=C-chunk5ms  batch=40 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 sat=0 win=163 a=(712,416,16420) g=(-950,394,-336)
+imu_interval_task,C-chunk5ms,256,418594,840000,1261319,1261319
+[ACT] cfg=C-chunk5ms  batch=15 n=128 lat_us med=9.1 p99=5008.7 max=5008.7 miss(1ms)=52 lost=0 skip=0
+action_latency,C-chunk5ms,128,759,769,420736,420736
+[EDGE]  win=164  cfg=D-chunk1ms  err=235994   thr=4294 ANOMALY infer=713.3us lat=21742.3us drop=0
+[EDGE]  win=165  cfg=D-chunk1ms  err=223221   thr=4294 ANOMALY infer=1741.1us lat=1767.8us drop=0
+[EDGE]  win=166  cfg=D-chunk1ms  err=217643   thr=4294 ANOMALY infer=1741.1us lat=1767.8us drop=0
+[EDGE]  win=167  cfg=D-chunk1ms  err=216415   thr=4294 ANOMALY infer=1741.2us lat=1767.9us drop=0
+[SEN] cfg=D-chunk1ms  batch=41 n=256 interval_us med=10000 p99=14013 max=15015 fail=0 skip=0 sat=0 win=167 a=(552,504,16548) g=(-944,388,-338)
+imu_interval_task,D-chunk1ms,256,418605,840000,1177143,1261319
+[EDGE]  win=168  cfg=D-chunk1ms  err=213658   thr=4294 ANOMALY infer=1741.2us lat=1767.9us drop=0
+[EDGE]  win=169  cfg=D-chunk1ms  err=223990   thr=4294 ANOMALY infer=1741.1us lat=1767.8us drop=0
+[EDGE]  win=170  cfg=D-chunk1ms  err=223034   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=171  cfg=D-chunk1ms  err=219545   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=D-chunk1ms  batch=42 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 sat=0 win=171 a=(664,448,16504) g=(-953,397,-341)
+imu_interval_task,D-chunk1ms,256,754583,840000,925333,925333
+[EDGE]  win=172  cfg=D-chunk1ms  err=218894   thr=4294 ANOMALY infer=713.5us lat=740.2us drop=0
+[EDGE]  win=173  cfg=D-chunk1ms  err=215747   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[EDGE]  win=174  cfg=D-chunk1ms  err=218887   thr=4294 ANOMALY infer=1741.0us lat=1767.7us drop=0
+[EDGE]  win=175  cfg=D-chunk1ms  err=214740   thr=4294 ANOMALY infer=1741.2us lat=1767.9us drop=0
+[ACT] cfg=D-chunk1ms  batch=16 n=128 lat_us med=14.1 p99=1008.6 max=1008.6 miss(1ms)=48 lost=0 skip=0
+action_latency,D-chunk1ms,128,769,1190,84730,84730
+[SEN] cfg=D-chunk1ms  batch=43 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 sat=0 win=175 a=(636,516,16524) g=(-945,401,-335)
+imu_interval_task,D-chunk1ms,256,754574,840000,925333,925333
+[INF] cfg=D-chunk1ms  batch=9 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275887,3276058,3276227,3276236
+[EDGE]  win=176  cfg=D-chunk1ms  err=227360   thr=4294 ANOMALY infer=713.4us lat=4203.9us drop=0
+[EDGE]  win=177  cfg=D-chunk1ms  err=227134   thr=4294 ANOMALY infer=1741.0us lat=1767.7us drop=0
+[EDGE]  win=178  cfg=D-chunk1ms  err=225571   thr=4294 ANOMALY infer=1741.0us lat=1767.7us drop=0
+[EDGE]  win=179  cfg=D-chunk1ms  err=218152   thr=4294 ANOMALY infer=1741.1us lat=1767.8us drop=0
+[SEN] cfg=D-chunk1ms  batch=44 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 sat=0 win=179 a=(712,444,16476) g=(-936,393,-356)
+imu_interval_task,D-chunk1ms,256,754583,840000,925333,925333
+[EDGE]  win=180  cfg=D-chunk1ms  err=217016   thr=4294 ANOMALY infer=1741.2us lat=1767.9us drop=0
+[EDGE]  win=181  cfg=D-chunk1ms  err=222856   thr=4294 ANOMALY infer=1741.1us lat=1767.8us drop=0
+[EDGE]  win=182  cfg=D-chunk1ms  err=217294   thr=4294 ANOMALY infer=1740.9us lat=1767.6us drop=0
+[EDGE]  win=183  cfg=D-chunk1ms  err=217401   thr=4294 ANOMALY infer=1742.9us lat=1769.6us drop=0
+[SEN] cfg=D-chunk1ms  batch=45 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 sat=0 win=183 a=(624,532,16480) g=(-948,398,-340)
+imu_interval_task,D-chunk1ms,256,754583,840000,925333,925333
+[EDGE]  win=184  cfg=D-chunk1ms  err=216467   thr=4294 ANOMALY infer=713.6us lat=740.1us drop=0
+[EDGE]  win=185  cfg=D-chunk1ms  err=215664   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[ACT] cfg=D-chunk1ms  batch=17 n=128 lat_us med=14.1 p99=1008.6 max=1008.7 miss(1ms)=47 lost=0 skip=0
+action_latency,D-chunk1ms,128,769,1190,84730,84737
+[EDGE]  win=186  cfg=D-chunk1ms  err=213958   thr=4294 ANOMALY infer=713.5us lat=740.2us drop=0
+[INF] cfg=D-chunk1ms  batch=10 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275864,3276058,3276227,3276227
+[EDGE]  win=187  cfg=D-chunk1ms  err=213951   thr=4294 ANOMALY infer=1742.1us lat=1768.8us drop=0
+[SEN] cfg=D-chunk1ms  batch=46 n=256 interval_us med=10000 p99=11015 max=11016 fail=0 skip=0 sat=0 win=187 a=(680,468,16520) g=(-950,391,-350)
+imu_interval_task,D-chunk1ms,256,754583,840000,925333,925347
+[EDGE]  win=188  cfg=D-chunk1ms  err=215875   thr=4294 ANOMALY infer=1741.2us lat=1767.9us drop=0
+[EDGE]  win=189  cfg=D-chunk1ms  err=214760   thr=4294 ANOMALY infer=1741.2us lat=1767.9us drop=0
+[EDGE]  win=190  cfg=D-chunk1ms  err=218133   thr=4294 ANOMALY infer=1741.1us lat=1767.8us drop=0
+[EDGE]  win=191  cfg=D-chunk1ms  err=214948   thr=4294 ANOMALY infer=1741.1us lat=1767.8us drop=0
+[SEN] cfg=D-chunk1ms  batch=47 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 sat=0 win=191 a=(680,444,16436) g=(-944,392,-358)
+imu_interval_task,D-chunk1ms,256,754583,840000,925333,925333
+[EDGE]  win=192  cfg=D-chunk1ms  err=217165   thr=4294 ANOMALY infer=1741.0us lat=1767.7us drop=0
+[EDGE]  win=193  cfg=D-chunk1ms  err=254150   thr=4294 ANOMALY infer=1741.1us lat=1767.8us drop=0
+[EDGE]  win=194  cfg=D-chunk1ms  err=246676   thr=4294 ANOMALY infer=1741.0us lat=1767.7us drop=0
+[EDGE]  win=195  cfg=D-chunk1ms  err=215139   thr=4294 ANOMALY infer=1741.1us lat=1767.8us drop=0
+[ACT] cfg=D-chunk1ms  batch=18 n=128 lat_us med=14.1 p99=1008.6 max=1008.6 miss(1ms)=49 lost=0 skip=0
+action_latency,D-chunk1ms,128,769,1190,84730,84730
+[SEN] cfg=D-chunk1ms  batch=48 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 sat=0 win=195 a=(644,488,16392) g=(-955,402,-366)
+imu_interval_task,D-chunk1ms,256,754574,840000,925333,925333
+[EDGE]  win=196  cfg=D-chunk1ms  err=218250   thr=4294 ANOMALY infer=1742.9us lat=1769.6us drop=0
+[EDGE]  win=197  cfg=D-chunk1ms  err=220675   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[INF] cfg=D-chunk1ms  batch=11 n=128 job_us med=39000 p99=39002 max=39002 skip=0
+load_job,D-chunk1ms,128,3275887,3276058,3276227,3276236
+[EDGE]  win=198  cfg=D-chunk1ms  err=215271   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[EDGE]  win=199  cfg=D-chunk1ms  err=216882   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[SEN] cfg=D-chunk1ms  batch=49 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 sat=0 win=199 a=(712,496,16440) g=(-944,407,-344)
+imu_interval_task,D-chunk1ms,256,754583,840000,925333,925333
+[EDGE]  win=200  cfg=D-chunk1ms  err=217643   thr=4294 ANOMALY infer=713.5us lat=740.2us drop=0
+[EDGE]  win=201  cfg=D-chunk1ms  err=233354   thr=4294 ANOMALY infer=1741.0us lat=1767.7us drop=0
+[EDGE]  win=202  cfg=D-chunk1ms  err=241983   thr=4294 ANOMALY infer=1741.0us lat=1767.7us drop=0
+[EDGE]  win=203  cfg=D-chunk1ms  err=233278   thr=4294 ANOMALY infer=1741.0us lat=1767.7us drop=0
+[SEN] cfg=D-chunk1ms  batch=50 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 sat=0 win=203 a=(704,520,16520) g=(-956,395,-359)
+imu_interval_task,D-chunk1ms,256,754583,840000,925333,925333
+[EDGE]  win=204  cfg=D-chunk1ms  err=267704   thr=4294 ANOMALY infer=1741.1us lat=1767.8us drop=0
+[EDGE]  win=205  cfg=D-chunk1ms  err=277407   thr=4294 ANOMALY infer=1741.2us lat=1767.9us drop=0
+[ACT] cfg=D-chunk1ms  batch=19 n=128 lat_us med=14.1 p99=1008.6 max=1008.6 miss(1ms)=48 lost=0 skip=0
+action_latency,D-chunk1ms,128,754,1190,84730,84730
+[EDGE]  win=206  cfg=L0-noload   err=219133   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=207  cfg=L0-noload   err=221733   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[SEN] cfg=L0-noload   batch=51 n=256 interval_us med=10000 p99=11015 max=11015 fail=0 skip=0 sat=0 win=207 a=(572,444,16460) g=(-941,395,-339)
+imu_interval_task,L0-noload,256,754583,840000,925285,925333
+[EDGE]  win=208  cfg=L0-noload   err=219366   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=209  cfg=L0-noload   err=222063   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=210  cfg=L0-noload   err=217282   thr=4294 ANOMALY infer=713.3us lat=739.9us drop=0
+[EDGE]  win=211  cfg=L0-noload   err=224574   thr=4294 ANOMALY infer=713.3us lat=739.8us drop=0
+[SEN] cfg=L0-noload   batch=52 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=211 a=(664,456,16520) g=(-941,399,-353)
+imu_interval_task,L0-noload,256,839820,840000,840180,840180
+[EDGE]  win=212  cfg=L0-noload   err=217995   thr=4294 ANOMALY infer=713.5us lat=740.2us drop=0
+[EDGE]  win=213  cfg=L0-noload   err=215712   thr=4294 ANOMALY infer=713.6us lat=740.3us drop=0
+[EDGE]  win=214  cfg=L0-noload   err=217064   thr=4294 ANOMALY infer=713.6us lat=740.1us drop=0
+[EDGE]  win=215  cfg=L0-noload   err=216924   thr=4294 ANOMALY infer=713.6us lat=740.1us drop=0
+[SEN] cfg=L0-noload   batch=53 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=215 a=(628,464,16572) g=(-952,401,-347)
+imu_interval_task,L0-noload,256,839820,840000,840180,840180
+[EDGE]  win=216  cfg=L0-noload   err=216411   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[ACT] cfg=L0-noload   batch=20 n=128 lat_us med=9.1 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,769,769,1257,1257
+[EDGE]  win=217  cfg=L0-noload   err=218214   thr=4294 ANOMALY infer=713.5us lat=740.1us drop=0
+[EDGE]  win=218  cfg=L0-noload   err=215826   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=219  cfg=L0-noload   err=220139   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[SEN] cfg=L0-noload   batch=54 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=219 a=(688,464,16408) g=(-939,410,-339)
+imu_interval_task,L0-noload,256,839820,840000,840180,840180
+[EDGE]  win=220  cfg=L0-noload   err=220400   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[EDGE]  win=221  cfg=L0-noload   err=220851   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=222  cfg=L0-noload   err=216256   thr=4294 ANOMALY infer=713.5us lat=740.1us drop=0
+[EDGE]  win=223  cfg=L0-noload   err=218627   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=L0-noload   batch=55 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=223 a=(604,512,16516) g=(-952,386,-352)
+imu_interval_task,L0-noload,256,839820,840000,840180,840180
+[EDGE]  win=224  cfg=L0-noload   err=217846   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[EDGE]  win=225  cfg=L0-noload   err=215644   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[EDGE]  win=226  cfg=L0-noload   err=219342   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[ACT] cfg=L0-noload   batch=21 n=128 lat_us med=9.1 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,759,769,1257,1257
+[EDGE]  win=227  cfg=L0-noload   err=218209   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[SEN] cfg=L0-noload   batch=56 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=227 a=(640,492,16584) g=(-950,405,-358)
+imu_interval_task,L0-noload,256,839820,840000,840180,840180
+[EDGE]  win=228  cfg=L0-noload   err=215830   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[EDGE]  win=229  cfg=L0-noload   err=214923   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=230  cfg=L0-noload   err=241793   thr=4294 ANOMALY infer=713.3us lat=739.8us drop=0
+[EDGE]  win=231  cfg=L0-noload   err=239830   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[SEN] cfg=L0-noload   batch=57 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=231 a=(604,444,16412) g=(-939,418,-348)
+imu_interval_task,L0-noload,256,839820,840000,840180,840180
+[EDGE]  win=232  cfg=L0-noload   err=219107   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=233  cfg=L0-noload   err=216163   thr=4294 ANOMALY infer=713.6us lat=740.1us drop=0
+[EDGE]  win=234  cfg=L0-noload   err=219508   thr=4294 ANOMALY infer=713.3us lat=739.8us drop=0
+[EDGE]  win=235  cfg=L0-noload   err=217138   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=L0-noload   batch=58 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=235 a=(616,476,16348) g=(-943,401,-355)
+imu_interval_task,L0-noload,256,839820,840000,840180,840180
+[EDGE]  win=236  cfg=L0-noload   err=221036   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[ACT] cfg=L0-noload   batch=22 n=128 lat_us med=9.1 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,769,769,1257,1257
+[EDGE]  win=237  cfg=L0-noload   err=227381   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[EDGE]  win=238  cfg=L0-noload   err=230048   thr=4294 ANOMALY infer=713.3us lat=740.0us drop=0
+[EDGE]  win=239  cfg=L0-noload   err=217367   thr=4294 ANOMALY infer=713.5us lat=740.2us drop=0
+[SEN] cfg=L0-noload   batch=59 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=239 a=(688,516,16416) g=(-968,395,-344)
+imu_interval_task,L0-noload,256,839806,840000,840180,840194
+[EDGE]  win=240  cfg=L0-noload   err=215411   thr=4294 ANOMALY infer=716.2us lat=742.9us drop=0
+[EDGE]  win=241  cfg=L0-noload   err=216264   thr=4294 ANOMALY infer=713.6us lat=740.1us drop=0
+[EDGE]  win=242  cfg=L0-noload   err=211144   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=243  cfg=L0-noload   err=211688   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[SEN] cfg=L0-noload   batch=60 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=243 a=(656,436,16448) g=(-952,399,-347)
+imu_interval_task,L0-noload,256,839820,840000,840180,840180
+[EDGE]  win=244  cfg=L0-noload   err=267846   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=245  cfg=L0-noload   err=266852   thr=4294 ANOMALY infer=713.6us lat=740.1us drop=0
+[EDGE]  win=246  cfg=L0-noload   err=213895   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[ACT] cfg=L0-noload   batch=23 n=128 lat_us med=9.1 p99=14.9 max=14.9 miss(1ms)=0 lost=0 skip=0
+action_latency,L0-noload,128,761,769,1257,1257
+[EDGE]  win=247  cfg=A-mono      err=234603   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[SEN] cfg=A-mono      batch=61 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=247 a=(612,428,16556) g=(-953,389,-334)
+imu_interval_task,A-mono,256,839804,840000,840180,840180
+[EDGE]  win=248  cfg=A-mono      err=293401   thr=4294 ANOMALY infer=713.7us lat=740.2us drop=0
+[EDGE]  win=249  cfg=A-mono      err=293735   thr=4294 ANOMALY infer=713.7us lat=740.2us drop=0
+[EDGE]  win=250  cfg=A-mono      err=265261   thr=4294 ANOMALY infer=713.7us lat=740.2us drop=0
+[EDGE]  win=251  cfg=A-mono      err=270311   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=A-mono      batch=62 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=251 a=(616,496,16476) g=(-946,398,-330)
+imu_interval_task,A-mono,256,839800,840000,840180,840180
+[EDGE]  win=252  cfg=A-mono      err=217015   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[EDGE]  win=253  cfg=A-mono      err=221471   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[EDGE]  win=254  cfg=A-mono      err=215952   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[EDGE]  win=255  cfg=A-mono      err=276106   thr=4294 ANOMALY infer=713.7us lat=740.2us drop=0
+[SEN] cfg=A-mono      batch=63 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=255 a=(776,468,16484) g=(-960,396,-346)
+imu_interval_task,A-mono,256,839800,840000,840180,840196
+[EDGE]  win=256  cfg=A-mono      err=260430   thr=4294 ANOMALY infer=713.6us lat=740.1us drop=0
+[AE ] cfg=A-mono      batch=1 n=128 infer_us med=713.5 max=13773.5 (min=59918 cyc) act=1 skip=0 bdrop=0
+inference_cycles,A-mono,128,59918,59940,1025224,1156980
+[AE ] cfg=A-mono      batch=1 n=128 decide_us med=740.1 max=40612.3
+infer_decide_latency,A-mono,128,62146,62174,3409659,3411436
+[EDGE]  win=257  cfg=A-mono      err=272489   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[ACT] cfg=A-mono      batch=24 n=128 lat_us med=9.1 p99=17.5 max=17.5 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,757,769,1475,1475
+[EDGE]  win=258  cfg=A-mono      err=278938   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[INF] cfg=A-mono      batch=12 n=128 job_us med=20001 p99=38192 max=61491 skip=0
+load_job,A-mono,128,1680096,1680127,3208158,5165267
+[EDGE]  win=259  cfg=A-mono      err=217361   thr=4294 ANOMALY infer=713.3us lat=739.8us drop=0
+[SEN] cfg=A-mono      batch=64 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=259 a=(696,384,16516) g=(-961,403,-354)
+imu_interval_task,A-mono,256,839800,840000,840180,840180
+[EDGE]  win=260  cfg=A-mono      err=267518   thr=4294 ANOMALY infer=713.5us lat=740.1us drop=0
+[EDGE]  win=261  cfg=A-mono      err=264431   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=262  cfg=A-mono      err=206241   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=263  cfg=A-mono      err=206716   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=A-mono      batch=65 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=263 a=(656,576,16456) g=(-938,394,-344)
+imu_interval_task,A-mono,256,839800,840000,840180,840180
+[EDGE]  win=264  cfg=A-mono      err=213115   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=265  cfg=A-mono      err=215728   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[EDGE]  win=266  cfg=A-mono      err=216580   thr=4294 ANOMALY infer=713.5us lat=740.2us drop=0
+[EDGE]  win=267  cfg=A-mono      err=219533   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=A-mono      batch=66 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=267 a=(644,532,16416) g=(-959,394,-352)
+imu_interval_task,A-mono,256,839800,840000,840180,840180
+[ACT] cfg=A-mono      batch=25 n=128 lat_us med=9.1 p99=17.5 max=17.5 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,757,769,1475,1475
+[EDGE]  win=268  cfg=A-mono      err=228028   thr=4294 ANOMALY infer=713.2us lat=739.8us drop=0
+[EDGE]  win=269  cfg=A-mono      err=218384   thr=4294 ANOMALY infer=713.6us lat=740.1us drop=0
+[INF] cfg=A-mono      batch=13 n=128 job_us med=20001 p99=21483 max=33384 skip=0
+load_job,A-mono,128,1680096,1680127,1804607,2804314
+[EDGE]  win=270  cfg=A-mono      err=227945   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[EDGE]  win=271  cfg=A-mono      err=222673   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=A-mono      batch=67 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=271 a=(680,464,16496) g=(-956,400,-350)
+imu_interval_task,A-mono,256,839800,840000,840180,840180
+[EDGE]  win=272  cfg=A-mono      err=230314   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[EDGE]  win=273  cfg=A-mono      err=228075   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[EDGE]  win=274  cfg=A-mono      err=219614   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[EDGE]  win=275  cfg=A-mono      err=216116   thr=4294 ANOMALY infer=713.6us lat=740.1us drop=0
+[SEN] cfg=A-mono      batch=68 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=275 a=(744,488,16420) g=(-959,401,-345)
+imu_interval_task,A-mono,256,839800,840000,840180,840180
+[EDGE]  win=276  cfg=A-mono      err=221034   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=277  cfg=A-mono      err=214912   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[ACT] cfg=A-mono      batch=26 n=128 lat_us med=9.1 p99=17.5 max=17.5 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,757,769,1475,1475
+[EDGE]  win=278  cfg=A-mono      err=215328   thr=4294 ANOMALY infer=713.5us lat=740.2us drop=0
+[EDGE]  win=279  cfg=A-mono      err=215039   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[SEN] cfg=A-mono      batch=69 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=279 a=(680,396,16444) g=(-950,394,-341)
+imu_interval_task,A-mono,256,839790,840000,840180,840180
+[INF] cfg=A-mono      batch=14 n=128 job_us med=20001 p99=31897 max=49387 skip=0
+load_job,A-mono,128,1680096,1680126,2679382,4148569
+[EDGE]  win=280  cfg=A-mono      err=217473   thr=4294 ANOMALY infer=713.6us lat=740.1us drop=0
+[EDGE]  win=281  cfg=A-mono      err=222277   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[EDGE]  win=282  cfg=A-mono      err=218434   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=283  cfg=A-mono      err=220217   thr=4294 ANOMALY infer=713.5us lat=740.1us drop=0
+[SEN] cfg=A-mono      batch=70 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=283 a=(648,436,16524) g=(-958,397,-347)
+imu_interval_task,A-mono,256,839800,840000,840180,840180
+[EDGE]  win=284  cfg=A-mono      err=217603   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=285  cfg=A-mono      err=218363   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=286  cfg=A-mono      err=219799   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=287  cfg=A-mono      err=225334   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=A-mono      batch=71 n=256 interval_us med=10000 p99=10002 max=10002 fail=0 skip=0 sat=0 win=287 a=(668,460,16516) g=(-955,388,-348)
+imu_interval_task,A-mono,256,839800,840000,840180,840180
+[ACT] cfg=A-mono      batch=27 n=128 lat_us med=9.1 p99=17.5 max=17.5 miss(1ms)=0 lost=0 skip=0
+action_latency,A-mono,128,757,769,1472,1475
+[EDGE]  win=288  cfg=B-mono      err=222042   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[EDGE]  win=289  cfg=B-mono      err=211907   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=290  cfg=B-mono      err=213564   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=291  cfg=B-mono      err=214411   thr=4294 ANOMALY infer=713.6us lat=740.3us drop=0
+[SEN] cfg=B-mono      batch=72 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=291 a=(644,408,16536) g=(-961,400,-350)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522291
+[EDGE]  win=292  cfg=B-mono      err=247695   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[EDGE]  win=293  cfg=B-mono      err=247135   thr=4294 ANOMALY infer=23886.4us lat=23913.1us drop=0
+[EDGE]  win=294  cfg=B-mono      err=232286   thr=4294 ANOMALY infer=716.0us lat=3880.0us drop=0
+[EDGE]  win=295  cfg=B-mono      err=233677   thr=4294 ANOMALY infer=713.4us lat=2308.6us drop=0
+[SEN] cfg=B-mono      batch=73 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=295 a=(764,400,16424) g=(-952,400,-351)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522280
+[EDGE]  win=296  cfg=B-mono      err=212292   thr=4294 ANOMALY infer=716.1us lat=2311.5us drop=0
+[EDGE]  win=297  cfg=B-mono      err=218532   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=298  cfg=B-mono      err=232203   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[ACT] cfg=B-mono      batch=28 n=128 lat_us med=9.1 p99=20008.9 max=20008.9 miss(1ms)=47 lost=0 skip=0
+action_latency,B-mono,128,754,769,1680755,1680755
+[EDGE]  win=299  cfg=B-mono      err=224731   thr=4294 ANOMALY infer=713.5us lat=20365.0us drop=0
+[SEN] cfg=B-mono      batch=74 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=299 a=(728,452,16544) g=(-941,393,-344)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522280
+[INF] cfg=B-mono      batch=15 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680096,1680112,1680125,1680125
+[EDGE]  win=300  cfg=B-mono      err=216137   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=301  cfg=B-mono      err=219300   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[EDGE]  win=302  cfg=B-mono      err=217573   thr=4294 ANOMALY infer=713.3us lat=739.9us drop=0
+[EDGE]  win=303  cfg=B-mono      err=214478   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[SEN] cfg=B-mono      batch=75 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=303 a=(708,428,16500) g=(-940,395,-342)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522280
+[EDGE]  win=304  cfg=B-mono      err=216249   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=305  cfg=B-mono      err=218517   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[EDGE]  win=306  cfg=B-mono      err=227321   thr=4294 ANOMALY infer=713.5us lat=740.2us drop=0
+[EDGE]  win=307  cfg=B-mono      err=222798   thr=4294 ANOMALY infer=716.1us lat=3880.2us drop=0
+[SEN] cfg=B-mono      batch=76 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=307 a=(644,420,16476) g=(-950,379,-350)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522280
+[EDGE]  win=308  cfg=B-mono      err=225321   thr=4294 ANOMALY infer=713.5us lat=2308.7us drop=0
+[ACT] cfg=B-mono      batch=29 n=128 lat_us med=9.1 p99=20008.9 max=20009.3 miss(1ms)=51 lost=0 skip=0
+action_latency,B-mono,128,769,769,1680755,1680782
+[EDGE]  win=309  cfg=B-mono      err=231354   thr=4294 ANOMALY infer=713.5us lat=22009.6us drop=0
+[EDGE]  win=310  cfg=B-mono      err=215886   thr=4294 ANOMALY infer=715.9us lat=2311.3us drop=0
+[INF] cfg=B-mono      batch=16 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680096,1680112,1680125,1680125
+[EDGE]  win=311  cfg=B-mono      err=215862   thr=4294 ANOMALY infer=713.3us lat=739.9us drop=0
+[SEN] cfg=B-mono      batch=77 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=311 a=(568,448,16440) g=(-955,406,-333)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522280
+[EDGE]  win=312  cfg=B-mono      err=216317   thr=4294 ANOMALY infer=716.0us lat=742.5us drop=0
+[EDGE]  win=313  cfg=B-mono      err=214018   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[EDGE]  win=314  cfg=B-mono      err=213932   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[EDGE]  win=315  cfg=B-mono      err=214166   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[SEN] cfg=B-mono      batch=78 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=315 a=(664,456,16428) g=(-946,395,-351)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522280
+[EDGE]  win=316  cfg=B-mono      err=213506   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[EDGE]  win=317  cfg=B-mono      err=214643   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=318  cfg=B-mono      err=219941   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[ACT] cfg=B-mono      batch=30 n=128 lat_us med=9.1 p99=20008.9 max=20008.9 miss(1ms)=48 lost=0 skip=0
+action_latency,B-mono,128,754,769,1680755,1680755
+[EDGE]  win=319  cfg=B-mono      err=226258   thr=4294 ANOMALY infer=2302.1us lat=40578.7us drop=0
+[SEN] cfg=B-mono      batch=79 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=319 a=(696,528,16456) g=(-944,390,-352)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522280
+[EDGE]  win=320  cfg=B-mono      err=230101   thr=4294 ANOMALY infer=716.0us lat=3880.1us drop=0
+[INF] cfg=B-mono      batch=17 n=128 job_us med=20001 p99=20001 max=20001 skip=0
+load_job,B-mono,128,1680096,1680112,1680125,1680125
+[EDGE]  win=321  cfg=B-mono      err=228167   thr=4294 ANOMALY infer=713.5us lat=2308.7us drop=0
+[EDGE]  win=322  cfg=B-mono      err=223767   thr=4294 ANOMALY infer=713.5us lat=2308.7us drop=0
+[EDGE]  win=323  cfg=B-mono      err=225406   thr=4294 ANOMALY infer=715.9us lat=2311.2us drop=0
+[SEN] cfg=B-mono      batch=80 n=256 interval_us med=10000 p99=30027 max=30034 fail=0 skip=0 sat=0 win=323 a=(588,476,16520) g=(-950,406,-339)
+imu_interval_task,B-mono,256,131770,840000,2522278,2522859
+[EDGE]  win=324  cfg=B-mono      err=221711   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[EDGE]  win=325  cfg=B-mono      err=217734   thr=4294 ANOMALY infer=716.0us lat=742.5us drop=0
+[EDGE]  win=326  cfg=B-mono      err=214970   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[EDGE]  win=327  cfg=B-mono      err=217596   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[SEN] cfg=B-mono      batch=81 n=256 interval_us med=10000 p99=30017 max=30027 fail=0 skip=0 sat=0 win=327 a=(756,524,16368) g=(-935,399,-347)
+imu_interval_task,B-mono,256,131770,840000,2521463,2522280
+[EDGE]  win=328  cfg=B-mono      err=222960   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[ACT] cfg=B-mono      batch=31 n=128 lat_us med=9.1 p99=20008.9 max=20008.9 miss(1ms)=47 lost=0 skip=0
+action_latency,B-mono,128,769,769,1680755,1680755
+[EDGE]  win=329  cfg=C-chunk5ms  err=221185   thr=4294 ANOMALY infer=25264.8us lat=40405.5us drop=0
+[EDGE]  win=330  cfg=C-chunk5ms  err=212339   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=331  cfg=C-chunk5ms  err=216407   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[SEN] cfg=C-chunk5ms  batch=82 n=256 interval_us med=10000 p99=29015 max=30027 fail=0 skip=0 sat=0 win=331 a=(608,380,16416) g=(-942,383,-364)
+imu_interval_task,C-chunk5ms,256,131770,840000,2437289,2522278
+[EDGE]  win=332  cfg=C-chunk5ms  err=214163   thr=4294 ANOMALY infer=713.6us lat=740.3us drop=0
+[EDGE]  win=333  cfg=C-chunk5ms  err=212561   thr=4294 ANOMALY infer=12203.6us lat=12230.3us drop=0
+[EDGE]  win=334  cfg=C-chunk5ms  err=214641   thr=4294 ANOMALY infer=13773.3us lat=13800.0us drop=0
+[EDGE]  win=335  cfg=C-chunk5ms  err=221430   thr=4294 ANOMALY infer=713.5us lat=7175.5us drop=0
+[SEN] cfg=C-chunk5ms  batch=83 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 sat=0 win=335 a=(644,424,16404) g=(-940,388,-350)
+imu_interval_task,C-chunk5ms,256,418605,840000,1261319,1261319
+[EDGE]  win=336  cfg=C-chunk5ms  err=216180   thr=4294 ANOMALY infer=713.5us lat=2308.4us drop=0
+[EDGE]  win=337  cfg=C-chunk5ms  err=227563   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[EDGE]  win=338  cfg=C-chunk5ms  err=270668   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=339  cfg=C-chunk5ms  err=265340   thr=4294 ANOMALY infer=713.6us lat=740.1us drop=0
+[SEN] cfg=C-chunk5ms  batch=84 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 sat=0 win=339 a=(656,488,16616) g=(-945,405,-349)
+imu_interval_task,C-chunk5ms,256,418587,840000,1261319,1261319
+[EDGE]  win=340  cfg=C-chunk5ms  err=217186   thr=4294 ANOMALY infer=713.6us lat=740.1us drop=0
+[ACT] cfg=C-chunk5ms  batch=32 n=128 lat_us med=9.1 p99=5008.7 max=5008.7 miss(1ms)=44 lost=0 skip=0
+action_latency,C-chunk5ms,128,754,769,420736,420736
+[INF] cfg=C-chunk5ms  batch=18 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931870,1932035,1932205,1932213
+[EDGE]  win=341  cfg=C-chunk5ms  err=283034   thr=4294 ANOMALY infer=712.5us lat=739.0us drop=0
+[EDGE]  win=342  cfg=C-chunk5ms  err=275578   thr=4294 ANOMALY infer=712.6us lat=739.1us drop=0
+[EDGE]  win=343  cfg=C-chunk5ms  err=260596   thr=4294 ANOMALY infer=713.7us lat=740.2us drop=0
+[SEN] cfg=C-chunk5ms  batch=85 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 sat=0 win=343 a=(632,504,16476) g=(-956,394,-344)
+imu_interval_task,C-chunk5ms,256,418605,840000,1261319,1261319
+[EDGE]  win=344  cfg=C-chunk5ms  err=217573   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[EDGE]  win=345  cfg=C-chunk5ms  err=211056   thr=4294 ANOMALY infer=713.4us lat=740.1us drop=0
+[EDGE]  win=346  cfg=C-chunk5ms  err=215474   thr=4294 ANOMALY infer=5741.6us lat=5768.3us drop=0
+[EDGE]  win=347  cfg=C-chunk5ms  err=214610   thr=4294 ANOMALY infer=13773.8us lat=13800.5us drop=0
+[SEN] cfg=C-chunk5ms  batch=86 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 sat=0 win=347 a=(628,540,16472) g=(-961,380,-350)
+imu_interval_task,C-chunk5ms,256,418605,840000,1261319,1261334
+[EDGE]  win=348  cfg=C-chunk5ms  err=213264   thr=4294 ANOMALY infer=713.6us lat=7183.2us drop=0
+[EDGE]  win=349  cfg=C-chunk5ms  err=213549   thr=4294 ANOMALY infer=713.5us lat=2308.5us drop=0
+[EDGE]  win=350  cfg=C-chunk5ms  err=207145   thr=4294 ANOMALY infer=2299.7us lat=2326.2us drop=0
+[ACT] cfg=C-chunk5ms  batch=33 n=128 lat_us med=9.1 p99=5008.7 max=5008.7 miss(1ms)=52 lost=0 skip=0
+action_latency,C-chunk5ms,128,759,769,420736,420736
+[EDGE]  win=351  cfg=C-chunk5ms  err=215099   thr=4294 ANOMALY infer=713.4us lat=740.0us drop=0
+[SEN] cfg=C-chunk5ms  batch=87 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 sat=0 win=351 a=(716,500,16488) g=(-951,403,-338)
+imu_interval_task,C-chunk5ms,256,418605,840000,1261319,1261319
+[INF] cfg=C-chunk5ms  batch=19 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931853,1932035,1932205,1932205
+[EDGE]  win=352  cfg=C-chunk5ms  err=207173   thr=4294 ANOMALY infer=713.6us lat=740.2us drop=0
+[EDGE]  win=353  cfg=C-chunk5ms  err=202889   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=354  cfg=C-chunk5ms  err=220674   thr=4294 ANOMALY infer=713.3us lat=739.8us drop=0
+[EDGE]  win=355  cfg=C-chunk5ms  err=214933   thr=4294 ANOMALY infer=713.5us lat=740.1us drop=0
+[SEN] cfg=C-chunk5ms  batch=88 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 sat=0 win=355 a=(632,476,16412) g=(-937,418,-343)
+imu_interval_task,C-chunk5ms,256,418605,840000,1261319,1261319
+[EDGE]  win=356  cfg=C-chunk5ms  err=206309   thr=4294 ANOMALY infer=713.3us lat=739.8us drop=0
+[EDGE]  win=357  cfg=C-chunk5ms  err=197690   thr=4294 ANOMALY infer=713.6us lat=740.2us drop=0
+[EDGE]  win=358  cfg=C-chunk5ms  err=193571   thr=4294 ANOMALY infer=713.5us lat=740.2us drop=0
+[EDGE]  win=359  cfg=C-chunk5ms  err=201755   thr=4294 ANOMALY infer=713.5us lat=740.2us drop=0
+[SEN] cfg=C-chunk5ms  batch=89 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 sat=0 win=359 a=(644,436,16568) g=(-955,375,-356)
+imu_interval_task,C-chunk5ms,256,418605,840000,1261319,1261319
+[EDGE]  win=360  cfg=C-chunk5ms  err=204374   thr=4294 ANOMALY infer=713.6us lat=13756.8us drop=0
+[ACT] cfg=C-chunk5ms  batch=34 n=128 lat_us med=9.1 p99=5008.7 max=5008.7 miss(1ms)=48 lost=0 skip=0
+action_latency,C-chunk5ms,128,759,769,420736,420736
+[EDGE]  win=361  cfg=C-chunk5ms  err=205232   thr=4294 ANOMALY infer=12215.0us lat=12241.7us drop=0
+[EDGE]  win=362  cfg=C-chunk5ms  err=203098   thr=4294 ANOMALY infer=7314.5us lat=7341.2us drop=0
+[INF] cfg=C-chunk5ms  batch=20 n=128 job_us med=23000 p99=23002 max=23002 skip=0
+load_job,C-chunk5ms,128,1931870,1932035,1932205,1932205
+[EDGE]  win=363  cfg=C-chunk5ms  err=190790   thr=4294 ANOMALY infer=713.7us lat=2308.9us drop=0
+[SEN] cfg=C-chunk5ms  batch=90 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 sat=0 win=363 a=(616,284,16584) g=(-946,392,-342)
+imu_interval_task,C-chunk5ms,256,418595,840000,1261319,1261319
+[EDGE]  win=364  cfg=C-chunk5ms  err=195731   thr=4294 ANOMALY infer=713.6us lat=740.2us drop=0
+[EDGE]  win=365  cfg=C-chunk5ms  err=207202   thr=4294 ANOMALY infer=713.4us lat=739.9us drop=0
+[EDGE]  win=366  cfg=C-chunk5ms  err=211448   thr=4294 ANOMALY infer=713.5us lat=740.0us drop=0
+[EDGE]  win=367  cfg=C-chunk5ms  err=213994   thr=4294 ANOMALY infer=713.7us lat=740.2us drop=0
+[SEN] cfg=C-chunk5ms  batch=91 n=256 interval_us med=10000 p99=15015 max=15015 fail=0 skip=0 sat=0 win=367 a=(688,472,16456) g=(-954,427,-347)
+imu_interval_task,C-chunk5ms,256,418605,840000,1261319,1261319
+[EDGE]  win=368  cfg=C-chunk5ms  err=210686   thr=4294 ANOMALY infer=713.3us lat=739.8us drop=0
