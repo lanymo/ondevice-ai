@@ -137,6 +137,7 @@ typedef enum
   APP_MSG_EDGE,      /* 윈도우 1개의 추론 결과 (축 B 데모의 눈에 보이는 부분) */
   APP_MSG_AECYC,     /* 추론 파이프라인 사이클 배치 -> inference_cycles.csv */
   APP_MSG_AELAT,     /* 윈도우 완성 -> 판정 지연 배치 */
+  APP_MSG_STACK,     /* 스택 high-water 보고 요청 (aux0 = 완료된 스윕 바퀴 수) */
   APP_MSG_ERR,       /* 오류 통지 (aux0 = 코드) */
 } app_msg_type_t;
 
@@ -188,6 +189,8 @@ static StackType_t  s_stk_infer[STK_INFER];
 static TaskHandle_t s_action_task;
 static TaskHandle_t s_load_task;    /* config 전환 시 우선순위를 바꾼다 */
 static TaskHandle_t s_infer_task;   /* 센서 태스크가 윈도우 완성 시 깨운다 */
+static TaskHandle_t s_sensor_task;  /* 스택 high-water 조회용 (W4) */
+static TaskHandle_t s_log_task;     /* 스택 high-water 조회용 (W4) */
 
 /* ------------------------------------------------------------------ 측정 버퍼 */
 
@@ -317,7 +320,7 @@ static void prv_action_task(void *arg)
 {
   uint32_t warm = 0u, idx = 0u, batch = 0u;
   uint32_t miss = 0u, lost = 0u, skip = 0u;
-  uint32_t cfg_batch = 0u;
+  uint32_t cfg_batch = 0u, sweeps = 0u;
   uint8_t  side = 0u;
 
   (void)arg;
@@ -380,6 +383,17 @@ static void prv_action_task(void *arg)
         cfg_batch = 0u;
         prv_sweep_apply((uint8_t)((s_cfg_idx + 1u) % CFG_N));
         warm = 0u;
+
+        /* 스윕이 한 바퀴(전 config, 128초) 돌 때마다 스택 high-water 보고를
+         * 요청한다(W4 memory_footprint). 한 바퀴를 기다리는 이유: high-water는
+         * "지금까지의 최악"이라 모든 config의 최악 경로를 지난 뒤라야 의미가
+         * 있다. 바퀴마다 반복해 찍는 건 값이 수렴하는지 보기 위해서다 -
+         * 늘고 있으면 아직 최악을 못 본 것이다. 조회/printf는 로그 태스크 몫. */
+        if (s_cfg_idx == 0u)
+        {
+          app_msg_t sm = { .type = APP_MSG_STACK, .aux0 = ++sweeps };
+          (void)xQueueSend(s_logq, &sm, 0u);   /* 큐 포화면 다음 바퀴에 또 온다 */
+        }
       }
     }
   }
@@ -827,6 +841,23 @@ static void prv_log_task(void *arg)
 
     cfg = s_cfg[m.cfg].name;
 
+    /* 스택 high-water: 태스크별 "여태 가장 얕게 남았던 잔여 스택"(워드, 1워드=4B).
+     * 여기(로그 태스크)서 조회하는 이유는 printf 규칙과 같다 - 다른 태스크의
+     * 측정 경로에 조회 비용(스택 영역 스캔)을 섞지 않는다. 값은 단조감소라
+     * 스윕 바퀴가 거듭돼도 같은 숫자면 수렴한 것이다. */
+    if (m.type == APP_MSG_STACK)
+    {
+      printf("[STK] sweep=%lu 잔여최소/총량(워드):"
+             " action=%lu/%u sensor=%lu/%u log=%lu/%u infer=%lu/%u load=%lu/%u\r\n",
+             (unsigned long)m.aux0,
+             (unsigned long)uxTaskGetStackHighWaterMark(s_action_task), (unsigned)STK_ACTION,
+             (unsigned long)uxTaskGetStackHighWaterMark(s_sensor_task), (unsigned)STK_SENSOR,
+             (unsigned long)uxTaskGetStackHighWaterMark(s_log_task),    (unsigned)STK_LOG,
+             (unsigned long)uxTaskGetStackHighWaterMark(s_infer_task),  (unsigned)STK_INFER,
+             (unsigned long)uxTaskGetStackHighWaterMark(s_load_task),   (unsigned)STK_LOAD);
+      continue;   /* 배치 메시지가 아니다 (buf == NULL) */
+    }
+
     /* EDGE는 배치가 아니라 윈도우 한 개짜리 결과라 통계를 뽑지 않는다.
      * 오차는 정수라 그대로 찍고, 임계값과 나란히 둬서 판정 근거가 보이게 한다. */
     if (m.type == APP_MSG_EDGE)
@@ -960,16 +991,16 @@ void app_tasks_init(void)
 
   s_cfg_idx = 0u;   /* 스윕은 대조군(L0-noload)부터 시작한다 */
 
-  (void)xTaskCreateStatic(prv_log_task, "log", STK_LOG, NULL,
-                          PRIO_LOG, s_stk_log, &s_tcb_log);
+  s_log_task = xTaskCreateStatic(prv_log_task, "log", STK_LOG, NULL,
+                                 PRIO_LOG, s_stk_log, &s_tcb_log);
   s_load_task = xTaskCreateStatic(prv_load_task, "load", STK_LOAD, NULL,
                                   s_cfg[0].prio, s_stk_load, &s_tcb_load);
   /* 추론 태스크는 센서보다 **먼저** 만든다 - 센서가 첫 윈도우에서
    * xTaskNotifyGive(s_infer_task)를 부르는데, 그때 핸들이 NULL이면 죽는다. */
   s_infer_task = xTaskCreateStatic(prv_infer_task, "infer", STK_INFER, NULL,
                                    PRIO_INFER, s_stk_infer, &s_tcb_infer);
-  (void)xTaskCreateStatic(prv_sensor_task, "sensor", STK_SENSOR, NULL,
-                          PRIO_SENSOR, s_stk_sensor, &s_tcb_sensor);
+  s_sensor_task = xTaskCreateStatic(prv_sensor_task, "sensor", STK_SENSOR, NULL,
+                                    PRIO_SENSOR, s_stk_sensor, &s_tcb_sensor);
   s_action_task = xTaskCreateStatic(prv_action_task, "action", STK_ACTION, NULL,
                                     PRIO_ACTION, s_stk_action, &s_tcb_action);
   configASSERT(s_action_task != NULL);

@@ -172,4 +172,6 @@ ondevice-ai/
 - `DEADLINE_MS=1`은 요구사항에서 도출된 값이 아니라 **관측 기준선**이다 — 초과 횟수가 아니라
   분포의 꼬리로 판단한다(초과 횟수 지표는 20배 차이를 구별하지 못했다).
 
-<!-- TODO(W4): docs/memory_footprint.md 링크 (flash/RAM/아레나/태스크별 스택 high-water — 보드 실측 필요) -->
+메모리 상세(Flash 12.2% / RAM 34.4%, 태스크별 스택 배정과 high-water):
+[`docs/memory_footprint.md`](stm32-edge/docs/memory_footprint.md)
+<!-- TODO(W4): 스택 high-water 보드 실측 후 memory_footprint.md §3 표 채우기 / 데모 영상 링크 -->
